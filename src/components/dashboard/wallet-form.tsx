@@ -1,13 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Loader2 } from "lucide-react";
+import { Loader as Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/providers/auth-provider";
-import { PAYMENT_OPTIONS } from "@/lib/nav";
+import { PAYMENT_OPTIONS } from "@/lib/bj88-nav";
 import { cn, formatPHP } from "@/lib/utils";
 
 const PRESETS = [100, 500, 1000, 5000, 10000];
@@ -42,8 +42,8 @@ export function WalletForm({ initialBalance }: { initialBalance: number }) {
       }
       toast.success(
         action === "deposit"
-          ? `Deposited ${formatPHP(amt)} successfully!`
-          : `Withdrew ${formatPHP(amt)} successfully!`,
+          ? `Deposited ৳${amt} successfully!`
+          : `Withdrew ৳${amt} successfully!`,
       );
       setAmount("");
       await refresh();
@@ -104,11 +104,11 @@ export function WalletForm({ initialBalance }: { initialBalance: number }) {
       {/* Amount */}
       <div className="space-y-2">
         <Label htmlFor="amount">
-          Amount {action === "withdraw" && `(max ${formatPHP(balance)})`}
+          Amount {action === "withdraw" && `(max ৳${balance})`}
         </Label>
         <div className="relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-            ₱
+            ৳
           </span>
           <Input
             id="amount"
@@ -130,7 +130,7 @@ export function WalletForm({ initialBalance }: { initialBalance: number }) {
               onClick={() => setAmount(String(p))}
               className="rounded-full border border-border/60 px-3 py-1 text-xs hover:border-primary/50 hover:text-foreground"
             >
-              +{formatPHP(p)}
+              +৳{p}
             </button>
           ))}
         </div>

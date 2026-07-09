@@ -52,7 +52,7 @@ export function RegisterForm() {
     const res = await signUp({ username, email, password });
     setLoading(false);
     if (res.ok) {
-      toast.success("Account created! Enjoy your ₱500 welcome credit.");
+      toast.success("Account created! Enjoy your ৳500 welcome credit.");
       router.push("/dashboard");
       router.refresh();
     } else {
@@ -63,7 +63,7 @@ export function RegisterForm() {
   return (
     <AuthShell
       title="Create your account"
-      subtitle="Join 180,000+ players. Get ₱500 free + a 100% bonus."
+      subtitle="Join BJ88 Bangladesh. Get ৳500 free + a 100% bonus."
       footer={
         <>
           Already have an account?{" "}
@@ -187,7 +187,7 @@ export function RegisterForm() {
             type="checkbox"
             checked={agree}
             onChange={(e) => setAgree(e.target.checked)}
-            className="mt-0.5 size-4 accent-violet-600"
+            className="mt-0.5 size-4 accent-amber-600"
           />
           <span>
             I am at least 18 years old and agree to the{" "}

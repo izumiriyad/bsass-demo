@@ -59,8 +59,8 @@ export function DashboardShell({
             </div>
             <div className="mt-3 rounded-lg bg-muted/50 p-3">
               <div className="text-xs text-muted-foreground">Balance</div>
-              <div className="text-lg font-bold text-gold-gradient">
-                {formatPHP(current.balance)}
+              <div className="text-lg font-bold text-[#f0b429]">
+                ৳{(current.balance * 110).toFixed(0)}
               </div>
             </div>
           </div>

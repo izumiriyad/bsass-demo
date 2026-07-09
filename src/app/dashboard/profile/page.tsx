@@ -2,7 +2,7 @@ import { Crown, Shield } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { ProfileForm } from "@/components/dashboard/profile-form";
 import { Badge } from "@/components/ui/badge";
-import { formatPHP, timeAgo } from "@/lib/utils";
+import { formatBDT, timeAgo } from "@/lib/bj88-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export default async function ProfilePage() {
           <span className="text-xl">💰</span>
           <div className="mt-2 text-sm text-muted-foreground">Balance</div>
           <div className="text-lg font-bold text-gold-gradient">
-            {formatPHP(user.balance)}
+            {formatBDT(user.balance * 110)}
           </div>
         </div>
         <div className="rounded-xl border border-border/60 bg-card/50 p-4">

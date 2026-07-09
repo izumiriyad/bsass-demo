@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TransactionRow } from "@/components/dashboard/transaction-row";
 import { getTransactions, requireUser } from "@/lib/auth";
-import { formatPHP } from "@/lib/utils";
+import { formatBDT } from "@/lib/bj88-utils";
 import { MiniChart } from "@/components/ui/charts";
 import type { Transaction } from "@/lib/types";
 
@@ -60,10 +60,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Current balance" value={formatPHP(user.balance)} accent chart={[10, 25, 15, 30, 25, 40, 35]} />
-        <StatCard label="Total deposited" value={formatPHP(deposits)} icon={<TrendingUp className="size-4 text-emerald-400" />} chart={[20, 35, 25, 45, 40, 50, 55]} />
-        <StatCard label="Total withdrawn" value={formatPHP(withdrawals)} icon={<ArrowUpFromLine className="size-4 text-rose-400" />} chart={[15, 20, 10, 25, 20, 30, 25]} />
-        <StatCard label="Bonuses & wins" value={formatPHP(bonuses)} icon={<Gift className="size-4 text-amber-400" />} chart={[5, 15, 10, 20, 18, 25, 30]} />
+        <StatCard label="Current balance" value={formatBDT(user.balance * 110)} accent chart={[10, 25, 15, 30, 25, 40, 35]} />
+        <StatCard label="Total deposited" value={formatBDT(deposits * 110)} icon={<TrendingUp className="size-4 text-emerald-400" />} chart={[20, 35, 25, 45, 40, 50, 55]} />
+        <StatCard label="Total withdrawn" value={formatBDT(withdrawals * 110)} icon={<ArrowUpFromLine className="size-4 text-rose-400" />} chart={[15, 20, 10, 25, 20, 30, 25]} />
+        <StatCard label="Bonuses & wins" value={formatBDT(bonuses * 110)} icon={<Gift className="size-4 text-amber-400" />} chart={[5, 15, 10, 20, 18, 25, 30]} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">

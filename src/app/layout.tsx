@@ -1,58 +1,40 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { SiteHeader } from "@/components/site/site-header";
-import { SiteFooter } from "@/components/site/site-footer";
-import { ScrollToTop } from "@/components/ui/scroll-to-top";
-import { CookieConsent } from "@/components/ui/cookie-consent";
-import { LiveChatWidget } from "@/components/ui/live-chat-widget";
+import { SidebarProvider } from "@/components/layout/sidebar-provider";
+import { AppShell } from "@/components/layout/app-shell";
 import { getSessionUser } from "@/lib/auth";
-import { SITE } from "@/lib/catalog";
+import { SITE } from "@/lib/bj88-catalog";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
+    default: `${SITE.name} Bangladesh — ${SITE.tagline}`,
     template: `%s · ${SITE.name}`,
   },
   description: SITE.description,
-  applicationName: SITE.name,
   keywords: [
-    "online games",
-    "slots",
-    "live casino",
-    "sports betting",
-    "fishing games",
-    "crash games",
-    "arcade games",
-    "online entertainment",
-    "Playverse",
+    "BJ88 Bangladesh",
+    "online casino Bangladesh",
+    "sports betting Bangladesh",
+    "cricket betting BD",
+    "slots Bangladesh",
+    "BPL betting",
+    "online gaming BD",
   ],
-  authors: [{ name: SITE.name }],
-  creator: SITE.name,
   openGraph: {
     type: "website",
-    locale: "en_PH",
+    locale: "en_BD",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: `${SITE.name} Bangladesh — ${SITE.tagline}`,
     description: SITE.description,
   },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, "max-image-preview": "large" },
-  },
-  category: "entertainment",
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#08070f",
+  themeColor: "#0a0a14",
   width: "device-width",
   initialScale: 1,
 };
@@ -66,14 +48,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="flex min-h-screen flex-col">
+      <body className="bg-[#0d0d18] text-white">
         <Providers initialUser={user}>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <ScrollToTop />
-          <CookieConsent />
-          <LiveChatWidget />
+          <SidebarProvider>
+            <AppShell>{children}</AppShell>
+          </SidebarProvider>
         </Providers>
       </body>
     </html>

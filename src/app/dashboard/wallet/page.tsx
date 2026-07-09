@@ -2,7 +2,7 @@ import { ShieldCheck, Clock, Zap } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { WalletForm } from "@/components/dashboard/wallet-form";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatPHP } from "@/lib/utils";
+import { formatBDT } from "@/lib/bj88-utils";
 
 export const dynamic = "force-dynamic";
 
@@ -47,7 +47,7 @@ export default async function WalletPage() {
           <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5">
             <div className="text-xs text-muted-foreground">Available balance</div>
             <div className="mt-1 text-2xl font-bold text-gold-gradient">
-              {formatPHP(user.balance)}
+              {formatBDT(user.balance * 110)}
             </div>
           </div>
           <div className="space-y-3">

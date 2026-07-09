@@ -28,13 +28,13 @@ export async function POST(req: NextRequest) {
   }
   if (action === "deposit" && amount < 100) {
     return NextResponse.json(
-      { error: "Minimum deposit is ₱100." },
+      { error: "Minimum deposit is ৳100." },
       { status: 400 },
     );
   }
   if (action === "withdraw" && amount < 200) {
     return NextResponse.json(
-      { error: "Minimum withdrawal is ₱200." },
+      { error: "Minimum withdrawal is ৳200." },
       { status: 400 },
     );
   }

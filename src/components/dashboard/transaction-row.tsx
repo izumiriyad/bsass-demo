@@ -7,7 +7,8 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { Transaction } from "@/lib/types";
-import { cn, formatPHP, timeAgo } from "@/lib/utils";
+import { cn, timeAgo } from "@/lib/utils";
+import { formatBDT } from "@/lib/bj88-utils";
 
 const META: Record<
   Transaction["type"],
@@ -51,7 +52,7 @@ export function TransactionRow({ tx }: { tx: Transaction }) {
           )}
         >
           {sign}
-          {formatPHP(tx.amount)}
+          {formatBDT(tx.amount * 110)}
         </div>
         <Badge
           variant={tx.status === "completed" ? "new" : "muted"}

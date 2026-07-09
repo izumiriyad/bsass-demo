@@ -1,54 +1,38 @@
-import type { Metadata } from "next";
-import { PromotionCard } from "@/components/game/promotion-card";
-import { PageHero } from "@/components/site/page-hero";
-import { FaqList } from "@/components/site/faq-list";
-import { PROMOTIONS } from "@/lib/catalog";
+import { PROMOTIONS } from "@/lib/bj88-catalog";
+import { WinnersTicker } from "@/components/bj88/tickers";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Promotions",
-  description:
-    "Claim welcome bonuses, daily cashback, free spins, reload offers, referral rewards, and monthly tournament prizes.",
-};
-
-const BONUS_FAQS = [
-  {
-    q: "How do I claim a promotion?",
-    a: "Open the promotion, copy its bonus code, and enter it when making a qualifying deposit in your wallet. Some bonuses are credited automatically.",
-  },
-  {
-    q: "What are wagering requirements?",
-    a: "A wagering requirement is the number of times you must play through a bonus before withdrawing it. For example, a 25x requirement on a ₱1,000 bonus means ₱25,000 in bets.",
-  },
-  {
-    q: "Can I have multiple bonuses active?",
-    a: "Generally one bonus is active at a time. You can claim a new one once the current bonus is completed or forfeited.",
-  },
-];
+export const metadata = { title: "Promotions" };
 
 export default function PromotionsPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Rewards"
-        title="Promotions & Bonuses"
-        description="Generous, transparent offers for new and returning players. No hidden terms — everything is spelled out clearly."
-      />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {PROMOTIONS.map((p) => (
-            <PromotionCard key={p.id} promo={p} />
-          ))}
-        </div>
-
-        <div className="mx-auto mt-14 max-w-3xl">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Bonus questions
-          </h2>
-          <div className="mt-4">
-            <FaqList items={BONUS_FAQS} />
-          </div>
-        </div>
-      </section>
-    </>
+    <div className="px-4 py-4 lg:px-6">
+      <div className="mb-4">
+        <WinnersTicker />
+      </div>
+      <h1 className="mb-6 text-xl font-black uppercase text-white">🎁 Promotions</h1>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {PROMOTIONS.map((p) => (
+          <Link
+            key={p.id}
+            href={`/promotions/${p.id}`}
+            className="group relative block overflow-hidden rounded-xl p-6 transition-transform hover:scale-[1.02]"
+            style={{ backgroundImage: `linear-gradient(120deg, ${p.gradient[0]}, ${p.gradient[1]})` }}
+          >
+            <div className="absolute right-4 top-4 text-5xl opacity-30">{p.emoji}</div>
+            <div className="relative">
+              <span className="rounded bg-black/30 px-2 py-0.5 text-[10px] font-bold text-white">
+                {p.badge}
+              </span>
+              <h3 className="mt-3 text-lg font-bold text-white">{p.title}</h3>
+              <p className="mt-1 text-sm text-white/80">{p.subtitle}</p>
+              <span className="mt-3 inline-block text-xs font-bold text-white underline">
+                Claim Now →
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
