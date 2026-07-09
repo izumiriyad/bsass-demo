@@ -3,49 +3,43 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+/* ---- icon helpers ---- */
+function Icon({ children, bg }: { children: React.ReactNode; bg: string }) {
+  return (
+    <span
+      className="flex size-[22px] shrink-0 items-center justify-center rounded-full text-xs"
+      style={{ background: bg }}
+    >
+      {children}
+    </span>
+  );
+}
 
 interface NavItem {
   id: string;
   label: string;
   href: string;
   icon: React.ReactNode;
-  children?: { label: string; href: string; icon?: string }[];
-  badge?: string;
-}
-
-function HomeIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="size-5">
-      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-    </svg>
-  );
+  children?: { label: string; href: string }[];
 }
 
 const NAV_ITEMS: NavItem[] = [
-  {
-    id: "home",
-    label: "Home",
-    href: "/",
-    icon: <HomeIcon />,
-  },
+  { id: "home", label: "Home", href: "/", icon: <Icon bg="#2a2a4a">🏠</Icon> },
   {
     id: "popular",
     label: "POPULAR",
     href: "/popular",
-    icon: <span className="text-lg">⭐</span>,
-    children: [
-      { label: "All Popular", href: "/popular" },
-      { label: "Featured Games", href: "/popular/featured" },
-      { label: "New Releases", href: "/popular/new" },
-    ],
+    icon: <Icon bg="#3a2a0a">⭐</Icon>,
+    children: [{ label: "All Popular", href: "/popular" }, { label: "New Games", href: "/popular/new" }],
   },
   {
     id: "sports",
     label: "SPORTS",
     href: "/sports",
-    icon: <span className="text-lg">⚽</span>,
+    icon: <Icon bg="#0a2a1a">⚽</Icon>,
     children: [
       { label: "Football", href: "/sports/football" },
       { label: "Cricket", href: "/sports/cricket" },
@@ -58,39 +52,35 @@ const NAV_ITEMS: NavItem[] = [
     id: "cricket",
     label: "CRICKET",
     href: "/cricket",
-    icon: <span className="text-lg">🏏</span>,
+    icon: <Icon bg="#0a1a3a">🏏</Icon>,
     children: [
-      { label: "BPL", href: "/cricket/bpl" },
+      { label: "BPL T20", href: "/cricket/bpl" },
       { label: "IPL", href: "/cricket/ipl" },
       { label: "ICC Tournaments", href: "/cricket/icc" },
-      { label: "Bangladesh National", href: "/cricket/national" },
     ],
   },
   {
     id: "slots",
     label: "SLOTS",
     href: "/slots",
-    icon: <span className="text-lg">🎰</span>,
+    icon: <Icon bg="#2a1a3a">🎰</Icon>,
     children: [
       { label: "Pragmatic Play", href: "/slots/pragmatic" },
       { label: "JILI", href: "/slots/jili" },
-      { label: "Habanero", href: "/slots/habanero" },
       { label: "PG Soft", href: "/slots/pg-soft" },
-      { label: "Netent", href: "/slots/netent" },
+      { label: "Habanero", href: "/slots/habanero" },
     ],
   },
   {
     id: "casino",
     label: "CASINO",
     href: "/casino",
-    icon: <span className="text-lg">🃏</span>,
+    icon: <Icon bg="#2a0a0a">🃏</Icon>,
     children: [
-      { label: "Evolution Gaming", href: "/casino/evolution" },
-      { label: "Ezugi", href: "/casino/ezugi" },
+      { label: "Evolution", href: "/casino/evolution" },
       { label: "AE Sexy", href: "/casino/sexy" },
       { label: "Baccarat", href: "/casino/baccarat" },
       { label: "Roulette", href: "/casino/roulette" },
-      { label: "Blackjack", href: "/casino/blackjack" },
       { label: "Teen Patti", href: "/casino/teen-patti" },
       { label: "Andar Bahar", href: "/casino/andar-bahar" },
     ],
@@ -99,7 +89,7 @@ const NAV_ITEMS: NavItem[] = [
     id: "table",
     label: "TABLE",
     href: "/table",
-    icon: <span className="text-lg">🎲</span>,
+    icon: <Icon bg="#0a1a2a">🎲</Icon>,
     children: [
       { label: "Poker", href: "/table/poker" },
       { label: "Blackjack", href: "/table/blackjack" },
@@ -110,39 +100,38 @@ const NAV_ITEMS: NavItem[] = [
     id: "fishing",
     label: "FISHING",
     href: "/fishing",
-    icon: <span className="text-lg">🎣</span>,
+    icon: <Icon bg="#0a2a2a">🎣</Icon>,
     children: [
       { label: "All Fishing", href: "/fishing" },
       { label: "JILI Fishing", href: "/fishing/jili" },
-      { label: "Fa Chai Fishing", href: "/fishing/fa-chai" },
     ],
   },
   {
     id: "lottery",
     label: "LOTTERY",
     href: "/lottery",
-    icon: <span className="text-lg">🎟️</span>,
+    icon: <Icon bg="#2a1a0a">🎟️</Icon>,
     children: [
       { label: "Keno", href: "/lottery/keno" },
       { label: "Lotto", href: "/lottery/lotto" },
-      { label: "Scratch Cards", href: "/lottery/scratch" },
     ],
   },
   {
     id: "arcade",
     label: "ARCADE",
     href: "/arcade",
-    icon: <span className="text-lg">🕹️</span>,
+    icon: <Icon bg="#1a0a2a">🕹️</Icon>,
     children: [
       { label: "All Arcade", href: "/arcade" },
-      { label: "JILI Arcade", href: "/arcade/jili" },
+      { label: "Plinko", href: "/arcade/plinko" },
+      { label: "Mines", href: "/arcade/mines" },
     ],
   },
   {
     id: "crash",
     label: "CRASH",
     href: "/crash",
-    icon: <span className="text-lg">🚀</span>,
+    icon: <Icon bg="#2a0a1a">🚀</Icon>,
     children: [
       { label: "Aviator", href: "/crash/aviator" },
       { label: "JetX", href: "/crash/jetx" },
@@ -151,97 +140,91 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-const BOTTOM_NAV = [
-  { id: "promotions", label: "Promotions", href: "/promotions", icon: "🎁" },
-  { id: "vip", label: "VIP CLUB", href: "/vip", icon: "👑" },
-  { id: "leaderboard", label: "Leaderboard", href: "/leaderboard", icon: "🏆" },
-  { id: "download", label: "Download", href: "/download", icon: "📥" },
-  { id: "affiliate", label: "Affiliate", href: "/affiliate", icon: "🤝" },
-  { id: "ambassador", label: "Ambassador", href: "/ambassador", icon: "⭐" },
-  { id: "referral", label: "Referral Program", href: "/referral", icon: "👥" },
-  { id: "help", label: "Help Page", href: "/help", icon: "❓" },
+const EXTRA_NAV = [
+  { id: "promotions", label: "Promotions", href: "/promotions", emoji: "🎁" },
+  { id: "vip", label: "VIP CLUB", href: "/vip", emoji: "👑" },
+  { id: "leaderboard", label: "Leaderboard", href: "/leaderboard", emoji: "🏆" },
+  { id: "download", label: "Download", href: "/download", emoji: "📥" },
+  { id: "affiliate", label: "Affiliate", href: "/affiliate", emoji: "🤝" },
+  { id: "ambassador", label: "Ambassador", href: "/ambassador", emoji: "⭐" },
+  { id: "referral", label: "Referral Program", href: "/referral", emoji: "👥" },
+  { id: "help", label: "Help Page", href: "/support", emoji: "❓" },
 ];
 
-export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+export function Sidebar({
+  onToggle,
+}: {
+  onToggle: () => void;
+}) {
   const pathname = usePathname();
-  const [openItems, setOpenItems] = React.useState<Record<string, boolean>>({ slots: true });
+  const [open, setOpen] = React.useState<Record<string, boolean>>({});
 
-  const toggleItem = (id: string) => {
-    setOpenItems((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const toggle = (id: string) => setOpen((p) => ({ ...p, [id]: !p[id] }));
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
     <aside
-      className={cn(
-        "fixed left-0 top-0 z-40 h-screen flex flex-col transition-all duration-300",
-        collapsed ? "w-0 overflow-hidden" : "w-[165px]"
-      )}
-      style={{ backgroundColor: "#0a0a14", borderRight: "1px solid #1a1a2e" }}
+      className="fixed left-0 top-0 z-40 flex h-screen w-[165px] flex-col"
+      style={{ backgroundColor: "#1e1e2d", borderRight: "1px solid #2a2a3e" }}
     >
-      {/* Logo area */}
-      <div className="flex items-center justify-between px-3 py-3 border-b border-[#1a1a2e]">
-        <Link href="/" className="flex items-center gap-1">
-          <span className="text-2xl font-black text-[#f0b429]">bj</span>
-          <span className="text-2xl font-black text-white">88</span>
-        </Link>
-        <button
-          onClick={onToggle}
-          className="text-gray-400 hover:text-white transition-colors"
-          aria-label="Toggle sidebar"
-        >
-          <ChevronRight className="size-4" />
-        </button>
-      </div>
-
-      {/* Active category highlight */}
-      <div className="px-2 py-1.5 border-b border-[#1a1a2e]">
+      {/* Active category pill */}
+      <div className="flex items-center gap-2 px-3 py-3">
         <div
-          className="flex items-center gap-2 rounded px-2 py-1.5 text-xs font-bold"
-          style={{ backgroundColor: "#f0b429", color: "#000" }}
+          className="flex flex-1 items-center gap-2 rounded-md px-3 py-2 text-xs font-bold"
+          style={{ background: "linear-gradient(90deg,#f5a623,#e8920f)", color: "#000" }}
         >
           <span>🎰</span>
           <span>SLOTS</span>
         </div>
+        <button
+          onClick={onToggle}
+          className="ml-1 flex size-7 items-center justify-center rounded text-white/50 hover:text-white"
+        >
+          <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto no-scrollbar py-1">
+      {/* Scroll area */}
+      <nav className="flex-1 overflow-y-auto no-scrollbar">
         {NAV_ITEMS.map((item) => {
           const active = isActive(item.href);
-          const open = openItems[item.id];
-
+          const expanded = open[item.id];
           return (
             <div key={item.id}>
               <button
-                onClick={() => item.children ? toggleItem(item.id) : undefined}
+                onClick={() => (item.children ? toggle(item.id) : undefined)}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-2.5 text-xs font-semibold transition-colors hover:bg-[#1a1a2e]",
-                  active ? "text-[#f0b429]" : "text-gray-300"
+                  "group flex w-full items-center gap-2.5 px-3 py-[9px] text-[12px] font-semibold transition-colors",
+                  active ? "text-[#f5a623]" : "text-[#b0b0c8] hover:text-white"
                 )}
               >
-                <span className="shrink-0">{item.icon}</span>
-                <span className="flex-1 text-left">{item.label}</span>
+                {item.icon}
+                <span className="flex-1 text-left tracking-wide">{item.label}</span>
                 {item.children && (
-                  open
-                    ? <ChevronDown className="size-3.5 text-gray-500" />
-                    : <ChevronRight className="size-3.5 text-gray-500" />
+                  <ChevronDown
+                    className={cn(
+                      "size-3.5 shrink-0 text-[#555577] transition-transform",
+                      expanded && "rotate-180"
+                    )}
+                  />
                 )}
               </button>
-              {item.children && open && (
-                <div className="bg-[#060610] border-y border-[#1a1a2e]">
-                  {item.children.map((child) => (
+              {item.children && expanded && (
+                <div style={{ background: "#15151f" }}>
+                  {item.children.map((ch) => (
                     <Link
-                      key={child.href}
-                      href={child.href}
+                      key={ch.href}
+                      href={ch.href}
                       className={cn(
-                        "flex items-center gap-2 pl-9 pr-3 py-2 text-[11px] transition-colors hover:text-[#f0b429] hover:bg-[#1a1a2e]",
-                        pathname === child.href ? "text-[#f0b429]" : "text-gray-400"
+                        "flex items-center pl-10 pr-3 py-2 text-[11px] transition-colors",
+                        pathname === ch.href
+                          ? "text-[#f5a623]"
+                          : "text-[#7777a0] hover:text-[#f5a623]"
                       )}
                     >
-                      {child.label}
+                      {ch.label}
                     </Link>
                   ))}
                 </div>
@@ -250,35 +233,22 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
           );
         })}
 
-        <div className="my-2 border-t border-[#1a1a2e]" />
+        <div className="my-1.5 mx-3 border-t border-[#2a2a3e]" />
 
-        {BOTTOM_NAV.map((item) => (
+        {EXTRA_NAV.map((item) => (
           <Link
             key={item.id}
             href={item.href}
             className={cn(
-              "flex items-center gap-2 px-3 py-2.5 text-xs font-semibold transition-colors hover:bg-[#1a1a2e]",
-              isActive(item.href) ? "text-[#f0b429]" : "text-gray-300"
+              "flex items-center gap-2.5 px-3 py-[9px] text-[12px] font-semibold transition-colors",
+              isActive(item.href) ? "text-[#f5a623]" : "text-[#b0b0c8] hover:text-white"
             )}
           >
-            <span className="shrink-0 text-base">{item.icon}</span>
+            <span className="flex size-[22px] items-center justify-center text-sm">{item.emoji}</span>
             <span>{item.label}</span>
           </Link>
         ))}
       </nav>
-    </aside>
-  );
-}
-
-export function CollapsedSidebar({ onToggle }: { onToggle: () => void }) {
-  return (
-    <aside
-      className="fixed left-0 top-0 z-40 h-screen w-[50px] flex flex-col items-center py-3 gap-2"
-      style={{ backgroundColor: "#0a0a14", borderRight: "1px solid #1a1a2e" }}
-    >
-      <button onClick={onToggle} className="text-[#f0b429] hover:text-white">
-        <ChevronRight className="size-5" />
-      </button>
     </aside>
   );
 }

@@ -11,34 +11,39 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       {collapsed ? (
-        <div
-          className="fixed left-0 top-0 z-40 h-screen w-[50px] flex flex-col items-center py-3"
-          style={{ backgroundColor: "#0a0a14", borderRight: "1px solid #1a1a2e" }}
-        >
-          <button onClick={toggle} className="text-[#f0b429] hover:text-white mb-4">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="size-5">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-          <div className="flex flex-1 flex-col items-center gap-3 pt-2">
-            <span className="text-base">⭐</span>
-            <span className="text-base">⚽</span>
-            <span className="text-base">🏏</span>
-            <span className="text-base">🎰</span>
-            <span className="text-base">🃏</span>
-          </div>
-        </div>
+        <CollapsedRail onToggle={toggle} />
       ) : (
-        <Sidebar collapsed={false} onToggle={toggle} />
+        <Sidebar onToggle={toggle} />
       )}
 
       <div
-        className="transition-all duration-300"
+        className="transition-[margin] duration-300 ease-out"
         style={{ marginLeft: collapsed ? "50px" : "165px" }}
       >
         <BJ88Header sidebarCollapsed={collapsed} onToggleSidebar={toggle} />
         <main className="pt-[52px] min-h-screen">{children}</main>
       </div>
     </>
+  );
+}
+
+function CollapsedRail({ onToggle }: { onToggle: () => void }) {
+  return (
+    <aside
+      className="fixed left-0 top-0 z-40 flex h-screen w-[50px] flex-col items-center gap-3 py-3"
+      style={{ background: "#1e1e2d", borderRight: "1px solid #2a2a3e" }}
+    >
+      <button
+        onClick={onToggle}
+        className="flex size-8 items-center justify-center rounded text-[#f5a623] hover:text-white"
+      >
+        <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <div className="flex flex-col items-center gap-3 pt-2 text-base">
+        <span>⭐</span><span>⚽</span><span>🏏</span><span>🎰</span><span>🃏</span><span>🎣</span>
+      </div>
+    </aside>
   );
 }
