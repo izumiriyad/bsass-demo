@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowDownToLine, ArrowUpFromLine, Gift, TrendingUp } from "lucide-react";
+import { ArrowDownToLine, ArrowUpFromLine, Gift, TrendingUp, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TransactionRow } from "@/components/dashboard/transaction-row";
 import { getTransactions, requireUser } from "@/lib/auth";
 import { formatPHP } from "@/lib/utils";
+import { MiniChart } from "@/components/ui/charts";
 import type { Transaction } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -59,10 +60,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Current balance" value={formatPHP(user.balance)} accent />
-        <StatCard label="Total deposited" value={formatPHP(deposits)} icon={<TrendingUp className="size-4 text-emerald-400" />} />
-        <StatCard label="Total withdrawn" value={formatPHP(withdrawals)} icon={<ArrowUpFromLine className="size-4 text-rose-400" />} />
-        <StatCard label="Bonuses & wins" value={formatPHP(bonuses)} icon={<Gift className="size-4 text-amber-400" />} />
+        <StatCard label="Current balance" value={formatPHP(user.balance)} accent chart={[10, 25, 15, 30, 25, 40, 35]} />
+        <StatCard label="Total deposited" value={formatPHP(deposits)} icon={<TrendingUp className="size-4 text-emerald-400" />} chart={[20, 35, 25, 45, 40, 50, 55]} />
+        <StatCard label="Total withdrawn" value={formatPHP(withdrawals)} icon={<ArrowUpFromLine className="size-4 text-rose-400" />} chart={[15, 20, 10, 25, 20, 30, 25]} />
+        <StatCard label="Bonuses & wins" value={formatPHP(bonuses)} icon={<Gift className="size-4 text-amber-400" />} chart={[5, 15, 10, 20, 18, 25, 30]} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -131,23 +132,33 @@ function StatCard({
   value,
   icon,
   accent,
+  chart,
 }: {
   label: string;
   value: string;
   icon?: React.ReactNode;
   accent?: boolean;
+  chart?: number[];
 }) {
   return (
     <div className="rounded-xl border border-border/60 bg-card/50 p-4">
-      <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        {icon} {label}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          {icon} {label}
+        </div>
+        {chart && <Activity className="size-3.5 text-primary/50" />}
       </div>
-      <div
-        className={`mt-1 text-xl font-bold ${
-          accent ? "text-gold-gradient" : ""
-        }`}
-      >
-        {value}
+      <div className="flex items-end justify-between">
+        <div
+          className={`mt-1 text-xl font-bold ${
+            accent ? "text-gold-gradient" : ""
+          }`}
+        >
+          {value}
+        </div>
+        {chart && (
+          <MiniChart data={chart} type="line" width={60} height={24} className="opacity-60" />
+        )}
       </div>
     </div>
   );

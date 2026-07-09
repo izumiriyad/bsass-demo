@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   User as UserIcon,
   Wallet,
+  Search,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -33,11 +35,34 @@ import { Logo } from "./logo";
 import { MAIN_NAV } from "@/lib/nav";
 import { useAuth } from "@/components/providers/auth-provider";
 import { cn, formatPHP } from "@/lib/utils";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { NotificationCenter } from "@/components/ui/notification-center";
+import { SearchAutocomplete } from "@/components/ui/search-autocomplete";
+import { GAMES } from "@/lib/catalog";
+
+const searchGames = async (query: string) => {
+  const q = query.toLowerCase();
+  return GAMES.filter(
+    (g) =>
+      g.title.toLowerCase().includes(q) ||
+      g.provider.toLowerCase().includes(q) ||
+      g.tags.some((t) => t.toLowerCase().includes(q))
+  )
+    .slice(0, 6)
+    .map((g) => ({
+      id: g.id,
+      title: g.title,
+      subtitle: `${g.provider} • ${g.rtp}% RTP`,
+      icon: g.emoji,
+      href: `/games/${g.slug}`,
+    }));
+};
 
 export function SiteHeader() {
   const pathname = usePathname();
   const { user, signOut } = useAuth();
   const [open, setOpen] = React.useState(false);
+  const [searchOpen, setSearchOpen] = React.useState(false);
 
   React.useEffect(() => {
     setOpen(false);
@@ -46,6 +71,12 @@ export function SiteHeader() {
   const initials = user
     ? user.username.slice(0, 2).toUpperCase()
     : "";
+
+  const handleSearchSelect = (result: { href?: string }) => {
+    if (result.href) {
+      window.location.href = result.href;
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 glass">
@@ -85,7 +116,31 @@ export function SiteHeader() {
           </nav>
         </div>
 
+        {/* Search bar - desktop */}
+        <div className="hidden lg:block flex-1 max-w-md mx-4">
+          <SearchAutocomplete
+            placeholder="Search games, providers..."
+            onSearch={searchGames}
+            onSelect={handleSearchSelect}
+          />
+        </div>
+
         <div className="flex items-center gap-2">
+          {/* Search button - mobile */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setSearchOpen(!searchOpen)}
+            aria-label="Search"
+          >
+            <Search className="size-5" />
+          </Button>
+
+          <ThemeToggle />
+
+          {user && <NotificationCenter />}
+
           {user ? (
             <>
               <Link
@@ -184,6 +239,17 @@ export function SiteHeader() {
                 <div className="border-b border-border/60 py-4">
                   <Logo />
                 </div>
+
+                {/* Mobile search */}
+                <div className="p-4 border-b border-border/60">
+                  <SearchAutocomplete
+                    placeholder="Search games..."
+                    onSearch={searchGames}
+                    onSelect={handleSearchSelect}
+                    autoFocus
+                  />
+                </div>
+
                 <nav className="flex flex-col gap-1 py-4">
                   {MAIN_NAV.map((item) => (
                     <Link
@@ -202,6 +268,15 @@ export function SiteHeader() {
                     </Link>
                   ))}
                 </nav>
+
+                {/* Mobile theme toggle */}
+                <div className="flex items-center justify-between px-3 py-2 border-t border-border/60">
+                  <span className="text-sm text-muted-foreground">Theme</span>
+                  <div className="flex gap-1">
+                    <ThemeToggle />
+                  </div>
+                </div>
+
                 <div className="mt-auto space-y-2 border-t border-border/60 pt-4">
                   {user ? (
                     <>
@@ -228,6 +303,28 @@ export function SiteHeader() {
           </Sheet>
         </div>
       </div>
+
+      {/* Mobile search overlay */}
+      {searchOpen && (
+        <div className="fixed inset-x-0 top-0 z-[60] bg-background p-4 lg:hidden animate-slide-down">
+          <div className="flex items-center gap-2">
+            <SearchAutocomplete
+              placeholder="Search games..."
+              onSearch={searchGames}
+              onSelect={handleSearchSelect}
+              autoFocus
+              className="flex-1"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSearchOpen(false)}
+            >
+              <X className="size-5" />
+            </Button>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

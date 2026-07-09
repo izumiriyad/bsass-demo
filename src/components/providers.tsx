@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { AuthProvider } from "@/components/providers/auth-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import type { SafeUser } from "@/lib/types";
 
-/** Client-side root providers: auth context + toast notifications. */
+/** Client-side root providers: auth context + theme + toast notifications. */
 export function Providers({
   children,
   initialUser,
@@ -14,9 +15,11 @@ export function Providers({
   initialUser: SafeUser | null;
 }) {
   return (
-    <AuthProvider initialUser={initialUser}>
-      {children}
-      <Toaster />
-    </AuthProvider>
+    <ThemeProvider defaultTheme="dark">
+      <AuthProvider initialUser={initialUser}>
+        {children}
+        <Toaster />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }

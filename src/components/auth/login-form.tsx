@@ -3,13 +3,14 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader as Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/providers/auth-provider";
 import { AuthShell } from "./auth-shell";
+import { SocialLoginGroup } from "@/components/ui/social-login";
 
 export function LoginForm() {
   const router = useRouter();
@@ -97,6 +98,8 @@ export function LoginForm() {
           {loading && <Loader2 className="size-4 animate-spin" />}
           Sign in
         </Button>
+
+        <SocialLoginGroup />
       </form>
     </AuthShell>
   );

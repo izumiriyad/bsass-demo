@@ -10,6 +10,8 @@ import {
   LogOut,
   User as UserIcon,
   Wallet,
+  Bell,
+  Shield,
 } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -22,6 +24,8 @@ const NAV = [
   { href: "/dashboard/history", label: "History", icon: History },
   { href: "/dashboard/favorites", label: "Favorites", icon: Heart },
   { href: "/dashboard/profile", label: "Profile", icon: UserIcon },
+  { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
+  { href: "/dashboard/security", label: "Security", icon: Shield },
 ];
 
 export function DashboardShell({

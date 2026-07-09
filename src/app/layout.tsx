@@ -3,6 +3,9 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { CookieConsent } from "@/components/ui/cookie-consent";
+import { LiveChatWidget } from "@/components/ui/live-chat-widget";
 import { getSessionUser } from "@/lib/auth";
 import { SITE } from "@/lib/catalog";
 
@@ -62,12 +65,15 @@ export default async function RootLayout({
   const user = await getSessionUser();
 
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
         <Providers initialUser={user}>
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <ScrollToTop />
+          <CookieConsent />
+          <LiveChatWidget />
         </Providers>
       </body>
     </html>
