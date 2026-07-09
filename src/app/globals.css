@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.85rem;
+
+  /* Dark "Playverse" gaming palette */
+  --background: #08070f;
+  --foreground: #f4f2fc;
+  --card: #110f20;
+  --card-foreground: #f4f2fc;
+  --popover: #161329;
+  --popover-foreground: #f4f2fc;
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1733;
+  --secondary-foreground: #ede9fe;
+  --muted: #16142a;
+  --muted-foreground: #a39fbf;
+  --accent: #241f47;
+  --accent-foreground: #ede9fe;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #27233f;
+  --input: #2b2748;
+  --ring: #8b5cf6;
+
+  /* Brand accents */
+  --gold: #f6b73c;
+  --cyan: #22d3ee;
+  --success: #22c55e;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-cyan: var(--cyan);
+  --color-success: var(--success);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    background-image: radial-gradient(
+        60rem 60rem at 80% -10%,
+        rgba(124, 58, 237, 0.18),
+        transparent 60%
+      ),
+      radial-gradient(50rem 50rem at -10% 10%, rgba(34, 211, 238, 0.1), transparent 55%);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: rgba(124, 58, 237, 0.4);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-300 bg-clip-text text-transparent;
+  }
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #fde68a, #f6b73c, #d97706);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .glow-primary {
+    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.4),
+      0 8px 40px -8px rgba(124, 58, 237, 0.55);
+  }
+  .glass {
+    background: rgba(20, 17, 38, 0.6);
+    backdrop-filter: blur(12px);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Thin custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0c0a18;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2645;
+  border-radius: 9999px;
+  border: 2px solid #0c0a18;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a345f;
+}
+
+/* Marquee animations */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+.animate-marquee-slow {
+  animation: marquee 60s linear infinite;
+}
+.marquee-pause:hover {
+  animation-play-state: paused;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
