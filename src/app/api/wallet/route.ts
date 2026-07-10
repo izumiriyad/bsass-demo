@@ -1,55 +1,94 @@
-import { NextRequest, NextResponse } from "next/server";
-import { adjustBalance, AuthError, getSessionUser } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import { getSessionUser, updateBalance } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
+const MIN_DEPOSIT = 100;
+const MIN_WITHDRAW = 200;
 
-export async function POST(req: NextRequest) {
+interface WalletRequestBody {
+  action?: unknown;
+  amount?: unknown;
+  method?: unknown;
+}
+
+export async function POST(request: Request) {
   const user = await getSessionUser();
   if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
   }
 
-  const body = await req.json().catch(() => ({}));
-  const action = body.action === "withdraw" ? "withdraw" : "deposit";
-  const amount = Number(body.amount);
-  const method = String(body.method ?? "wallet");
+  let body: WalletRequestBody;
+  try {
+    body = (await request.json()) as WalletRequestBody;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON body" },
+      { status: 400 }
+    );
+  }
 
-  if (!Number.isFinite(amount) || amount <= 0) {
+  const action = body.action;
+  const amount = typeof body.amount === "string" ? Number(body.amount) : body.amount;
+  const method =
+    typeof body.method === "string" ? body.method.trim() : "";
+
+  if (action !== "deposit" && action !== "withdraw") {
     return NextResponse.json(
-      { error: "Please enter a valid amount." },
-      { status: 400 },
+      { error: "Action must be 'deposit' or 'withdraw'" },
+      { status: 400 }
     );
   }
-  if (amount > 1_000_000) {
+
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
     return NextResponse.json(
-      { error: "Amount exceeds the maximum limit." },
-      { status: 400 },
+      { error: "Amount must be a positive number" },
+      { status: 400 }
     );
   }
-  if (action === "deposit" && amount < 100) {
+
+  if (action === "deposit" && amount < MIN_DEPOSIT) {
     return NextResponse.json(
-      { error: "Minimum deposit is ৳100." },
-      { status: 400 },
+      { error: `Minimum deposit is ৳${MIN_DEPOSIT}` },
+      { status: 400 }
     );
   }
-  if (action === "withdraw" && amount < 200) {
+
+  if (action === "withdraw" && amount < MIN_WITHDRAW) {
     return NextResponse.json(
-      { error: "Minimum withdrawal is ৳200." },
-      { status: 400 },
+      { error: `Minimum withdrawal is ৳${MIN_WITHDRAW}` },
+      { status: 400 }
+    );
+  }
+
+  if (action === "withdraw" && amount > user.balance) {
+    return NextResponse.json(
+      { error: "Insufficient balance for withdrawal" },
+      { status: 400 }
+    );
+  }
+
+  if (method.length === 0) {
+    return NextResponse.json(
+      { error: "Payment method is required" },
+      { status: 400 }
     );
   }
 
   try {
-    const updated = await adjustBalance(user.id, amount, action, method);
-    return NextResponse.json({ user: updated });
-  } catch (e) {
-    if (e instanceof AuthError) {
-      return NextResponse.json({ error: e.message }, { status: 400 });
-    }
-    console.error("wallet error", e);
+    const signedAmount = action === "withdraw" ? -amount : amount;
+    const newBalance = await updateBalance(user.id, signedAmount);
+    return NextResponse.json({
+      balance: newBalance,
+      action,
+      amount,
+      method,
+    });
+  } catch {
     return NextResponse.json(
-      { error: "Transaction failed. Please try again." },
-      { status: 500 },
+      { error: "Failed to process transaction" },
+      { status: 500 }
     );
   }
 }

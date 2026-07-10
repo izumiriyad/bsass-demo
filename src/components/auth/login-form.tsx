@@ -1,105 +1,102 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Loader as Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/components/providers/auth-provider";
-import { AuthShell } from "./auth-shell";
-import { SocialLoginGroup } from "@/components/ui/social-login";
+import { AuthShell } from "@/components/auth/auth-shell";
 
 export function LoginForm() {
   const router = useRouter();
   const { signIn } = useAuth();
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [show, setShow] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (!username.trim() || !password) {
+      toast.error("Please enter your username and password.");
+      return;
+    }
     setLoading(true);
-    const res = await signIn(email, password);
-    setLoading(false);
-    if (res.ok) {
-      toast.success("Welcome back!");
-      const redirect =
-        new URLSearchParams(window.location.search).get("redirect") ||
-        "/dashboard";
-      router.push(redirect);
-      router.refresh();
-    } else {
-      toast.error(res.error || "Unable to sign in.");
+    try {
+      const user = await signIn(username.trim(), password);
+      if (user) {
+        toast.success(`Welcome back, ${user.username}!`);
+        router.push("/dashboard");
+      } else {
+        toast.error("Invalid username or password. Please try again.");
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <AuthShell
       title="Welcome back"
-      subtitle="Sign in to continue to your account."
+      subtitle="Sign in to your BJ88 account"
       footer={
         <>
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-semibold text-primary hover:underline">
+          <Link
+            href="/register"
+            className="font-bold text-[#f5a623] hover:underline"
+          >
             Sign up
           </Link>
         </>
       }
     >
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="login-username"
+            className="text-xs font-semibold text-[#c8c8d6]"
+          >
+            Username
+          </label>
+          <input
+            id="login-username"
+            type="text"
+            autoComplete="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
           />
         </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <button
-              type="button"
-              onClick={() => setShow((s) => !s)}
-              className="text-xs text-muted-foreground hover:text-foreground"
-            >
-              {show ? "Hide" : "Show"}
-            </button>
-          </div>
-          <div className="relative">
-            <Input
-              id="password"
-              type={show ? "text" : "password"}
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
-            <button
-              type="button"
-              onClick={() => setShow((s) => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-              aria-label={show ? "Hide password" : "Show password"}
-            >
-              {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-            </button>
-          </div>
-        </div>
-        <Button type="submit" variant="gradient" className="w-full" disabled={loading}>
-          {loading && <Loader2 className="size-4 animate-spin" />}
-          Sign in
-        </Button>
 
-        <SocialLoginGroup />
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="login-password"
+            className="text-xs font-semibold text-[#c8c8d6]"
+          >
+            Password
+          </label>
+          <input
+            id="login-password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-2 rounded-lg px-4 py-2.5 text-sm font-bold text-black transition-opacity hover:opacity-90 disabled:opacity-60"
+          style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
+        >
+          {loading ? "Signing in…" : "Sign In"}
+        </button>
       </form>
     </AuthShell>
   );

@@ -1,6 +1,3 @@
-import { WinnersTicker } from "@/components/bj88/tickers";
-import { CategoryTabs } from "@/components/bj88/category-tabs";
-import { GameSection } from "@/components/bj88/game-section";
 import {
   POPULAR_GAMES,
   SLOTS_GAMES,
@@ -13,7 +10,10 @@ import {
   SPORTS_GAMES_LIST,
   CRICKET_GAMES_LIST,
   type BJ88Game,
-} from "@/lib/bj88-catalog";
+} from "@/lib/catalog";
+import { WinnersTicker } from "./tickers";
+import { CategoryTabs } from "./category-tabs";
+import { GameSection } from "./game-section";
 
 export function CategoryPage({
   title,
@@ -25,27 +25,27 @@ export function CategoryPage({
   title: string;
   emoji: string;
   games: BJ88Game[];
-  description?: string;
-  active?: string;
+  description: string;
+  active: string;
 }) {
   return (
-    <div className="px-3 py-3 lg:px-4">
-      <div className="mb-3">
-        <WinnersTicker />
-      </div>
+    <div className="mx-auto max-w-6xl px-3 py-3">
+      <WinnersTicker />
       <CategoryTabs active={active} />
-      <div className="mb-4">
-        <div className="flex items-center gap-2">
-          <span
-            className="inline-block h-6 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
-          />
-          <span className="text-xl">{emoji}</span>
-          <h1 className="text-lg font-black uppercase tracking-wide text-white">{title}</h1>
+      <div className="mt-4 flex items-center gap-3">
+        <span className="text-4xl">{emoji}</span>
+        <div>
+          <h1 className="text-2xl font-black text-white">{title}</h1>
+          <p className="text-sm text-[#8a8aa0]">{description}</p>
         </div>
-        {description && <p className="mt-1.5 pl-5 text-sm text-[#888899]">{description}</p>}
       </div>
-      <GameSection title={title} icon={emoji} games={games} columns={10} />
+      <GameSection
+        title={title}
+        icon={emoji}
+        games={games}
+        href={`/${active}`}
+        columns={7}
+      />
     </div>
   );
 }
@@ -53,11 +53,11 @@ export function CategoryPage({
 export function PopularPage() {
   return (
     <CategoryPage
-      title="Popular"
+      title="Popular Games"
       emoji="⭐"
       games={POPULAR_GAMES}
+      description="The hottest games on BJ88 right now."
       active="popular"
-      description="The most-played games on BJ88 Bangladesh right now."
     />
   );
 }
@@ -68,8 +68,8 @@ export function SlotsPage() {
       title="Slots"
       emoji="🎰"
       games={SLOTS_GAMES}
+      description="Spin and win on the best slot games."
       active="slots"
-      description="Play the best slots from Pragmatic Play, JILI, PG Soft, Habanero and more."
     />
   );
 }
@@ -80,8 +80,8 @@ export function CasinoPage() {
       title="Live Casino"
       emoji="🃏"
       games={CASINO_GAMES}
+      description="Real dealers, real thrill — live casino action."
       active="casino"
-      description="Real dealers, real action — live roulette, baccarat, blackjack and more 24/7."
     />
   );
 }
@@ -89,11 +89,11 @@ export function CasinoPage() {
 export function FishingPage() {
   return (
     <CategoryPage
-      title="Fishing"
+      title="Fishing Games"
       emoji="🎣"
       games={FISHING_GAMES}
+      description="Aim, shoot, and catch the biggest rewards."
       active="fishing"
-      description="Blast sea creatures and win big with multiplayer fishing games."
     />
   );
 }
@@ -101,11 +101,11 @@ export function FishingPage() {
 export function ArcadePage() {
   return (
     <CategoryPage
-      title="Arcade"
+      title="Arcade Games"
       emoji="🕹️"
       games={ARCADE_GAMES}
+      description="Quick-play arcade games with instant wins."
       active="arcade"
-      description="Instant-win arcade games — Plinko, Mines, Dice and more."
     />
   );
 }
@@ -116,8 +116,8 @@ export function LotteryPage() {
       title="Lottery"
       emoji="🎟️"
       games={LOTTERY_GAMES}
+      description="Keno, Bingo, and more — test your luck."
       active="lottery"
-      description="Keno, Bingo and lottery games with massive prize pools."
     />
   );
 }
@@ -125,11 +125,11 @@ export function LotteryPage() {
 export function CrashPage() {
   return (
     <CategoryPage
-      title="Crash"
+      title="Crash Games"
       emoji="🚀"
       games={CRASH_GAMES}
+      description="Cash out before it crashes!"
       active="crash"
-      description="Cash out before it crashes! Provably-fair multiplier games."
     />
   );
 }
@@ -140,8 +140,8 @@ export function TablePage() {
       title="Table Games"
       emoji="🎲"
       games={TABLE_GAMES}
+      description="Poker, Blackjack, Baccarat and more."
       active="table"
-      description="Poker, Blackjack, Baccarat and more classic table games."
     />
   );
 }
@@ -152,8 +152,8 @@ export function SportsPage() {
       title="Sports"
       emoji="⚽"
       games={SPORTS_GAMES_LIST}
+      description="Bet on football, cricket, kabaddi and more."
       active="sports"
-      description="Bet on football, cricket, basketball, tennis, kabaddi and more with the best odds in Bangladesh."
     />
   );
 }
@@ -164,8 +164,8 @@ export function CricketPage() {
       title="Cricket"
       emoji="🏏"
       games={CRICKET_GAMES_LIST}
+      description="BPL, IPL, ICC World Cup — all the cricket action."
       active="cricket"
-      description="Bet on BPL, IPL, ICC tournaments and Bangladesh national team matches."
     />
   );
 }

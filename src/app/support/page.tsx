@@ -1,89 +1,72 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Mail, MessageCircle, Phone, Clock } from "lucide-react";
-import { PageHero } from "@/components/site/page-hero";
-import { ContactForm } from "@/components/site/contact-form";
-import { Card, CardContent } from "@/components/ui/card";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { SITE } from "@/lib/catalog";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
-  title: "Support",
-  description:
-    "Get help from the Playverse support team via live chat, email, or our help center — available 24/7.",
+  title: `Support — ${SITE.name} Bangladesh`,
+  description: `Get help with your ${SITE.name} account. Contact us via email, live chat or phone — available 24/7 for players in Bangladesh.`,
 };
 
-const CHANNELS = [
-  { icon: MessageCircle, title: "Live chat", value: "Available 24/7", desc: "Instant answers from real humans." },
-  { icon: Mail, title: "Email", value: SITE.supportEmail, desc: "Replies within 24 hours." },
-  { icon: Phone, title: "Hotline", value: "+63 (2) 8000 0000", desc: "For account & payment help." },
-  { icon: Clock, title: "Hours", value: "Always open", desc: "Support never sleeps." },
+const CONTACT_OPTIONS = [
+  {
+    icon: Mail,
+    title: "Email Us",
+    detail: SITE.supportEmail,
+    note: "Replies within 24 hours",
+  },
+  {
+    icon: MessageCircle,
+    title: "Live Chat",
+    detail: "Available 24/7",
+    note: "Instant help from our team",
+  },
+  {
+    icon: Phone,
+    title: "Phone Support",
+    detail: "+880 1700-000000",
+    note: "9 AM – 11 PM BST",
+  },
 ];
 
 export default function SupportPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Help center"
-        title="Support"
-        description="We're here for you around the clock. Reach out any way you like."
-      />
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CHANNELS.map((c) => {
-            const Icon = c.icon;
-            return (
-              <Card key={c.title} className="bg-card/50">
-                <CardContent className="p-5">
-                  <Icon className="size-6 text-primary" />
-                  <h3 className="mt-3 font-semibold">{c.title}</h3>
-                  <div className="text-sm font-medium">{c.value}</div>
-                  <p className="mt-1 text-xs text-muted-foreground">{c.desc}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+    <div className="mx-auto max-w-4xl px-3 py-4">
+      <div className="mb-4">
+        <h1 className="text-2xl font-black text-white">Support</h1>
+        <p className="mt-1 text-sm text-[#8a8aa0]">
+          We&apos;re here to help, 24/7. Reach out any time.
+        </p>
+      </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
-          <div>
-            <h2 className="text-xl font-bold">Send us a message</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Fill out the form and we&apos;ll get back to you as soon as
-              possible.
-            </p>
-            <div className="mt-4">
-              <ContactForm />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {CONTACT_OPTIONS.map((opt) => {
+          const Icon = opt.icon;
+          return (
+            <div
+              key={opt.title}
+              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5"
+            >
+              <span
+                className="flex h-10 w-10 items-center justify-center rounded-full text-black"
+                style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <h2 className="mt-3 text-sm font-bold text-white">{opt.title}</h2>
+              <p className="mt-0.5 text-sm font-semibold text-[#f5a623]">
+                {opt.detail}
+              </p>
+              <p className="text-xs text-[#8a8aa0]">{opt.note}</p>
             </div>
-          </div>
-          <div>
-            <h2 className="text-xl font-bold">Popular questions</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Find quick answers in our FAQ.
-            </p>
-            <Card className="mt-4 bg-card/50">
-              <CardContent className="p-5">
-                <ul className="space-y-3 text-sm">
-                  {[
-                    "How fast are withdrawals?",
-                    "What payment methods are supported?",
-                    "Are the games fair?",
-                    "How does the VIP program work?",
-                  ].map((q) => (
-                    <li key={q}>
-                      <Link
-                        href="/faq"
-                        className="flex items-center justify-between text-muted-foreground transition-colors hover:text-foreground"
-                      >
-                        {q} <span className="text-primary">→</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-    </>
+          );
+        })}
+      </div>
+
+      <div className="mt-5 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5">
+        <h2 className="mb-4 text-sm font-bold text-white">Send us a message</h2>
+        <ContactForm />
+      </div>
+    </div>
   );
 }

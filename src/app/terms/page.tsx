@@ -1,62 +1,75 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/site/page-hero";
+import { SITE } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
-  description: "The terms and conditions that govern your use of the Playverse platform.",
+  title: `Terms & Conditions — ${SITE.name} Bangladesh`,
+  description: `The terms and conditions governing your use of ${SITE.name} Bangladesh.`,
 };
 
 const SECTIONS = [
   {
-    h: "1. Acceptance of terms",
-    p: "By accessing or using Playverse, you agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.",
+    title: "1. Acceptance of Terms",
+    body: `By accessing or using ${SITE.name} ("we", "us", "our"), you agree to be bound by these Terms & Conditions. If you do not agree, please do not use our services.`,
   },
   {
-    h: "2. Eligibility",
-    p: "You must be at least 18 years of age (or the legal age of majority in your jurisdiction) to use this platform. You are responsible for ensuring that your use complies with all applicable laws.",
+    title: "2. Eligibility",
+    body: "You must be at least 18 years old and legally permitted to use online gaming services in your jurisdiction to register and play. We may request identity verification at any time.",
   },
   {
-    h: "3. Demo nature",
-    p: "Playverse is a fictional demonstration platform created for educational purposes. It uses play credits only. No real money, gambling, or financial transactions take place at any time.",
+    title: "3. Account Registration",
+    body: "You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account. You may not share, transfer or sell your account.",
   },
   {
-    h: "4. Accounts",
-    p: "You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Notify us immediately of any unauthorized use.",
+    title: "4. Deposits & Withdrawals",
+    body: "All transactions are processed in Bangladeshi Taka (BDT). The minimum deposit is ৳100 and the minimum withdrawal is ৳200. We reserve the right to verify your identity before processing withdrawals and to void any transactions involving suspected fraud.",
   },
   {
-    h: "5. Acceptable use",
-    p: "You agree not to misuse the platform, attempt to disrupt its operation, reverse-engineer any part of it, or use automated systems to access it without authorization.",
+    title: "5. Bonuses & Promotions",
+    body: "Bonuses are subject to specific wagering requirements and expiry dates stated in each promotion's terms. We reserve the right to modify, suspend or cancel any promotion at any time.",
   },
   {
-    h: "6. Intellectual property",
-    p: "All content on Playverse, including text, graphics, logos, and software, is the property of its respective owners and is protected by intellectual property laws. Game names and imagery are fictional.",
+    title: "6. Prohibited Conduct",
+    body: "You may not use bots, automated scripts, exploit software bugs, collude, or engage in money laundering. Any abuse will result in account suspension and forfeiture of balances.",
   },
   {
-    h: "7. Limitation of liability",
-    p: "Playverse is provided 'as is' without warranties of any kind. To the fullest extent permitted by law, we are not liable for any indirect, incidental, or consequential damages arising from your use of the platform.",
+    title: "7. Limitation of Liability",
+    body: `${SITE.name} is provided "as is". To the maximum extent permitted by law, we are not liable for indirect, incidental or consequential damages arising from your use of the service.`,
   },
   {
-    h: "8. Changes to terms",
-    p: "We may update these terms from time to time. Continued use of the platform after changes constitutes acceptance of the revised terms.",
+    title: "8. Changes to Terms",
+    body: "We may update these Terms & Conditions at any time. Continued use of the service after changes are posted constitutes acceptance of the revised terms.",
+  },
+  {
+    title: "9. Governing Law",
+    body: `These terms are governed by the laws of the jurisdiction in which ${SITE.name} is licensed. Disputes will be resolved in accordance with those laws.`,
   },
 ];
 
 export default function TermsPage() {
   return (
-    <>
-      <PageHero eyebrow="Legal" title="Terms of Service" description="Last updated January 2026." />
-      <section className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
-        <div className="space-y-6">
-          {SECTIONS.map((s) => (
-            <div key={s.h}>
-              <h2 className="text-lg font-semibold">{s.h}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {s.p}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-    </>
+    <div className="mx-auto max-w-3xl px-3 py-4">
+      <div className="mb-5">
+        <h1 className="text-2xl font-black text-white">Terms &amp; Conditions</h1>
+        <p className="mt-1 text-sm text-[#8a8aa0]">
+          Last updated: {new Date().toLocaleDateString("en-BD", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {SECTIONS.map((section) => (
+          <div
+            key={section.title}
+            className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5"
+          >
+            <h2 className="mb-2 text-sm font-bold text-[#f5a623]">
+              {section.title}
+            </h2>
+            <p className="text-sm leading-relaxed text-[#c8c8d6]">
+              {section.body}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

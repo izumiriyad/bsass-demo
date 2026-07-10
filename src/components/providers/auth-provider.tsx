@@ -1,105 +1,87 @@
 "use client";
 
-import * as React from "react";
-import type { SafeUser } from "@/lib/types";
-
-interface AuthResult {
-  ok: boolean;
-  error?: string;
-}
-
-interface SignUpInput {
-  username: string;
-  email: string;
-  password: string;
-}
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import type { AuthUser } from "@/lib/auth";
 
 interface AuthContextValue {
-  user: SafeUser | null;
-  loading: boolean;
-  refresh: () => Promise<void>;
-  signIn: (email: string, password: string) => Promise<AuthResult>;
-  signUp: (input: SignUpInput) => Promise<AuthResult>;
+  user: AuthUser | null;
+  signIn: (username: string, password: string) => Promise<AuthUser | null>;
   signOut: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
-const AuthContext = React.createContext<AuthContextValue | null>(null);
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({
-  children,
   initialUser,
+  children,
 }: {
-  children: React.ReactNode;
-  initialUser: SafeUser | null;
+  initialUser: AuthUser | null;
+  children: ReactNode;
 }) {
-  const [user, setUser] = React.useState<SafeUser | null>(initialUser);
-  const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = useState<AuthUser | null>(initialUser);
 
-  const refresh = React.useCallback(async () => {
+  // Keep client state in sync if the server-provided initialUser changes
+  // (e.g. after a full navigation or re-render with new props).
+  useEffect(() => {
+    setUser(initialUser);
+  }, [initialUser]);
+
+  const signIn = useCallback(
+    async (username: string, password: string): Promise<AuthUser | null> => {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!res.ok) return null;
+      const data = (await res.json()) as { user: AuthUser | null };
+      if (data.user) {
+        setUser(data.user);
+        return data.user;
+      }
+      return null;
+    },
+    []
+  );
+
+  const signOut = useCallback(async (): Promise<void> => {
+    await fetch("/api/auth", { method: "DELETE" });
+    setUser(null);
+  }, []);
+
+  const refreshUser = useCallback(async (): Promise<void> => {
     try {
-      const res = await fetch("/api/auth/me", { cache: "no-store" });
-      if (res.ok) setUser(await res.json());
-      else setUser(null);
+      const res = await fetch("/api/auth", { method: "GET" });
+      if (!res.ok) {
+        setUser(null);
+        return;
+      }
+      const data = (await res.json()) as { user: AuthUser | null };
+      setUser(data.user);
     } catch {
       setUser(null);
     }
   }, []);
 
-  const signIn = React.useCallback(
-    async (email: string, password: string): Promise<AuthResult> => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-        });
-        const data = await res.json();
-        if (!res.ok) return { ok: false, error: data.error };
-        setUser(data.user);
-        return { ok: true };
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
+  return (
+    <AuthContext.Provider value={{ user, signIn, signOut, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
   );
-
-  const signUp = React.useCallback(
-    async (input: SignUpInput): Promise<AuthResult> => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(input),
-        });
-        const data = await res.json();
-        if (!res.ok) return { ok: false, error: data.error };
-        setUser(data.user);
-        return { ok: true };
-      } finally {
-        setLoading(false);
-      }
-    },
-    [],
-  );
-
-  const signOut = React.useCallback(async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setUser(null);
-  }, []);
-
-  const value = React.useMemo(
-    () => ({ user, loading, refresh, signIn, signUp, signOut }),
-    [user, loading, refresh, signIn, signUp, signOut],
-  );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
-  const ctx = React.useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
+export function useAuth(): AuthContextValue {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return ctx;
 }

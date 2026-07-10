@@ -1,57 +1,80 @@
 "use client";
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
+import { POPULAR_GAMES } from "@/lib/catalog";
 
-const WINNERS = [
-  { user: "R***1", amount: "45,200", game: "Crazy Time" },
-  { user: "S***3", amount: "128,500", game: "Gates of Olympus" },
-  { user: "M***7", amount: "67,300", game: "Aviator" },
-  { user: "K***2", amount: "89,100", game: "Mega Wheel" },
-  { user: "T***9", amount: "234,000", game: "Sweet Bonanza" },
-  { user: "A***4", amount: "52,800", game: "Super Ace" },
-  { user: "N***6", amount: "156,700", game: "Lightning Roulette" },
-  { user: "B***8", amount: "78,400", game: "Fortune Gems" },
-  { user: "H***5", amount: "312,000", game: "Aztec Gems" },
-  { user: "F***0", amount: "94,600", game: "Wild West Gold" },
+interface Win {
+  user: string;
+  amount: number;
+  game: string;
+}
+
+const USERS = [
+  "Rahim***", "Karim***", "Tanvir***", "Sadia***", "Nusrat***",
+  "Imran***", "Fariha***", "Sabbir***", "Mehedi***", "Rifat***",
+  "Arif***", "Sumaiya***", "Hasan***", "Naimur***", "Tania***",
 ];
 
+function buildWins(): Win[] {
+  return Array.from({ length: 16 }, (_, i) => {
+    const g = POPULAR_GAMES[i % POPULAR_GAMES.length];
+    return {
+      user: USERS[i % USERS.length],
+      amount: Math.floor(Math.random() * 48000) + 2000,
+      game: g.title,
+    };
+  });
+}
+
 export function WinnersTicker() {
-  const items = [...WINNERS, ...WINNERS];
+  const winsRef = useRef<Win[]>(buildWins());
+  const wins = winsRef.current;
+  const doubled = [...wins, ...wins];
+
   return (
-    <div className="relative flex items-center overflow-hidden rounded-lg border border-[#1e1e2d] bg-[#1a1a26] py-2">
-      <span className="flex shrink-0 items-center gap-1.5 border-r border-[#2a2a3e] px-3 text-[11px] font-bold text-[#22c55e]">
-        <span className="size-1.5 rounded-full bg-[#22c55e] animate-live" />
+    <div className="flex items-center gap-2 overflow-hidden border-b border-[#2a2a3e] bg-[#1e1e2d] px-2 py-1.5">
+      <span className="flex shrink-0 items-center gap-1.5 rounded bg-green-600/15 px-2 py-1 text-[10px] font-bold text-green-400">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+        </span>
         LIVE WINS
       </span>
-      <div className="flex w-max shrink-0 animate-marquee items-center gap-5 pl-5">
-        {items.map((w, i) => (
-          <div key={i} className="flex shrink-0 items-center gap-1.5 text-[11px]">
-            <span className="font-semibold text-[#22c55e]">{w.user}</span>
-            <span className="text-[#666680]">won</span>
-            <span className="font-bold text-[#f5a623]">৳{w.amount}</span>
-            <span className="text-[#666680]">on {w.game}</span>
-            <span className="text-[#333344]">•</span>
-          </div>
-        ))}
+      <div className="relative flex-1 overflow-hidden">
+        <div className="flex w-max animate-marquee items-center gap-6 whitespace-nowrap">
+          {doubled.map((w, i) => (
+            <span key={i} className="flex items-center gap-1.5 text-[11px]">
+              <span className="font-semibold text-[#c8c8d6]">{w.user}</span>
+              <span className="font-bold text-[#f5a623]">৳{w.amount.toLocaleString("en-BD")}</span>
+              <span className="text-[#8a8aa0]">on {w.game}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-export function JackpotTicker({ className }: { className?: string }) {
-  const [value, setValue] = React.useState(18_452_119);
+export function JackpotTicker() {
+  const [value, setValue] = useState(18_400_000 + Math.floor(Math.random() * 200_000));
 
-  React.useEffect(() => {
-    const id = setInterval(() => {
-      setValue((v) => v + Math.floor(Math.random() * 137) + 13);
+  useEffect(() => {
+    const t = setInterval(() => {
+      setValue((v) => v + Math.floor(Math.random() * 700) + 100);
     }, 1500);
-    return () => clearInterval(id);
+    return () => clearInterval(t);
   }, []);
 
+  const formatted = value.toLocaleString("en-BD");
+
   return (
-    <span className={cn(className)} aria-live="polite">
-      ৳{value.toLocaleString("en-US")}
-    </span>
+    <div className="flex flex-col items-center justify-center gap-1">
+      <span className="text-[10px] font-bold uppercase tracking-wider text-[#f5a623]">
+        💰 Mega Jackpot
+      </span>
+      <span className="text-2xl font-black tabular-nums text-white sm:text-3xl">
+        ৳{formatted}
+      </span>
+    </div>
   );
 }

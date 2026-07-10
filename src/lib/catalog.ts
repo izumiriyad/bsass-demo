@@ -1,779 +1,236 @@
-import type {
-  Category,
-  Game,
-  Promotion,
-  Provider,
-  SportEvent,
-} from "@/lib/types";
-
 export const SITE = {
-  name: "Playverse",
-  tagline: "Where every game comes alive",
+  name: "BJ88",
+  tagline: "Bangladesh's #1 Online Gaming Platform",
   description:
-    "Playverse is a premier online gaming entertainment hub featuring thousands of slots, live dealer tables, sports markets, and arcade games — with fast payouts, fair play, and 24/7 support.",
-  url: "https://playverse.example.com",
-  locale: "en-PH",
-  currency: "PHP",
-  supportEmail: "support@playverse.example.com",
+    "BJ88 Bangladesh — Premier online casino, sports betting, slots, fishing games and more. Play with BDT. 24/7 support.",
+  url: "https://bj88.com.bd",
+  locale: "en-BD",
+  currency: "BDT",
+  currencySymbol: "৳",
+  country: "Bangladesh",
+  supportEmail: "support@bj88.com.bd",
 };
 
-export const CATEGORIES: Category[] = [
-  {
-    id: "slots",
-    name: "Slots",
-    tagline: "Spin to win",
-    emoji: "🎰",
-    gradient: ["#7c3aed", "#db2777"],
-    accent: "#db2777",
-  },
-  {
-    id: "live-casino",
-    name: "Live Casino",
-    tagline: "Real dealers, real thrill",
-    emoji: "🃏",
-    gradient: ["#0ea5e9", "#7c3aed"],
-    accent: "#0ea5e9",
-  },
-  {
-    id: "sports",
-    name: "Sports",
-    tagline: "Bet on the action",
-    emoji: "⚽",
-    gradient: ["#22c55e", "#0ea5e9"],
-    accent: "#22c55e",
-  },
-  {
-    id: "fishing",
-    name: "Fishing",
-    tagline: "Catch the big one",
-    emoji: "🎣",
-    gradient: ["#06b6d4", "#3b82f6"],
-    accent: "#06b6d4",
-  },
-  {
-    id: "crash",
-    name: "Crash",
-    tagline: "Cash out in time",
-    emoji: "🚀",
-    gradient: ["#f97316", "#ef4444"],
-    accent: "#f97316",
-  },
-  {
-    id: "arcade",
-    name: "Arcade",
-    tagline: "Instant fun",
-    emoji: "🕹️",
-    gradient: ["#a855f7", "#6366f1"],
-    accent: "#a855f7",
-  },
-  {
-    id: "poker",
-    name: "Poker",
-    tagline: "Read the table",
-    emoji: "♠️",
-    gradient: ["#14b8a6", "#0ea5e9"],
-    accent: "#14b8a6",
-  },
-];
-
-export const PROVIDERS: Provider[] = [
-  { id: "nova-star", name: "NovaStar", emoji: "✨", games: 480 },
-  { id: "quantum-play", name: "QuantumPlay", emoji: "⚛️", games: 360 },
-  { id: "lunar-games", name: "LunarGames", emoji: "🌙", games: 290 },
-  { id: "prism-live", name: "PrismLive", emoji: "🔷", games: 210 },
-  { id: "vertex-studios", name: "Vertex Studios", emoji: "🔺", games: 175 },
-  { id: "aurora-networks", name: "Aurora Networks", emoji: "🌌", games: 140 },
-  { id: "helix-interactive", name: "Helix Interactive", emoji: "🧬", games: 120 },
-];
-
-interface Seed {
-  title: string;
-  category: Game["category"];
-  provider: string;
+export interface GameCategory {
+  id: string;
+  label: string;
   emoji: string;
   gradient: [string, string];
-  rtp: number;
-  tags: string[];
-  description: string;
-  hot?: boolean;
-  new?: boolean;
-  featured?: boolean;
 }
 
-const SEEDS: Seed[] = [
-  // Slots
-  {
-    title: "Galactic Gold",
-    category: "slots",
-    provider: "NovaStar",
-    emoji: "🪐",
-    gradient: ["#7c3aed", "#1e1b4b"],
-    rtp: 96.5,
-    tags: ["5-Reel", "Free Spins", "Megaways"],
-    description:
-      "Chart the cosmos and collect stardust multipliers across 117,649 ways to win in this deep-space slot adventure.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Pharaoh's Vault",
-    category: "slots",
-    provider: "LunarGames",
-    emoji: "🏺",
-    gradient: ["#f59e0b", "#7c2d12"],
-    rtp: 96.2,
-    tags: ["Egyptian", "Bonus Buy", "Jackpot"],
-    description:
-      "Unlock the sealed tomb of the pharaoh and trigger expanding symbols for monumental treasure.",
-    hot: true,
-  },
-  {
-    title: "Neon Safari",
-    category: "slots",
-    provider: "QuantumPlay",
-    emoji: "🦒",
-    gradient: ["#22d3ee", "#0e7490"],
-    rtp: 96.8,
-    tags: ["Animals", "Cascading", "High Volatility"],
-    description:
-      "A vibrant savanna at midnight where cascading wins and neon wilds light up the reels.",
-    new: true,
-    featured: true,
-  },
-  {
-    title: "Crystal Empress",
-    category: "slots",
-    provider: "Aurora Networks",
-    emoji: "💎",
-    gradient: ["#ec4899", "#7c3aed"],
-    rtp: 97.1,
-    tags: ["Jewels", "Sticky Wilds", "Free Spins"],
-    description:
-      "The Crystal Empress bestows sticky wilds and escalating multipliers across frozen reels.",
-    featured: true,
-  },
-  {
-    title: "Dragon Hoard",
-    category: "slots",
-    provider: "Vertex Studios",
-    emoji: "🐉",
-    gradient: ["#ef4444", "#7f1d1d"],
-    rtp: 96.0,
-    tags: ["Fantasy", "Megaways", "Jackpot"],
-    description:
-      "Face the ancient dragon and seize its golden hoard with random mega multipliers.",
-    hot: true,
-  },
-  {
-    title: "Sugar Sprint",
-    category: "slots",
-    provider: "NovaStar",
-    emoji: "🍭",
-    gradient: ["#f472b6", "#be185d"],
-    rtp: 96.4,
-    tags: ["Candy", "Cluster Pays", "Tumbling"],
-    description:
-      "A candy-coated wonderland of tumbling clusters and sugar-rush multipliers.",
-    new: true,
-  },
-  {
-    title: "Mystic Oasis",
-    category: "slots",
-    provider: "QuantumPlay",
-    emoji: "🌴",
-    gradient: ["#10b981", "#065f46"],
-    rtp: 96.7,
-    tags: ["Adventure", "Expanding Wilds"],
-    description:
-      "Discover the hidden oasis where wilds expand across the reels for refreshing wins.",
-  },
-  {
-    title: "Cyber Heist",
-    category: "slots",
-    provider: "Helix Interactive",
-    emoji: "💾",
-    gradient: ["#6366f1", "#1e1b4b"],
-    rtp: 96.9,
-    tags: ["Cyberpunk", "Bonus Buy", "Multipliers"],
-    description:
-      "Hack the mainframe and escape with the loot in this high-voltage cyberpunk caper.",
-    new: true,
-    hot: true,
-  },
-  // Live Casino
-  {
-    title: "Velocity Roulette",
-    category: "live-casino",
-    provider: "PrismLive",
-    emoji: "🎯",
-    gradient: ["#0ea5e9", "#0c4a6e"],
-    rtp: 97.3,
-    tags: ["Roulette", "HD Stream", "Multi-Camera"],
-    description:
-      "A lightning-fast roulette experience streamed in HD with multi-angle cameras and instant payouts.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Royal Baccarat",
-    category: "live-casino",
-    provider: "PrismLive",
-    emoji: "👑",
-    gradient: ["#a855f7", "#4c1d95"],
-    rtp: 98.9,
-    tags: ["Baccarat", "No Commission", "Side Bets"],
-    description:
-      "Experience the elegance of no-commission baccarat with professional live dealers and side-bet action.",
-    featured: true,
-  },
-  {
-    title: "Blackjack Royale",
-    category: "live-casino",
-    provider: "PrismLive",
-    emoji: "🂡",
-    gradient: ["#14b8a6", "#134e4a"],
-    rtp: 99.3,
-    tags: ["Blackjack", "VIP Tables", "Bet Behind"],
-    description:
-      "Classic 21 with VIP tables, bet-behind features, and the best RTP on the floor.",
-    hot: true,
-  },
-  {
-    title: "Mega Spin Wheel",
-    category: "live-casino",
-    provider: "Aurora Networks",
-    emoji: "🎡",
-    gradient: ["#f59e0b", "#b45309"],
-    rtp: 96.9,
-    tags: ["Game Show", "Multipliers", "Live"],
-    description:
-      "Spin the giant wheel with a live host for a chance at world-class multiplier segments.",
-    new: true,
-  },
-  {
-    title: "Sic Bo Supreme",
-    category: "live-casino",
-    provider: "PrismLive",
-    emoji: "🎲",
-    gradient: ["#ef4444", "#7f1d1d"],
-    rtp: 97.2,
-    tags: ["Dice", "Live", "Big/Small"],
-    description:
-      "The classic three-dice game streamed live with dozens of betting combinations.",
-  },
-  // Fishing
-  {
-    title: "Ocean Hunter",
-    category: "fishing",
-    provider: "Vertex Studios",
-    emoji: "🦈",
-    gradient: ["#06b6d4", "#0e7490"],
-    rtp: 96.6,
-    tags: ["Shooter", "Multiplayer", "Boss Fights"],
-    description:
-      "Team up to blast the deep-sea boss and split the jackpot bounty with your crew.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Deep Sea Bounty",
-    category: "fishing",
-    provider: "Helix Interactive",
-    emoji: "🐙",
-    gradient: ["#3b82f6", "#1e3a8a"],
-    rtp: 96.3,
-    tags: ["Shooter", "Cannon Upgrades"],
-    description:
-      "Upgrade your cannon and reel in legendary sea creatures for escalating rewards.",
-    new: true,
-  },
-  {
-    title: "Golden Shoal",
-    category: "fishing",
-    provider: "NovaStar",
-    emoji: "🐠",
-    gradient: ["#f59e0b", "#92400e"],
-    rtp: 96.8,
-    tags: ["Casual", "Relaxed"],
-    description:
-      "A relaxed fishing experience perfect for casual sessions and steady returns.",
-  },
-  // Crash
-  {
-    title: "Rocket Crash",
-    category: "crash",
-    provider: "QuantumPlay",
-    emoji: "🚀",
-    gradient: ["#f97316", "#7c2d12"],
-    rtp: 97.0,
-    tags: ["Crash", "Auto Cashout", "Provably Fair"],
-    description:
-      "Watch the rocket climb and cash out before it crashes in this provably-fair multiplier game.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Comet Climb",
-    category: "crash",
-    provider: "Helix Interactive",
-    emoji: "☄️",
-    gradient: ["#8b5cf6", "#4c1d95"],
-    rtp: 96.9,
-    tags: ["Crash", "In-Play"],
-    description:
-      "Race the comet to record altitudes and lock in your winnings with split cash-outs.",
-    new: true,
-  },
-  {
-    title: "Meteor Multiplier",
-    category: "crash",
-    provider: "QuantumPlay",
-    emoji: "🌠",
-    gradient: ["#ec4899", "#831843"],
-    rtp: 96.7,
-    tags: ["Crash", "Fast-Paced"],
-    description:
-      "A fast-paced crash variant with meteoric multipliers and rapid rounds.",
-  },
-  // Arcade
-  {
-    title: "Plinko Pro",
-    category: "arcade",
-    provider: "Vertex Studios",
-    emoji: "🟣",
-    gradient: ["#a855f7", "#581c87"],
-    rtp: 97.2,
-    tags: ["Arcade", "Provably Fair", "Instant"],
-    description:
-      "Drop the ball and watch it cascade through a forest of pegs toward high-multiplier slots.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Minesweeper X",
-    category: "arcade",
-    provider: "Helix Interactive",
-    emoji: "💣",
-    gradient: ["#ef4444", "#450a0a"],
-    rtp: 97.0,
-    tags: ["Arcade", "Strategy", "Instant"],
-    description:
-      "Reveal tiles to grow your multiplier — but watch out for the hidden mines.",
-    new: true,
-  },
-  {
-    title: "Dice Duel",
-    category: "arcade",
-    provider: "QuantumPlay",
-    emoji: "🎲",
-    gradient: ["#22d3ee", "#0e7490"],
-    rtp: 98.0,
-    tags: ["Dice", "Custom Odds"],
-    description:
-      "Set your own odds and roll the dice in this flexible, player-controlled classic.",
-  },
-  {
-    title: "Tower Climb",
-    category: "arcade",
-    provider: "Vertex Studios",
-    emoji: "🗼",
-    gradient: ["#10b981", "#064e3b"],
-    rtp: 96.8,
-    tags: ["Arcade", "Risk/Reward"],
-    description:
-      "Climb the tower one safe step at a time — each level raises your reward and the risk.",
-  },
-  // Poker
-  {
-    title: "Texas Hold'em",
-    category: "poker",
-    provider: "PrismLive",
-    emoji: "♠️",
-    gradient: ["#0ea5e9", "#0c4a6e"],
-    rtp: 98.5,
-    tags: ["Poker", "Ring Games", "Tournaments"],
-    description:
-      "The world's favorite poker variant with cash rings and multi-table tournaments around the clock.",
-    hot: true,
-    featured: true,
-  },
-  {
-    title: "Omaha Tables",
-    category: "poker",
-    provider: "PrismLive",
-    emoji: "♣️",
-    gradient: ["#a855f7", "#4c1d95"],
-    rtp: 98.2,
-    tags: ["Poker", "Four-Card"],
-    description:
-      "Four hole cards, twice the action. Omaha brings explosive pots and big draws.",
-    new: true,
-  },
-  {
-    title: "Casino Hold'em",
-    category: "poker",
-    provider: "Aurora Networks",
-    emoji: "♥️",
-    gradient: ["#ef4444", "#7f1d1d"],
-    rtp: 97.8,
-    tags: ["Poker", "vs Dealer"],
-    description:
-      "Beat the dealer's hand in this house-banked poker favorite with a lucrative bonus side bet.",
-  },
+export const GAME_CATEGORIES: GameCategory[] = [
+  { id: "popular", label: "POPULAR", emoji: "⭐", gradient: ["#f5a623", "#e8920f"] },
+  { id: "sports", label: "SPORTS", emoji: "⚽", gradient: ["#22c55e", "#15803d"] },
+  { id: "cricket", label: "CRICKET", emoji: "🏏", gradient: ["#3b82f6", "#1d4ed8"] },
+  { id: "slots", label: "SLOTS", emoji: "🎰", gradient: ["#a855f7", "#7c3aed"] },
+  { id: "casino", label: "CASINO", emoji: "🃏", gradient: ["#ef4444", "#b91c1c"] },
+  { id: "table", label: "TABLE", emoji: "🎲", gradient: ["#06b6d4", "#0891b2"] },
+  { id: "fishing", label: "FISHING", emoji: "🎣", gradient: ["#14b8a6", "#0d9488"] },
+  { id: "lottery", label: "LOTTERY", emoji: "🎟️", gradient: ["#f97316", "#ea580c"] },
+  { id: "arcade", label: "ARCADE", emoji: "🕹️", gradient: ["#8b5cf6", "#6d28d9"] },
+  { id: "crash", label: "CRASH", emoji: "🚀", gradient: ["#ec4899", "#be185d"] },
 ];
 
-export const GAMES: Game[] = SEEDS.map((s, i) => {
-  const slug =
-    s.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") +
-    "-" +
-    (i + 1);
-  return {
-    id: slug,
-    slug,
-    title: s.title,
-    category: s.category,
-    provider: s.provider,
-    tags: s.tags,
-    emoji: s.emoji,
-    gradient: s.gradient,
-    rtp: s.rtp,
-    minBet: 1,
-    maxBet: 50000,
-    rating: Math.round((4 + ((i * 7) % 10) / 10) * 10) / 10,
-    players: 120 + ((i * 137) % 4800),
-    description: s.description,
-    isHot: s.hot,
-    isNew: s.new,
-    isFeatured: s.featured,
-    jackpot: s.tags.includes("Jackpot")
-      ? 4_000_000 + ((i * 999983) % 6_000_000)
-      : undefined,
-  };
-});
-
-export const PROMOTIONS: Promotion[] = [
-  {
-    id: "welcome-100",
-    slug: "welcome-bonus-100",
-    title: "100% Welcome Bonus",
-    summary: "Double your first deposit up to ₱20,000",
-    description:
-      "New to Playverse? We'll match your first deposit 100% up to ₱20,000 so you can explore our full library of games with twice the bankroll. Simply make your first deposit and the bonus is credited instantly.",
-    badge: "New Player",
-    emoji: "🎁",
-    gradient: ["#7c3aed", "#db2777"],
-    reward: "Up to ₱20,000",
-    code: "WELCOME100",
-    terms: [
-      "Available to new verified accounts only.",
-      "Minimum qualifying deposit of ₱500.",
-      "Wagering requirement of 25x the bonus amount.",
-      "Bonus expires 14 days after activation.",
-      "Maximum bet while wagering is ₱500 per round.",
-    ],
-  },
-  {
-    id: "daily-cashback",
-    slug: "daily-cashback-15",
-    title: "15% Daily Cashback",
-    summary: "Get up to 15% back every single day",
-    description:
-      "Turn unlucky streaks into a safety net. Playverse returns up to 15% of your daily net losses as real, withdrawable cash — credited automatically every morning with zero wagering requirements.",
-    badge: "Recurring",
-    emoji: "💸",
-    gradient: ["#22c55e", "#0ea5e9"],
-    reward: "Up to ₱50,000/day",
-    code: "CASHBACK15",
-    terms: [
-      "Calculated on net losses between 00:00 and 23:59 (PHT).",
-      "Cashback is credited by 10:00 the following day.",
-      "No wagering requirement — instantly withdrawable.",
-      "Maximum daily cashback is ₱50,000.",
-    ],
-  },
-  {
-    id: "free-spins",
-    slug: "weekly-free-spins",
-    title: "120 Weekly Free Spins",
-    summary: "Claim free spins every week on top slots",
-    description:
-      "Active players earn free spins on a rotating selection of our hottest slots. Make three deposits during the week and unlock 120 free spins to use over the weekend.",
-    badge: "Weekly",
-    emoji: "🌀",
-    gradient: ["#f59e0b", "#ef4444"],
-    reward: "120 Free Spins",
-    code: "SPINS120",
-    terms: [
-      "Requires a minimum of three deposits during the week.",
-      "Free spins are valid on selected titles only.",
-      "Winnings carry a 20x wagering requirement.",
-      "Free spins expire 72 hours after being credited.",
-    ],
-  },
-  {
-    id: "referral",
-    slug: "refer-a-friend",
-    title: "Refer a Friend",
-    summary: "Earn ₱1,000 for every friend who joins",
-    description:
-      "Share the fun and get rewarded. For every friend who registers with your referral link and makes their first deposit, you'll both receive ₱1,000 in bonus credit.",
-    badge: "Social",
-    emoji: "🤝",
-    gradient: ["#06b6d4", "#3b82f6"],
-    reward: "₱1,000 per friend",
-    terms: [
-      "Friend must verify their account and deposit a minimum of ₱500.",
-      "Referral bonus carries a 15x wagering requirement.",
-      "No limit on the number of friends you can refer.",
-      "Self-referrals are not permitted.",
-    ],
-  },
-  {
-    id: "reload",
-    slug: "weekend-reload-50",
-    title: "50% Weekend Reload",
-    summary: "Top up every Saturday and Sunday",
-    description:
-      "Weekends just got better. Claim a 50% reload bonus on your weekend deposits and keep the momentum going with extra credit on your favorite games.",
-    badge: "Weekend",
-    emoji: "🔥",
-    gradient: ["#ec4899", "#7c3aed"],
-    reward: "Up to ₱10,000",
-    code: "WEEKEND50",
-    terms: [
-      "Available every Saturday and Sunday.",
-      "Minimum deposit of ₱300.",
-      "Wagering requirement of 20x the bonus amount.",
-      "One reload bonus per day.",
-    ],
-  },
-  {
-    id: "tournament",
-    slug: "monthly-slots-race",
-    title: "Monthly Slots Race",
-    summary: "Compete for a ₱1,000,000 prize pool",
-    description:
-      "Spin your way up the leaderboard in our monthly slots race. The top 500 players share a massive ₱1,000,000 prize pool based on their multiplier winnings.",
-    badge: "Tournament",
-    emoji: "🏆",
-    gradient: ["#f6b73c", "#d97706"],
-    reward: "₱1,000,000 pool",
-    terms: [
-      "Open to all verified players.",
-      "Points awarded for every win multiplier achieved.",
-      "Prizes distributed within 48 hours of the race ending.",
-      "Leaderboard updates in real time.",
-    ],
-  },
-];
-
-const TEAMS = [
-  { name: "Manila Mariners", emoji: "⛵" },
-  { name: "Cebu Cobras", emoji: "🐍" },
-  { name: "Davao Eagles", emoji: "🦅" },
-  { name: "Quezon Knights", emoji: "🐎" },
-  { name: "Makati Bulls", emoji: "🐂" },
-  { name: "Pasig Sharks", emoji: "🦈" },
-];
-
-export const SPORT_EVENTS: SportEvent[] = [
-  {
-    id: "e1",
-    league: "PBA Cup",
-    sport: "Basketball",
-    startTime: new Date(Date.now() + 1000 * 60 * 45).toISOString(),
-    status: "live",
-    minute: "Q2 06:43",
-    participants: [TEAMS[0], TEAMS[1]],
-    market: { label: "Match Winner", odds: [1.85, 4.2, 2.1] },
-  },
-  {
-    id: "e2",
-    league: "Premier Liga",
-    sport: "Football",
-    startTime: new Date(Date.now() + 1000 * 60 * 12).toISOString(),
-    status: "live",
-    minute: "67'",
-    participants: [TEAMS[2], TEAMS[3]],
-    market: { label: "Match Winner", odds: [2.4, 3.1, 2.9] },
-  },
-  {
-    id: "e3",
-    league: "World Tour",
-    sport: "Tennis",
-    startTime: new Date(Date.now() + 1000 * 60 * 90).toISOString(),
-    status: "upcoming",
-    participants: [TEAMS[4], TEAMS[5]],
-    market: { label: "Match Winner", odds: [1.55, 0, 2.45] },
-  },
-  {
-    id: "e4",
-    league: "Esports Pro",
-    sport: "Esports",
-    startTime: new Date(Date.now() + 1000 * 60 * 150).toISOString(),
-    status: "upcoming",
-    participants: [TEAMS[1], TEAMS[4]],
-    market: { label: "Match Winner", odds: [1.7, 0, 2.15] },
-  },
-  {
-    id: "e5",
-    league: "Premier Liga",
-    sport: "Football",
-    startTime: new Date(Date.now() + 1000 * 60 * 240).toISOString(),
-    status: "upcoming",
-    participants: [TEAMS[0], TEAMS[5]],
-    market: { label: "Match Winner", odds: [2.0, 3.3, 3.6] },
-  },
-  {
-    id: "e6",
-    league: "PBA Cup",
-    sport: "Basketball",
-    startTime: new Date(Date.now() + 1000 * 60 * 320).toISOString(),
-    status: "upcoming",
-    participants: [TEAMS[2], TEAMS[5]],
-    market: { label: "Match Winner", odds: [1.9, 4.5, 2.05] },
-  },
-];
-
-export const JACKPOT_BASE = 18_452_119;
-
-/** Recent big winners, deterministically generated for the live ticker. */
-export function getRecentWinners(): {
-  username: string;
-  amount: number;
-  game: string;
-}[] {
-  const names = [
-    "Mark",
-    "Andrea",
-    "J***7",
-    "Ram",
-    "Selena",
-    "K***2",
-    "Diego",
-    "Yuki",
-    "Pablo",
-    "Nina",
-    "V***9",
-    "Hassan",
-  ];
-  return names.map((name, i) => ({
-    username: name.length > 3 ? `${name[0]}***${name.at(-1)}` : name,
-    amount: 4_200 + ((i * 8731) % 96_000),
-    game: GAMES[(i * 5) % GAMES.length].title,
-  }));
+export interface BJ88Game {
+  id: string;
+  title: string;
+  provider: string;
+  category: string;
+  subcategory?: string;
+  gradient: [string, string];
+  emoji: string;
+  isHot?: boolean;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  badge?: string;
+  players?: number;
 }
 
-export const STATS = [
-  { label: "Games", value: "2,500+" },
-  { label: "Active players", value: "180K+" },
-  { label: "Paid out", value: "₱4.8B" },
-  { label: "Avg. payout", value: "3 min" },
+export const POPULAR_GAMES: BJ88Game[] = [
+  { id: "pp-slots", title: "PRAGMATIC PLAY", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#1a0533", "#3b0764"], emoji: "🏛️", badge: "SLOTS", players: 5200 },
+  { id: "sportsbook", title: "SPORTSBOOK", provider: "Sports", category: "popular", subcategory: "SPORTS", gradient: ["#0a1628", "#1e3a5f"], emoji: "⚽", badge: "SPORTS", players: 8100, isHot: true },
+  { id: "sexy-gaming", title: "SEXY", provider: "AE Sexy", category: "popular", subcategory: "CASINO", gradient: ["#3b0011", "#6b0020"], emoji: "💃", badge: "CASINO", players: 3400 },
+  { id: "jungle", title: "LET'S GO JUNGLE", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#064e3b", "#065f46"], emoji: "🦁", badge: "LET'S GO", players: 2800, isNew: true },
+  { id: "aztec-gems", title: "AZTEC GEMS", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#7c2d12", "#9a3412"], emoji: "💎", badge: "PRAGMATIC", players: 4100, isHot: true },
+  { id: "mega-wheel", title: "MEGA WHEEL", provider: "Pragmatic Play", category: "popular", subcategory: "CASINO", gradient: ["#1e1b4b", "#312e81"], emoji: "🎡", badge: "PRAGMATIC", players: 6200, isFeatured: true },
+  { id: "high-flyer", title: "HIGH FLYER", provider: "Pragmatic Play", category: "popular", subcategory: "CRASH", gradient: ["#0c4a6e", "#075985"], emoji: "✈️", badge: "PRAGMATIC", players: 5500, isFeatured: true },
+  { id: "fortune-gems-3", title: "FORTUNE GEMS 3", provider: "JILI", category: "popular", subcategory: "SLOTS", gradient: ["#713f12", "#92400e"], emoji: "💍", badge: "JILI", players: 3900 },
+  { id: "no-comm-baccarat", title: "NO COMM. BACCARAT", provider: "Evolution", category: "popular", subcategory: "CASINO", gradient: ["#1c1917", "#292524"], emoji: "🂡", badge: "EVOLUTION", players: 7200, isHot: true },
+  { id: "pusoy-go", title: "PUSOY GO", provider: "JILI", category: "popular", subcategory: "TABLE", gradient: ["#1e1b4b", "#2e1065"], emoji: "🃏", badge: "JILI", players: 2100 },
+  { id: "crazy-time", title: "CRAZY TIME", provider: "Evolution", category: "popular", subcategory: "CASINO", gradient: ["#7c0000", "#991b1b"], emoji: "🎪", badge: "EVOLUTION", players: 9100, isFeatured: true, isHot: true },
+  { id: "super-ace", title: "SUPER ACE", provider: "JILI", category: "popular", subcategory: "SLOTS", gradient: ["#422006", "#713f12"], emoji: "♠️", badge: "JILI", players: 4800, isHot: true },
+  { id: "gates-olympus", title: "GATES OF OLYMPUS", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#2e1065", "#5b21b6"], emoji: "⚡", badge: "PRAGMATIC", players: 8200, isFeatured: true },
+  { id: "sweet-bonanza", title: "SWEET BONANZA", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#be185d", "#ec4899"], emoji: "🍭", badge: "PRAGMATIC", players: 5100 },
+  { id: "wild-west-gold", title: "WILD WEST GOLD", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#78350f", "#b45309"], emoji: "🤠", badge: "PRAGMATIC", players: 3200 },
+  { id: "dog-house", title: "THE DOG HOUSE", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#1d4ed8", "#3b82f6"], emoji: "🐕", badge: "PRAGMATIC", players: 2900 },
+  { id: "big-bass", title: "BIG BASS BONANZA", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#065f46", "#10b981"], emoji: "🐟", badge: "PRAGMATIC", players: 3600 },
+  { id: "starlight-princess", title: "STARLIGHT PRINCESS", provider: "Pragmatic Play", category: "popular", subcategory: "SLOTS", gradient: ["#4c1d95", "#8b5cf6"], emoji: "⭐", badge: "PRAGMATIC", players: 6700, isNew: true },
+  { id: "aviator", title: "AVIATOR", provider: "Spribe", category: "popular", subcategory: "CRASH", gradient: ["#7c2d12", "#ea580c"], emoji: "✈️", badge: "SPRIBE", players: 9200, isHot: true },
+  { id: "lightning-roulette", title: "LIGHTNING ROULETTE", provider: "Evolution", category: "popular", subcategory: "CASINO", gradient: ["#7c0000", "#991b1b"], emoji: "⚡", badge: "EVOLUTION", players: 8400, isHot: true },
 ];
 
-export const FEATURES = [
-  {
-    icon: "⚡",
-    title: "Instant Payouts",
-    description:
-      "Withdrawals processed in an average of three minutes, 24 hours a day.",
-  },
-  {
-    icon: "🔒",
-    title: "Bank-Grade Security",
-    description:
-      "256-bit encryption and rigorous fair-play auditing keep your account safe.",
-  },
-  {
-    icon: "📱",
-    title: "Play Anywhere",
-    description:
-      "A flawless experience across desktop, tablet, and mobile — no app required.",
-  },
-  {
-    icon: "🎧",
-    title: "24/7 Support",
-    description:
-      "Real humans on live chat and email, any time of day or night.",
-  },
+export const SLOTS_GAMES: BJ88Game[] = [
+  { id: "s1", title: "Fortune Gems 3", provider: "JILI", category: "slots", gradient: ["#713f12", "#92400e"], emoji: "💍", isHot: true, players: 3900 },
+  { id: "s2", title: "Aztec Gems", provider: "Pragmatic Play", category: "slots", gradient: ["#7c2d12", "#9a3412"], emoji: "💎", isHot: true, players: 4100 },
+  { id: "s3", title: "Gates of Olympus", provider: "Pragmatic Play", category: "slots", gradient: ["#2e1065", "#5b21b6"], emoji: "⚡", isFeatured: true, players: 8200 },
+  { id: "s4", title: "Sweet Bonanza", provider: "Pragmatic Play", category: "slots", gradient: ["#be185d", "#ec4899"], emoji: "🍭", players: 5100 },
+  { id: "s5", title: "Wild West Gold", provider: "Pragmatic Play", category: "slots", gradient: ["#78350f", "#b45309"], emoji: "🤠", players: 3200 },
+  { id: "s6", title: "The Dog House", provider: "Pragmatic Play", category: "slots", gradient: ["#1d4ed8", "#3b82f6"], emoji: "🐕", players: 2900 },
+  { id: "s7", title: "Big Bass Bonanza", provider: "Pragmatic Play", category: "slots", gradient: ["#065f46", "#10b981"], emoji: "🐟", players: 3600 },
+  { id: "s8", title: "Starlight Princess", provider: "Pragmatic Play", category: "slots", gradient: ["#4c1d95", "#8b5cf6"], emoji: "⭐", players: 6700, isNew: true },
+  { id: "s9", title: "Super Ace", provider: "JILI", category: "slots", gradient: ["#422006", "#713f12"], emoji: "♠️", isHot: true, players: 4800 },
+  { id: "s10", title: "Boxing King", provider: "JILI", category: "slots", gradient: ["#7c0000", "#991b1b"], emoji: "🥊", players: 2600 },
+  { id: "s11", title: "Golden Empire", provider: "JILI", category: "slots", gradient: ["#713f12", "#d97706"], emoji: "👑", players: 3400, isNew: true },
+  { id: "s12", title: "Money Coming", provider: "JILI", category: "slots", gradient: ["#065f46", "#10b981"], emoji: "💰", players: 2200 },
+  { id: "s13", title: "Crazy Hunter", provider: "JILI", category: "slots", gradient: ["#7c2d12", "#ea580c"], emoji: "🎯", players: 1800 },
+  { id: "s14", title: "Lucky Neko", provider: "PG Soft", category: "slots", gradient: ["#be185d", "#9d174d"], emoji: "🐱", players: 3100, isHot: true },
+  { id: "s15", title: "Mahjong Ways", provider: "PG Soft", category: "slots", gradient: ["#1e1b4b", "#312e81"], emoji: "🀄", players: 4200 },
+  { id: "s16", title: "Treasure of Aztec", provider: "PG Soft", category: "slots", gradient: ["#7c2d12", "#9a3412"], emoji: "🗿", players: 2800 },
+  { id: "s17", title: "Wild Fireworks", provider: "PG Soft", category: "slots", gradient: ["#be185d", "#ec4899"], emoji: "🎆", players: 2400, isNew: true },
+  { id: "s18", title: "Leprechaun Riches", provider: "PG Soft", category: "slots", gradient: ["#166534", "#15803d"], emoji: "🌈", players: 1900 },
+  { id: "s19", title: "Pirate Gold", provider: "Pragmatic Play", category: "slots", gradient: ["#1e3a5f", "#1d4ed8"], emoji: "🏴‍☠️", players: 2700 },
+  { id: "s20", title: "Fruit Party", provider: "Pragmatic Play", category: "slots", gradient: ["#be185d", "#f472b6"], emoji: "🍓", players: 2100 },
 ];
 
-export const STEPS = [
-  {
-    step: "01",
-    title: "Create your account",
-    description:
-      "Sign up in under a minute with just an email and password. No documents needed to explore.",
-  },
-  {
-    step: "02",
-    title: "Claim your bonus",
-    description:
-      "Make your first deposit and instantly double your bankroll with our welcome offer.",
-  },
-  {
-    step: "03",
-    title: "Start playing",
-    description:
-      "Dive into 2,500+ games, place bets, and cash out your winnings whenever you like.",
-  },
+export const CASINO_GAMES: BJ88Game[] = [
+  { id: "c1", title: "Lightning Roulette", provider: "Evolution", category: "casino", gradient: ["#7c0000", "#991b1b"], emoji: "⚡", isHot: true, players: 8400 },
+  { id: "c2", title: "Crazy Time", provider: "Evolution", category: "casino", gradient: ["#1e1b4b", "#312e81"], emoji: "🎪", isHot: true, players: 9100 },
+  { id: "c3", title: "Baccarat", provider: "Evolution", category: "casino", gradient: ["#1c1917", "#292524"], emoji: "🃏", players: 5200 },
+  { id: "c4", title: "Dream Catcher", provider: "Evolution", category: "casino", gradient: ["#0c4a6e", "#075985"], emoji: "🎯", players: 4100 },
+  { id: "c5", title: "Dragon Tiger", provider: "Evolution", category: "casino", gradient: ["#7c2d12", "#9a3412"], emoji: "🐉", players: 6300, isNew: true },
+  { id: "c6", title: "Monopoly Live", provider: "Evolution", category: "casino", gradient: ["#166534", "#15803d"], emoji: "🎩", players: 7800 },
+  { id: "c7", title: "Andar Bahar", provider: "Ezugi", category: "casino", gradient: ["#1e3a5f", "#1d4ed8"], emoji: "🀄", players: 3900 },
+  { id: "c8", title: "Teen Patti", provider: "Ezugi", category: "casino", gradient: ["#831843", "#be185d"], emoji: "🃏", players: 4500, isHot: true },
+  { id: "c9", title: "Sic Bo", provider: "Evolution", category: "casino", gradient: ["#713f12", "#b45309"], emoji: "🎲", players: 2300 },
+  { id: "c10", title: "Mega Ball", provider: "Evolution", category: "casino", gradient: ["#2e1065", "#5b21b6"], emoji: "🎱", players: 3400, isNew: true },
+  { id: "c11", title: "Speed Roulette", provider: "Evolution", category: "casino", gradient: ["#7c0000", "#b91c1c"], emoji: "🎯", players: 5100 },
+  { id: "c12", title: "Blackjack Party", provider: "Evolution", category: "casino", gradient: ["#1c1917", "#57534e"], emoji: "🂡", players: 3800 },
+  { id: "c13", title: "Sexy Baccarat A", provider: "AE Sexy", category: "casino", gradient: ["#3b0011", "#6b0020"], emoji: "💃", players: 6200, isHot: true },
+  { id: "c14", title: "Sexy Baccarat B", provider: "AE Sexy", category: "casino", gradient: ["#3b0011", "#8b0033"], emoji: "💃", players: 4800 },
+  { id: "c15", title: "Sexy Roulette", provider: "AE Sexy", category: "casino", gradient: ["#4a0019", "#7a0030"], emoji: "💃", players: 4100 },
+  { id: "c16", title: "Mega Wheel", provider: "Pragmatic Play", category: "casino", gradient: ["#1e1b4b", "#4c1d95"], emoji: "🎡", isFeatured: true, players: 6200 },
 ];
 
-export const TESTIMONIALS = [
-  {
-    name: "Carlos M.",
-    role: "Slots enthusiast",
-    quote:
-      "The withdrawals are genuinely instant. I cashed out at 2am and had the money before my coffee was cold.",
-    rating: 5,
-  },
-  {
-    name: "Bea T.",
-    role: "Live casino regular",
-    quote:
-      "The live dealers are professional and the streaming is crystal clear. Royal Baccarat is my go-to.",
-    rating: 5,
-  },
-  {
-    name: "Jun R.",
-    role: "Sports bettor",
-    quote:
-      "Best odds I've found locally and the live betting updates are lightning fast. Highly recommended.",
-    rating: 4,
-  },
+export const FISHING_GAMES: BJ88Game[] = [
+  { id: "f1", title: "Ocean King", provider: "JILI", category: "fishing", gradient: ["#065f46", "#0d9488"], emoji: "🦈", isHot: true, players: 3100 },
+  { id: "f2", title: "Fish Hunter", provider: "JILI", category: "fishing", gradient: ["#0c4a6e", "#0369a1"], emoji: "🐙", players: 2200 },
+  { id: "f3", title: "Golden Toad", provider: "Fa Chai", category: "fishing", gradient: ["#713f12", "#b45309"], emoji: "🐸", players: 1800 },
+  { id: "f4", title: "Deep Sea Bounty", provider: "JILI", category: "fishing", gradient: ["#1e3a5f", "#1d4ed8"], emoji: "🐠", isNew: true, players: 2500 },
+  { id: "f5", title: "Dragon Fishing", provider: "JILI", category: "fishing", gradient: ["#7c0000", "#991b1b"], emoji: "🐉", isHot: true, players: 3400 },
+  { id: "f6", title: "Cai Shen Fishing", provider: "Fa Chai", category: "fishing", gradient: ["#713f12", "#d97706"], emoji: "🎣", players: 1900 },
+  { id: "f7", title: "Star Fish", provider: "JDB", category: "fishing", gradient: ["#2e1065", "#5b21b6"], emoji: "⭐", players: 1200 },
+  { id: "f8", title: "Fishing Master", provider: "Spade Gaming", category: "fishing", gradient: ["#064e3b", "#10b981"], emoji: "🐟", players: 2700 },
 ];
 
-export const FAQS = [
-  {
-    q: "Is Playverse free to join?",
-    a: "Yes. Creating an account is completely free. You can browse the entire library, claim promotions, and even try demo play before ever making a deposit.",
-  },
-  {
-    q: "How fast are withdrawals?",
-    a: "Most withdrawals are processed within three minutes. The exact time depends on your chosen payment method, but we process requests 24/7.",
-  },
-  {
-    q: "What payment methods are supported?",
-    a: "We support major credit and debit cards, e-wallets such as GCash and Maya, bank transfers, and selected cryptocurrencies. All methods are encrypted end to end.",
-  },
-  {
-    q: "Are the games fair?",
-    a: "Absolutely. Every game uses a certified random number generator and is independently audited for fairness. RTP percentages are published on each game's detail page.",
-  },
-  {
-    q: "Can I play on my phone?",
-    a: "Yes. Playverse is fully responsive and works beautifully on any modern smartphone or tablet directly from your browser — no download required.",
-  },
-  {
-    q: "How does the VIP program work?",
-    a: "You earn VIP points with every wager. As you climb through five tiers, you unlock cashback, a personal account manager, faster withdrawals, and exclusive bonuses.",
-  },
+export const ARCADE_GAMES: BJ88Game[] = [
+  { id: "a1", title: "Plinko", provider: "Spribe", category: "arcade", gradient: ["#4c1d95", "#8b5cf6"], emoji: "🟣", isHot: true, players: 5400 },
+  { id: "a2", title: "Mines", provider: "Spribe", category: "arcade", gradient: ["#7c0000", "#991b1b"], emoji: "💣", players: 4200 },
+  { id: "a3", title: "Dice", provider: "Spribe", category: "arcade", gradient: ["#0c4a6e", "#0369a1"], emoji: "🎲", players: 3800 },
+  { id: "a4", title: "Tower", provider: "Spribe", category: "arcade", gradient: ["#065f46", "#10b981"], emoji: "🗼", players: 2100 },
+  { id: "a5", title: "Crash", provider: "Spribe", category: "arcade", gradient: ["#7c2d12", "#ea580c"], emoji: "🚀", isHot: true, players: 6100 },
+  { id: "a6", title: "Mini Roulette", provider: "Spribe", category: "arcade", gradient: ["#1c1917", "#57534e"], emoji: "🎯", players: 1700 },
+  { id: "a7", title: "Goal", provider: "Spribe", category: "arcade", gradient: ["#166534", "#15803d"], emoji: "⚽", players: 2300 },
+  { id: "a8", title: "HiLo", provider: "Spribe", category: "arcade", gradient: ["#831843", "#be185d"], emoji: "🎴", players: 1500 },
 ];
 
-export function getGameBySlug(slug: string): Game | undefined {
-  return GAMES.find((g) => g.slug === slug);
-}
+export const LOTTERY_GAMES: BJ88Game[] = [
+  { id: "l1", title: "Keno", provider: "JILI", category: "lottery", gradient: ["#713f12", "#d97706"], emoji: "🔢", players: 2100 },
+  { id: "l2", title: "Bingo", provider: "JILI", category: "lottery", gradient: ["#0c4a6e", "#0369a1"], emoji: "🎟️", players: 1800 },
+  { id: "l3", title: "Lucky 5", provider: "JILI", category: "lottery", gradient: ["#7c0000", "#991b1b"], emoji: "🍀", players: 1400 },
+  { id: "l4", title: "Power Ball", provider: "JILI", category: "lottery", gradient: ["#1e1b4b", "#4c1d95"], emoji: "🔮", players: 1100 },
+];
 
-export function getGamesByCategory(category: string): Game[] {
-  return GAMES.filter((g) => g.category === category);
-}
+export const CRASH_GAMES: BJ88Game[] = [
+  { id: "cr1", title: "Aviator", provider: "Spribe", category: "crash", gradient: ["#7c2d12", "#ea580c"], emoji: "✈️", isHot: true, players: 9200 },
+  { id: "cr2", title: "JetX", provider: "SmartSoft", category: "crash", gradient: ["#1e3a5f", "#1d4ed8"], emoji: "🚀", isHot: true, players: 6800 },
+  { id: "cr3", title: "High Flyer", provider: "Pragmatic", category: "crash", gradient: ["#0c4a6e", "#0369a1"], emoji: "🛩️", isFeatured: true, players: 5500 },
+  { id: "cr4", title: "Space XY", provider: "BGaming", category: "crash", gradient: ["#2e1065", "#5b21b6"], emoji: "🌌", players: 3200 },
+  { id: "cr5", title: "Lucky Jet", provider: "1Win", category: "crash", gradient: ["#713f12", "#b45309"], emoji: "🚀", players: 4100, isNew: true },
+  { id: "cr6", title: "Rocketman", provider: "Elbet", category: "crash", gradient: ["#7c0000", "#991b1b"], emoji: "👨‍🚀", players: 2800 },
+];
+
+export const TABLE_GAMES: BJ88Game[] = [
+  { id: "t1", title: "Texas Hold'em", provider: "Evolution", category: "table", gradient: ["#0c4a6e", "#0369a1"], emoji: "♠️", players: 3400 },
+  { id: "t2", title: "Blackjack VIP", provider: "Evolution", category: "table", gradient: ["#1c1917", "#292524"], emoji: "🂡", players: 5200, isHot: true },
+  { id: "t3", title: "Baccarat Squeeze", provider: "Evolution", category: "table", gradient: ["#7c0000", "#991b1b"], emoji: "🃏", players: 4100 },
+  { id: "t4", title: "Sic Bo", provider: "Evolution", category: "table", gradient: ["#713f12", "#b45309"], emoji: "🎲", players: 2300 },
+  { id: "t5", title: "Casino Hold'em", provider: "Evolution", category: "table", gradient: ["#065f46", "#10b981"], emoji: "♥️", players: 1900 },
+  { id: "t6", title: "Dragon Tiger", provider: "Evolution", category: "table", gradient: ["#7c2d12", "#9a3412"], emoji: "🐉", players: 2700, isNew: true },
+];
+
+export const SPORTS_GAMES_LIST: BJ88Game[] = [
+  { id: "sp1", title: "Football", provider: "Sportsbook", category: "sports", gradient: ["#065f46", "#10b981"], emoji: "⚽", isHot: true, players: 8100 },
+  { id: "sp2", title: "Cricket", provider: "Sportsbook", category: "sports", gradient: ["#0c4a6e", "#1d4ed8"], emoji: "🏏", isHot: true, players: 7500 },
+  { id: "sp3", title: "Basketball", provider: "Sportsbook", category: "sports", gradient: ["#7c2d12", "#ea580c"], emoji: "🏀", players: 3200 },
+  { id: "sp4", title: "Tennis", provider: "Sportsbook", category: "sports", gradient: ["#166534", "#22c55e"], emoji: "🎾", players: 2400 },
+  { id: "sp5", title: "Kabaddi", provider: "Sportsbook", category: "sports", gradient: ["#7c0000", "#991b1b"], emoji: "🤼", players: 1800 },
+  { id: "sp6", title: "Esports", provider: "Sportsbook", category: "sports", gradient: ["#2e1065", "#5b21b6"], emoji: "🎮", players: 4100, isNew: true },
+  { id: "sp7", title: "Horse Racing", provider: "Sportsbook", category: "sports", gradient: ["#713f12", "#b45309"], emoji: "🏇", players: 1500 },
+  { id: "sp8", title: "Boxing", provider: "Sportsbook", category: "sports", gradient: ["#1c1917", "#57534e"], emoji: "🥊", players: 1200 },
+];
+
+export const CRICKET_GAMES_LIST: BJ88Game[] = [
+  { id: "cr1", title: "BPL T20", provider: "Cricket", category: "cricket", gradient: ["#065f46", "#10b981"], emoji: "🏏", isHot: true, players: 5500 },
+  { id: "cr2", title: "IPL", provider: "Cricket", category: "cricket", gradient: ["#7c0000", "#991b1b"], emoji: "🏏", isHot: true, players: 8200 },
+  { id: "cr3", title: "ICC World Cup", provider: "Cricket", category: "cricket", gradient: ["#0c4a6e", "#1d4ed8"], emoji: "🏆", players: 6700 },
+  { id: "cr4", title: "Bangladesh vs India", provider: "Cricket", category: "cricket", gradient: ["#166534", "#15803d"], emoji: "🇧🇩", players: 4200, isNew: true },
+  { id: "cr5", title: "T20 World Cup", provider: "Cricket", category: "cricket", gradient: ["#713f12", "#d97706"], emoji: "🏆", players: 5800 },
+  { id: "cr6", title: "Asia Cup", provider: "Cricket", category: "cricket", gradient: ["#2e1065", "#5b21b6"], emoji: "🏆", players: 3900 },
+];
+
+export const FEATURED_GAMES: BJ88Game[] = [
+  { id: "feat-mega-wheel", title: "Mega Wheel", provider: "Pragmatic Play", category: "casino", gradient: ["#1e1b4b", "#4c1d95"], emoji: "🎡", isFeatured: true },
+  { id: "feat-high-flyer", title: "High Flyer", provider: "Pragmatic Play", category: "crash", gradient: ["#0c4a6e", "#0369a1"], emoji: "✈️", isFeatured: true },
+  { id: "feat-gates", title: "Gates of Olympus Roulette", provider: "Pragmatic Play", category: "casino", gradient: ["#2e1065", "#5b21b6"], emoji: "⚡", isFeatured: true },
+];
+
+export const TOURNAMENTS: BJ88Game[] = [
+  { id: "tour-slots", title: "Slots Tournament", provider: "Weekly", category: "popular", gradient: ["#6d28d9", "#a855f7"], emoji: "🏆", isFeatured: true },
+  { id: "tour-crash", title: "Crash Championship", provider: "Monthly", category: "crash", gradient: ["#7c2d12", "#ea580c"], emoji: "🚀", isFeatured: true },
+  { id: "tour-fishing", title: "Fishing Master Cup", provider: "Daily", category: "fishing", gradient: ["#065f46", "#0d9488"], emoji: "🎣", isFeatured: true },
+];
+
+export const SPORTS_EVENTS = [
+  { id: "se1", league: "Bangladesh Premier League", sport: "Cricket", team1: "Dhaka Dominators", team2: "Chattogram Challengers", odds: [1.85, 3.4, 2.1], status: "live", minute: "18.4 overs" },
+  { id: "se2", league: "BPL T20", sport: "Cricket", team1: "Sylhet Strikers", team2: "Khulna Tigers", odds: [2.1, 4.2, 1.75], status: "upcoming" },
+  { id: "se3", league: "Premier League", sport: "Football", team1: "Sheikh Jamal DC", team2: "Bashundhara Kings", odds: [2.4, 3.1, 2.9], status: "live", minute: "67'" },
+  { id: "se4", league: "IPL", sport: "Cricket", team1: "Mumbai Indians", team2: "Chennai Super Kings", odds: [1.95, 3.8, 1.9], status: "upcoming" },
+];
+
+export const PROMOTIONS = [
+  { id: "welcome", title: "Welcome Bonus", subtitle: "100% Bonus up to ৳10,000", badge: "New Member", emoji: "🎁", gradient: ["#6d28d9", "#be185d"] as [string, string] },
+  { id: "sports-cashback", title: "Sports Cashback", subtitle: "Up to 5% Daily Cashback", badge: "Sports", emoji: "⚽", gradient: ["#065f46", "#0d9488"] as [string, string] },
+  { id: "slots-bonus", title: "Slots Bonus", subtitle: "Free Spins Every Day", badge: "Slots", emoji: "🎰", gradient: ["#1e1b4b", "#4c1d95"] as [string, string] },
+  { id: "cricket-promo", title: "Cricket Special", subtitle: "50% Bonus on First Cricket Bet", badge: "Cricket", emoji: "🏏", gradient: ["#0c4a6e", "#0369a1"] as [string, string] },
+  { id: "referral", title: "Refer & Earn", subtitle: "Get ৳500 for each friend referred", badge: "Referral", emoji: "🤝", gradient: ["#78350f", "#b45309"] as [string, string] },
+  { id: "vip", title: "VIP Club", subtitle: "Exclusive rewards for VIP members", badge: "VIP", emoji: "👑", gradient: ["#713f12", "#d97706"] as [string, string] },
+];
+
+export const PROVIDERS = [
+  { name: "PRAGMATIC PLAY", emoji: "🎯" },
+  { name: "JILI", emoji: "🎰" },
+  { name: "EVOLUTION", emoji: "🃏" },
+  { name: "AE SEXY", emoji: "💃" },
+  { name: "HABANERO", emoji: "🌶️" },
+  { name: "PG SOFT", emoji: "🎮" },
+  { name: "SPADE GAMING", emoji: "♠️" },
+  { name: "JDB", emoji: "🎲" },
+];
+
+export const PAYMENT_OPTIONS = [
+  { id: "bkash", name: "bKash", emoji: "💗", fee: "Free", time: "Instant" },
+  { id: "nagad", name: "Nagad", emoji: "🟠", fee: "Free", time: "Instant" },
+  { id: "rocket", name: "Rocket", emoji: "🚀", fee: "Free", time: "Instant" },
+  { id: "bank", name: "Bank Transfer", emoji: "🏦", fee: "Free", time: "1–3 hrs" },
+  { id: "crypto", name: "Crypto", emoji: "₿", fee: "Free", time: "Instant" },
+];
+
+export const ALL_GAMES: BJ88Game[] = [
+  ...POPULAR_GAMES,
+  ...SLOTS_GAMES,
+  ...CASINO_GAMES,
+  ...FISHING_GAMES,
+  ...ARCADE_GAMES,
+  ...CRASH_GAMES,
+  ...TABLE_GAMES,
+];

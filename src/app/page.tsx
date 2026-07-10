@@ -1,9 +1,3 @@
-import Link from "next/link";
-import { HeroBanner } from "@/components/bj88/hero-banner";
-import { GameSection } from "@/components/bj88/game-section";
-import { FeatureCard } from "@/components/bj88/game-card";
-import { CategoryTabs } from "@/components/bj88/category-tabs";
-import { WinnersTicker, JackpotTicker } from "@/components/bj88/tickers";
 import {
   POPULAR_GAMES,
   SLOTS_GAMES,
@@ -13,28 +7,26 @@ import {
   CRASH_GAMES,
   FEATURED_GAMES,
   TOURNAMENTS,
-  PROMOTIONS,
   SPORTS_EVENTS,
+  PROMOTIONS,
   PROVIDERS,
-} from "@/lib/bj88-catalog";
+  SITE,
+} from "@/lib/catalog";
+import { WinnersTicker, JackpotTicker } from "@/components/bj88/tickers";
+import { HeroBanner } from "@/components/bj88/hero-banner";
+import { CategoryTabs } from "@/components/bj88/category-tabs";
+import { GameSection } from "@/components/bj88/game-section";
+import { FeatureCard } from "@/components/bj88/game-card";
 
 export default function HomePage() {
   return (
-    <div className="px-3 py-3 lg:px-4">
-      {/* Winners ticker */}
-      <div className="mb-3">
-        <WinnersTicker />
-      </div>
-
-      {/* Hero banner full width */}
-      <div className="mb-3">
+    <div className="mx-auto max-w-6xl px-3 py-3">
+      <WinnersTicker />
+      <div className="mt-3">
         <HeroBanner />
       </div>
+      <CategoryTabs />
 
-      {/* Category tabs */}
-      <CategoryTabs active="popular" />
-
-      {/* Popular games */}
       <GameSection
         title="Popular"
         icon="⭐"
@@ -43,17 +35,16 @@ export default function HomePage() {
         columns={10}
       />
 
-      {/* Featured Games — landscape cards */}
-      <section className="mb-5">
-        <div className="mb-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block h-5 w-[3px] rounded-full"
-              style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
-            />
-            <span className="text-base">🎮</span>
-            <h2 className="text-[15px] font-bold uppercase tracking-wide text-white">Featured Games</h2>
-          </div>
+      <section className="mt-5">
+        <div className="flex items-center gap-2.5 py-2">
+          <span
+            className="h-5 w-[3px] rounded-full"
+            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
+          />
+          <span className="text-base">✨</span>
+          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+            Featured Games
+          </h2>
         </div>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURED_GAMES.map((g) => (
@@ -62,7 +53,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Slots */}
       <GameSection
         title="Slots"
         icon="🎰"
@@ -71,204 +61,208 @@ export default function HomePage() {
         columns={10}
       />
 
-      {/* Live Casino */}
       <GameSection
         title="Live Casino"
         icon="🃏"
         games={CASINO_GAMES}
         href="/casino"
-        columns={10}
+        columns={8}
       />
 
-      {/* Tournaments — landscape cards */}
-      <section className="mb-5">
-        <div className="mb-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block h-5 w-[3px] rounded-full"
-              style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
-            />
-            <span className="text-base">🏆</span>
-            <h2 className="text-[15px] font-bold uppercase tracking-wide text-white">Tournaments</h2>
-          </div>
-          <Link href="/tournaments" className="text-xs font-medium text-[#f5a623] hover:underline">
-            See All →
-          </Link>
+      <section className="mt-5">
+        <div className="flex items-center gap-2.5 py-2">
+          <span
+            className="h-5 w-[3px] rounded-full"
+            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
+          />
+          <span className="text-base">🏆</span>
+          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+            Tournaments
+          </h2>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-3">
           {TOURNAMENTS.map((g) => (
-            <FeatureCard key={g.id} game={g} badge={g.provider.toUpperCase()} />
+            <FeatureCard key={g.id} game={g} badge={g.provider} />
           ))}
         </div>
       </section>
 
-      {/* Fishing */}
       <GameSection
         title="Fishing"
         icon="🎣"
         games={FISHING_GAMES}
         href="/fishing"
-        columns={10}
+        columns={8}
       />
 
-      {/* Arcade */}
       <GameSection
         title="Arcade"
         icon="🕹️"
         games={ARCADE_GAMES}
         href="/arcade"
-        columns={10}
+        columns={8}
       />
 
-      {/* Crash */}
       <GameSection
         title="Crash"
         icon="🚀"
         games={CRASH_GAMES}
         href="/crash"
-        columns={10}
+        columns={7}
       />
 
-      {/* Promotions */}
-      <section className="mb-5">
-        <div className="mb-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block h-5 w-[3px] rounded-full"
-              style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
-            />
-            <span className="text-base">🎁</span>
-            <h2 className="text-[15px] font-bold uppercase tracking-wide text-white">Promotions</h2>
-          </div>
-          <Link href="/promotions" className="text-xs font-medium text-[#f5a623] hover:underline">
-            See All →
-          </Link>
+      <section className="mt-5">
+        <div className="flex items-center gap-2.5 py-2">
+          <span
+            className="h-5 w-[3px] rounded-full"
+            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
+          />
+          <span className="text-base">🎁</span>
+          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+            Promotions
+          </h2>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {PROMOTIONS.map((p) => (
-            <Link
+            <div
               key={p.id}
-              href={`/promotions/${p.id}`}
-              className="group relative block overflow-hidden rounded-lg p-5 transition-transform hover:scale-[1.02]"
-              style={{ backgroundImage: `linear-gradient(120deg, ${p.gradient[0]}, ${p.gradient[1]})` }}
+              className="relative overflow-hidden rounded-xl p-4"
+              style={{
+                background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})`,
+              }}
             >
-              <div className="absolute right-3 top-3 text-4xl opacity-25">{p.emoji}</div>
-              <div className="relative">
-                <span className="rounded bg-black/30 px-2 py-0.5 text-[9px] font-bold text-white">
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18), transparent 60%)",
+                }}
+              />
+              <div className="relative z-10">
+                <span className="text-3xl">{p.emoji}</span>
+                <span className="mt-2 block rounded-full bg-black/30 px-2 py-0.5 text-[9px] font-bold text-white w-fit">
                   {p.badge}
                 </span>
-                <h3 className="mt-2 text-sm font-bold text-white">{p.title}</h3>
-                <p className="mt-0.5 text-xs text-white/75">{p.subtitle}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Sportsbook preview */}
-      <section className="mb-5">
-        <div className="mb-2.5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span
-              className="inline-block h-5 w-[3px] rounded-full"
-              style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
-            />
-            <span className="text-base">⚽</span>
-            <h2 className="text-[15px] font-bold uppercase tracking-wide text-white">Sports — Live & Upcoming</h2>
-          </div>
-          <Link href="/sports" className="text-xs font-medium text-[#f5a623] hover:underline">
-            See All →
-          </Link>
-        </div>
-        <div className="space-y-2">
-          {SPORTS_EVENTS.map((e) => (
-            <div
-              key={e.id}
-              className="rounded-lg border border-[#1e1e2d] bg-[#1e1e2d] p-3"
-            >
-              <div className="mb-2 flex items-center justify-between text-[10px] text-[#888899]">
-                <span className="font-semibold text-white">{e.league}</span>
-                {e.status === "live" ? (
-                  <span className="flex items-center gap-1 rounded bg-red-500/15 px-1.5 py-0.5 font-bold text-red-400 animate-live">
-                    ● LIVE {e.minute}
-                  </span>
-                ) : (
-                  <span className="rounded bg-[#2a2a3e] px-1.5 py-0.5">Upcoming</span>
-                )}
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2 text-sm font-semibold">
-                  <span>{e.team1}</span>
-                  <span className="text-xs text-[#555577]">vs</span>
-                  <span>{e.team2}</span>
-                </div>
-                <div className="flex gap-1.5">
-                  {e.odds.map((odd, i) => (
-                    <button
-                      key={i}
-                      className="rounded border border-[#2a2a3e] bg-[#0d0d18] px-3 py-1.5 text-xs font-bold hover:border-[#f5a623] hover:text-[#f5a623] transition-colors"
-                    >
-                      {odd.toFixed(2)}
-                    </button>
-                  ))}
-                </div>
+                <h3 className="mt-1.5 text-sm font-bold text-white">{p.title}</h3>
+                <p className="text-[11px] text-white/80">{p.subtitle}</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Jackpot banner */}
-      <section className="mb-5">
-        <div
-          className="relative overflow-hidden rounded-xl p-6"
-          style={{ background: "linear-gradient(135deg, #713f12, #d97706)" }}
-        >
-          <div className="text-xs font-bold uppercase tracking-[0.2em] text-amber-200">
-            Mega Jackpot
-          </div>
-          <div className="mt-1 font-mono text-3xl font-black text-white">
-            <JackpotTicker />
-          </div>
-          <p className="mt-1 text-xs text-amber-100/70">
-            Growing every second — could be yours!
-          </p>
-          <Link
-            href="/slots"
-            className="mt-3 inline-block rounded-md bg-white px-4 py-1.5 text-xs font-bold text-black hover:bg-amber-50"
+      <section className="mt-5">
+        <div className="flex items-center gap-2.5 py-2">
+          <span
+            className="h-5 w-[3px] rounded-full"
+            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
+          />
+          <span className="text-base">🏟️</span>
+          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+            Sportsbook
+          </h2>
+          <a
+            href="/sports"
+            className="text-xs font-semibold text-[#f5a623] transition-opacity hover:opacity-80"
           >
-            Play Jackpot Slots →
-          </Link>
+            See All →
+          </a>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {SPORTS_EVENTS.map((e) => (
+            <div
+              key={e.id}
+              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-3"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-semibold uppercase tracking-wide text-[#8a8aa0]">
+                  {e.league}
+                </span>
+                {e.status === "live" ? (
+                  <span className="flex items-center gap-1 rounded bg-red-600/20 px-1.5 py-0.5 text-[9px] font-bold text-red-400">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
+                    LIVE {e.minute}
+                  </span>
+                ) : (
+                  <span className="rounded bg-[#2a2a3e] px-1.5 py-0.5 text-[9px] font-bold text-[#8a8aa0]">
+                    UPCOMING
+                  </span>
+                )}
+              </div>
+              <div className="mt-2 flex items-center justify-between text-sm font-bold text-white">
+                <span className="truncate">{e.team1}</span>
+                <span className="text-[#8a8aa0]">vs</span>
+                <span className="truncate">{e.team2}</span>
+              </div>
+              <div className="mt-2.5 grid grid-cols-3 gap-1.5">
+                {e.odds.map((o, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className="rounded-md border border-[#2a2a3e] bg-[#0d0d18] py-1.5 text-xs font-bold text-white transition-colors hover:border-[#f5a623] hover:text-[#f5a623]"
+                  >
+                    {o.toFixed(2)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Providers */}
-      <section className="mb-5">
-        <div className="mb-2.5 flex items-center gap-2">
-          <span
-            className="inline-block h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom,#f5a623,#e8920f)" }}
+      <section className="mt-5">
+        <div className="relative overflow-hidden rounded-xl border border-[#f5a623]/30 p-5 text-center" style={{ background: "linear-gradient(135deg, #1e1b4b, #4c1d95)" }}>
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 0%, rgba(245,166,35,0.25), transparent 70%)",
+            }}
           />
-          <h2 className="text-[15px] font-bold uppercase tracking-wide text-white">Game Providers</h2>
+          <div className="relative z-10 flex flex-col items-center gap-2">
+            <JackpotTicker />
+            <p className="text-xs text-white/70">
+              Play any slot game for a chance to win the progressive jackpot!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-5">
+        <div className="flex items-center gap-2.5 py-2">
+          <span
+            className="h-5 w-[3px] rounded-full"
+            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
+          />
+          <span className="text-base">🤝</span>
+          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+            Top Providers
+          </h2>
         </div>
         <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
           {PROVIDERS.map((p) => (
             <div
               key={p.name}
-              className="flex flex-col items-center gap-1 rounded-lg border border-[#1e1e2d] bg-[#1e1e2d] p-3 text-center hover:border-[#f5a623]/40 transition-colors"
+              className="flex flex-col items-center gap-1 rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-2 transition-colors hover:border-[#f5a623]/50"
             >
-              <span className="text-xl">{p.emoji}</span>
-              <span className="text-[9px] font-semibold text-[#b0b0c8]">{p.name}</span>
+              <span className="text-2xl">{p.emoji}</span>
+              <span className="text-center text-[8px] font-semibold leading-tight text-[#c8c8d6]">
+                {p.name}
+              </span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Responsible gaming */}
-      <div className="mt-6 rounded-lg border border-[#1e1e2d] bg-[#1a1a26] p-4 text-center text-[11px] text-[#666680]">
-        BJ88 Bangladesh is committed to responsible gaming. 18+ only. Play responsibly.
-        Gambling can be addictive. If you need help, contact support@bj88.com.bd
-      </div>
+      <section className="mt-6 border-t border-[#2a2a3e] pt-4">
+        <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-4 text-center">
+          <p className="text-xs text-[#8a8aa0]">
+            🛡️ {SITE.name} promotes responsible gaming. Only persons aged 18+ may
+            play. Gambling can be addictive — please play responsibly. If you need
+            help, contact support at {SITE.supportEmail}.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

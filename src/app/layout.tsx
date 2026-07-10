@@ -4,39 +4,38 @@ import { Providers } from "@/components/providers";
 import { SidebarProvider } from "@/components/layout/sidebar-provider";
 import { AppShell } from "@/components/layout/app-shell";
 import { getSessionUser } from "@/lib/auth";
-import { SITE } from "@/lib/bj88-catalog";
+import { SITE } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
-  title: {
-    default: `${SITE.name} Bangladesh — ${SITE.tagline}`,
-    template: `%s · ${SITE.name}`,
-  },
+  title: `${SITE.name} Bangladesh — ${SITE.tagline}`,
   description: SITE.description,
   keywords: [
+    "BJ88",
     "BJ88 Bangladesh",
+    "BJ88 BD",
     "online casino Bangladesh",
     "sports betting Bangladesh",
     "cricket betting BD",
     "slots Bangladesh",
-    "BPL betting",
-    "online gaming BD",
+    "live casino BD",
+    "fishing games Bangladesh",
+    "BJ88 login",
+    "BJ88 register",
+    "BDT betting",
+    "bKash casino",
+    "Nagad betting",
   ],
   openGraph: {
-    type: "website",
-    locale: "en_BD",
-    url: SITE.url,
-    siteName: SITE.name,
     title: `${SITE.name} Bangladesh — ${SITE.tagline}`,
     description: SITE.description,
+    locale: "en_BD",
+    siteName: `${SITE.name} Bangladesh`,
+    url: SITE.url,
   },
-  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
   themeColor: "#0a0a14",
-  width: "device-width",
-  initialScale: 1,
 };
 
 export default async function RootLayout({
@@ -44,12 +43,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getSessionUser();
+  const initialUser = await getSessionUser();
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="bg-[#0d0d18] text-white">
-        <Providers initialUser={user}>
+    <html lang="en" className="dark">
+      <body className="bg-[#0d0d18]">
+        <Providers initialUser={initialUser}>
           <SidebarProvider>
             <AppShell>{children}</AppShell>
           </SidebarProvider>

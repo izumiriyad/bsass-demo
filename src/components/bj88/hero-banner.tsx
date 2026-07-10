@@ -1,137 +1,140 @@
 "use client";
 
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Slide {
   eyebrow: string;
   title: string;
   cta: string;
-  gradient: [string, string];
-  emoji: string;
   href: string;
+  emoji: string;
+  gradient: [string, string];
 }
 
 const SLIDES: Slide[] = [
   {
-    eyebrow: "Welcome Bonus",
-    title: "100% Bonus up to ৳10,000",
+    eyebrow: "WELCOME BONUS",
+    title: "100% up to ৳10,000",
     cta: "Claim Now",
-    gradient: ["#6d28d9", "#be185d"],
+    href: "/promotions",
     emoji: "🎁",
-    href: "/promotions/welcome",
+    gradient: ["#6d28d9", "#be185d"],
   },
   {
-    eyebrow: "BPL T20 Cricket",
-    title: "Best Odds on Every Match",
+    eyebrow: "SLOTS TOURNAMENT",
+    title: "Win ৳1,000,000",
+    cta: "Join Tournament",
+    href: "/popular",
+    emoji: "🎰",
+    gradient: ["#2e1065", "#5b21b6"],
+  },
+  {
+    eyebrow: "CRICKET LIVE",
+    title: "Bet on BPL T20",
     cta: "Bet Now",
-    gradient: ["#0c4a6e", "#0369a1"],
+    href: "/cricket",
     emoji: "🏏",
-    href: "/cricket/bpl",
+    gradient: ["#065f46", "#0d9488"],
   },
   {
-    eyebrow: "Live Casino",
-    title: "Real Dealers · 24/7 Action",
-    cta: "Play Live",
-    gradient: ["#7c0000", "#991b1b"],
-    emoji: "🃏",
-    href: "/casino",
-  },
-  {
-    eyebrow: "Mega Jackpot Slots",
-    title: "Win the Progressive Jackpot",
-    cta: "Spin Now",
-    gradient: ["#713f12", "#d97706"],
-    emoji: "💎",
+    eyebrow: "JACKPOT",
+    title: "Mega Win Awaits",
+    cta: "Play Now",
     href: "/slots",
+    emoji: "💰",
+    gradient: ["#7c2d12", "#d97706"],
   },
 ];
 
 export function HeroBanner() {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
+  const count = SLIDES.length;
 
-  React.useEffect(() => {
-    const id = setInterval(() => setIndex((p) => (p + 1) % SLIDES.length), 5000);
-    return () => clearInterval(id);
-  }, []);
+  const go = useCallback(
+    (dir: number) => setIndex((i) => (i + dir + count) % count),
+    [count]
+  );
 
-  const go = (dir: number) => setIndex((p) => (p + dir + SLIDES.length) % SLIDES.length);
+  useEffect(() => {
+    const t = setInterval(() => setIndex((i) => (i + 1) % count), 5000);
+    return () => clearInterval(t);
+  }, [count]);
 
   return (
-    <div className="relative overflow-hidden rounded-xl">
-      <div className="relative h-[220px] sm:h-[300px] lg:h-[360px]">
-        {SLIDES.map((slide, i) => (
+    <div className="relative w-full overflow-hidden rounded-xl h-[220px] sm:h-[300px] lg:h-[360px]">
+      <div className="absolute inset-0">
+        {SLIDES.map((s, i) => (
           <Link
             key={i}
-            href={slide.href}
+            href={s.href}
             className={cn(
-              "absolute inset-0 transition-opacity duration-700",
+              "absolute inset-0 flex items-center transition-opacity duration-500",
               i === index ? "opacity-100" : "pointer-events-none opacity-0"
             )}
+            style={{
+              background: `linear-gradient(120deg, ${s.gradient[0]}, ${s.gradient[1]})`,
+            }}
           >
             <div
-              className="absolute inset-0"
-              style={{ backgroundImage: `linear-gradient(110deg, ${slide.gradient[0]} 0%, ${slide.gradient[1]} 100%)` }}
-            />
-            {/* Decorative pattern */}
-            <div
-              className="absolute inset-0 opacity-25"
+              className="pointer-events-none absolute inset-0"
               style={{
-                backgroundImage: `radial-gradient(ellipse 50% 60% at 80% 50%, rgba(255,255,255,0.2), transparent)`,
+                background:
+                  "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.18), transparent 60%)",
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent" />
-
-            <div className="relative z-10 flex h-full flex-col justify-center gap-2 p-6 md:p-10 lg:max-w-[60%]">
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/75">
-                {slide.eyebrow}
+            <div className="relative z-10 flex w-full items-center justify-between px-5 sm:px-8 lg:px-12">
+              <div className="max-w-[60%]">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-white/80 sm:text-xs">
+                  {s.eyebrow}
+                </span>
+                <h2 className="mt-1 text-xl font-black leading-tight text-white drop-shadow-md sm:text-3xl lg:text-4xl">
+                  {s.title}
+                </h2>
+                <span
+                  className="mt-3 inline-block rounded-full px-4 py-1.5 text-xs font-bold text-black sm:text-sm"
+                  style={{ background: "#f5a623" }}
+                >
+                  {s.cta} →
+                </span>
+              </div>
+              <span className="text-5xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.4)] sm:text-7xl lg:text-8xl">
+                {s.emoji}
               </span>
-              <h2 className="text-xl font-black text-white drop-shadow-lg sm:text-3xl lg:text-4xl">
-                {slide.title}
-              </h2>
-              <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-md bg-white px-4 py-2 text-sm font-bold text-black transition-transform hover:scale-105">
-                {slide.cta} →
-              </span>
-            </div>
-
-            {/* Large decorative emoji */}
-            <div className="absolute right-4 top-1/2 hidden -translate-y-1/2 text-[10rem] opacity-20 drop-shadow-2xl md:block lg:text-[14rem]">
-              {slide.emoji}
             </div>
           </Link>
         ))}
       </div>
 
-      {/* Arrows */}
       <button
+        type="button"
+        aria-label="Previous slide"
         onClick={() => go(-1)}
-        aria-label="Previous"
-        className="absolute left-2 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/70 transition-colors"
+        className="absolute left-2 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition-colors hover:bg-black/70"
       >
-        <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
+        <ChevronLeft className="h-5 w-5" />
       </button>
       <button
+        type="button"
+        aria-label="Next slide"
         onClick={() => go(1)}
-        aria-label="Next"
-        className="absolute right-2 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white hover:bg-black/70 transition-colors"
+        className="absolute right-2 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white transition-colors hover:bg-black/70"
       >
-        <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
+        <ChevronRight className="h-5 w-5" />
       </button>
 
-      {/* Dots */}
       <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 gap-1.5">
         {SLIDES.map((_, i) => (
           <button
             key={i}
+            type="button"
+            aria-label={`Go to slide ${i + 1}`}
             onClick={() => setIndex(i)}
             className={cn(
               "h-1.5 rounded-full transition-all",
-              i === index ? "w-6 bg-[#f5a623]" : "w-1.5 bg-white/40 hover:bg-white/60"
+              i === index ? "w-5 bg-[#f5a623]" : "w-1.5 bg-white/50"
             )}
           />
         ))}

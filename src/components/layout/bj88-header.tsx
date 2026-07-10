@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { Bell, Menu, User, Wallet } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { useAuth } from "@/components/providers/auth-provider";
+import { cn, formatBDT } from "@/lib/utils";
 
 export function BJ88Header({
   sidebarCollapsed,
@@ -12,88 +11,81 @@ export function BJ88Header({
   sidebarCollapsed: boolean;
   onToggleSidebar: () => void;
 }) {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
+  const leftOffset = sidebarCollapsed ? "50px" : "165px";
 
   return (
     <header
-      className="fixed top-0 right-0 z-30 flex items-center h-[52px] px-4 gap-3"
+      className={cn(
+        "fixed top-0 z-40 flex h-[52px] items-center gap-2 border-b border-[#2a2a3e] px-3 transition-[left] duration-200",
+        "right-0"
+      )}
       style={{
-        left: sidebarCollapsed ? "50px" : "165px",
+        left: leftOffset,
         background: "#0d0d18",
-        borderBottom: "1px solid #1e1e2d",
-        transition: "left 0.25s ease",
       }}
     >
-      {/* Collapse toggle */}
+      {/* Left: menu toggle */}
       <button
+        type="button"
         onClick={onToggleSidebar}
-        className="flex size-8 items-center justify-center rounded text-[#888899] hover:text-white transition-colors"
+        aria-label="Toggle sidebar"
+        className="flex h-8 w-8 items-center justify-center rounded-md text-[#c8c8d6] transition-colors hover:bg-[#2a2a3e] hover:text-white"
       >
-        <Menu className="size-5" />
+        <Menu className="h-5 w-5" />
       </button>
 
-      {/* Center logo */}
-      <div className="flex flex-1 items-center justify-center gap-3">
-        <Link href="/" className="flex items-center">
-          <span
-            className="text-[28px] font-black leading-none tracking-tighter"
-            style={{ color: "#f5a623", fontStyle: "italic" }}
-          >
-            bj
-          </span>
-          <span
-            className="text-[28px] font-black leading-none tracking-tighter"
-            style={{ color: "#fff", fontStyle: "italic" }}
-          >
-            88
-          </span>
-        </Link>
-        {/* Bangladesh flag + text */}
-        <div className="flex items-center gap-1 rounded-full border border-[#2a2a3e] px-2.5 py-1 text-xs text-[#888899]">
-          <span>🇧🇩</span>
-          <span className="font-medium">BD</span>
-        </div>
+      {/* Center: logo + BD badge */}
+      <div className="flex flex-1 items-center justify-center gap-2">
+        <a href="/" className="select-none">
+          <span className="text-xl font-black italic text-[#f5a623]">bj</span>
+          <span className="text-xl font-black italic text-white">88</span>
+        </a>
+        <span className="flex items-center gap-1 rounded-full border border-[#2a2a3e] bg-[#1e1e2d] px-1.5 py-0.5 text-[10px] font-semibold text-[#c8c8d6]">
+          🇧🇩 BD
+        </span>
       </div>
 
-      {/* Auth area */}
-      <div className="flex items-center gap-2 shrink-0">
+      {/* Right: auth state */}
+      <div className="flex items-center gap-2">
         {user ? (
-          <>
-            <Link
-              href="/dashboard/wallet"
-              className="hidden sm:flex items-center gap-1.5 rounded border border-[#2a2a3e] bg-[#1e1e2d] px-3 py-1.5 text-sm hover:border-[#f5a623]/40 transition-colors"
-            >
-              <Wallet className="size-3.5 text-[#f5a623]" />
-              <span className="font-bold text-[#f5a623]">৳{Math.round(user.balance * 110).toLocaleString()}</span>
-            </Link>
-            <button className="relative p-1.5 text-[#888899] hover:text-white">
-              <Bell className="size-5" />
-              <span className="absolute right-1 top-1 size-1.5 rounded-full bg-red-500" />
-            </button>
+          <div className="flex items-center gap-2">
+            <span className="flex items-center rounded-full border border-[#2a2a3e] bg-[#1e1e2d] px-2.5 py-1 text-xs font-semibold text-[#f5a623]">
+              {formatBDT(user.balance)}
+            </span>
             <button
-              onClick={() => signOut()}
-              className="flex items-center gap-1.5 rounded border border-[#2a2a3e] bg-[#1e1e2d] px-2.5 py-1.5 text-sm font-medium text-white hover:border-[#f5a623]/40 transition-colors"
+              type="button"
+              aria-label="Notifications"
+              className="relative flex h-8 w-8 items-center justify-center rounded-full text-[#c8c8d6] transition-colors hover:bg-[#2a2a3e] hover:text-white"
             >
-              <User className="size-4 text-[#888899]" />
-              {user.username}
+              <Bell className="h-4.5 w-4.5" />
+              <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-[#f5a623]" />
             </button>
-          </>
+            <a
+              href="/dashboard"
+              className="max-w-[120px] truncate rounded-full bg-[#1e1e2d] px-2.5 py-1 text-xs font-semibold text-white hover:bg-[#2a2a3e]"
+            >
+              {user.username}
+            </a>
+          </div>
         ) : (
-          <>
-            <Link
+          <div className="flex items-center gap-2">
+            <a
               href="/login"
-              className="rounded px-5 py-2 text-sm font-bold border border-[#f5a623] text-[#f5a623] hover:bg-[#f5a623] hover:text-black transition-colors"
+              className="rounded-full border border-[#f5a623] px-3.5 py-1 text-xs font-bold text-[#f5a623] transition-colors hover:bg-[#f5a623]/10"
             >
               Login
-            </Link>
-            <Link
+            </a>
+            <a
               href="/register"
-              className="rounded px-5 py-2 text-sm font-bold text-black transition-all hover:brightness-105"
-              style={{ background: "linear-gradient(135deg,#f5a623,#e8920f)" }}
+              className="rounded-full px-3.5 py-1 text-xs font-bold text-black transition-opacity hover:opacity-90"
+              style={{
+                background: "linear-gradient(135deg, #f5a623, #e8920f)",
+              }}
             >
               Sign up
-            </Link>
-          </>
+            </a>
+          </div>
         )}
       </div>
     </header>

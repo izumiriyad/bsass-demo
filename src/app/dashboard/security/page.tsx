@@ -1,188 +1,124 @@
-import { Shield, KeyRound, Smartphone, Monitor, TriangleAlert as AlertTriangle, LogOut } from "lucide-react";
-import { requireUser } from "@/lib/auth";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { PasswordChangeForm } from "@/components/ui/password-form";
-import { timeAgo } from "@/lib/utils";
-
-export const dynamic = "force-dynamic";
-
-const MOCK_DEVICES = [
-  {
-    id: "1",
-    name: "Chrome on Windows",
-    location: "Manila, Philippines",
-    lastActive: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-    current: true,
-  },
-  {
-    id: "2",
-    name: "Safari on iPhone",
-    location: "Manila, Philippines",
-    lastActive: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
-    current: false,
-  },
-];
-
-const MOCK_ACTIVITY = [
-  { action: "Password changed", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 14).toISOString(), ip: "192.168.1.xxx" },
-  { action: "Two-factor authentication enabled", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(), ip: "192.168.1.xxx" },
-  { action: "Email address verified", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 60).toISOString(), ip: "192.168.1.xxx" },
-  { action: "Account created", timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 90).toISOString(), ip: "192.168.1.xxx" },
-];
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/auth";
+import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 
 export default async function SecurityPage() {
-  const user = await requireUser();
+  const user = await getSessionUser();
+  if (!user) redirect("/login");
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Security & privacy</h1>
-        <p className="text-sm text-muted-foreground">
-          Manage your password, connected devices, and account security.
+    <DashboardShell active="security">
+      <div className="mb-4">
+        <h1 className="text-2xl font-black text-white">Security</h1>
+        <p className="mt-1 text-sm text-[#8a8aa0]">
+          Manage your password and account security settings.
         </p>
       </div>
 
-      {/* Security overview */}
-      <div className="grid gap-4 sm:grid-cols-3">
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4">
-          <div className="flex items-center gap-2">
-            <Shield className="size-5 text-emerald-400" />
-            <span className="text-sm font-medium">Password</span>
-          </div>
-          <p className="mt-2 text-lg font-bold">Strong</p>
-          <p className="text-xs text-muted-foreground">Last changed 14 days ago</p>
-        </div>
-        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4">
-          <div className="flex items-center gap-2">
-            <Smartphone className="size-5 text-emerald-400" />
-            <span className="text-sm font-medium">Two-factor auth</span>
-          </div>
-          <p className="mt-2 text-lg font-bold">Enabled</p>
-          <p className="text-xs text-muted-foreground">Via authenticator app</p>
-        </div>
-        <div className="rounded-xl border border-border/60 bg-card/50 p-4">
-          <div className="flex items-center gap-2">
-            <Monitor className="size-5 text-muted-foreground" />
-            <span className="text-sm font-medium">Active sessions</span>
-          </div>
-          <p className="mt-2 text-lg font-bold">2 devices</p>
-          <p className="text-xs text-muted-foreground">1 active now</p>
-        </div>
-      </div>
-
-      {/* Password change */}
-      <div className="rounded-xl border border-border/60 bg-card/50 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <KeyRound className="size-5" />
-          <h2 className="font-semibold">Change password</h2>
-        </div>
-        <PasswordChangeForm />
-      </div>
-
-      {/* Two-factor auth */}
-      <div className="rounded-xl border border-border/60 bg-card/50 p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Smartphone className="size-5" />
-            <div>
-              <h2 className="font-semibold">Two-factor authentication</h2>
-              <p className="text-sm text-muted-foreground">
-                Add an extra layer of security to your account.
-              </p>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5">
+          <h2 className="mb-4 text-sm font-bold text-white">Change Password</h2>
+          <form action="/api/wallet" method="post" className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="sec-current"
+                className="text-xs font-semibold text-[#c8c8d6]"
+              >
+                Current Password
+              </label>
+              <input
+                id="sec-current"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Enter current password"
+                className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+              />
             </div>
-          </div>
-          <Badge variant="new">Enabled</Badge>
-        </div>
-        <div className="mt-4 p-4 rounded-lg bg-muted/50 flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium">Authenticator app</p>
-            <p className="text-xs text-muted-foreground">Last used 2 hours ago</p>
-          </div>
-          <Button variant="outline" size="sm">Manage</Button>
-        </div>
-      </div>
 
-      {/* Active sessions */}
-      <div className="rounded-xl border border-border/60 bg-card/50 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Monitor className="size-5" />
-            <h2 className="font-semibold">Active sessions</h2>
-          </div>
-          <Button variant="outline" size="sm">
-            Log out all other sessions
-          </Button>
-        </div>
-        <div className="space-y-3">
-          {MOCK_DEVICES.map((device) => (
-            <div
-              key={device.id}
-              className="flex items-center justify-between rounded-lg border border-border/60 p-4"
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="sec-new"
+                className="text-xs font-semibold text-[#c8c8d6]"
+              >
+                New Password
+              </label>
+              <input
+                id="sec-new"
+                type="password"
+                autoComplete="new-password"
+                placeholder="At least 6 characters"
+                className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="sec-confirm"
+                className="text-xs font-semibold text-[#c8c8d6]"
+              >
+                Confirm New Password
+              </label>
+              <input
+                id="sec-confirm"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Re-enter new password"
+                className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="mt-1 w-fit rounded-lg px-5 py-2.5 text-sm font-bold text-black transition-opacity hover:opacity-90"
+              style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
             >
-              <div className="flex items-center gap-3">
-                <Monitor className="size-5 text-muted-foreground" />
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{device.name}</p>
-                    {device.current && (
-                      <Badge variant="new" className="text-xs">Current</Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {device.location} • Active {timeAgo(device.lastActive)}
-                  </p>
-                </div>
-              </div>
-              {!device.current && (
-                <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                  <LogOut className="size-4" />
-                  Revoke
-                </Button>
-              )}
-            </div>
-          ))}
+              Update Password
+            </button>
+          </form>
         </div>
-      </div>
 
-      {/* Security activity */}
-      <div className="rounded-xl border border-border/60 bg-card/50 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Shield className="size-5" />
-          <h2 className="font-semibold">Security activity</h2>
-        </div>
-        <div className="divide-y divide-border/60">
-          {MOCK_ACTIVITY.map((activity, i) => (
-            <div key={i} className="flex items-center justify-between py-3">
+        <div className="flex flex-col gap-4">
+          <div className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5">
+            <h2 className="mb-1 text-sm font-bold text-white">
+              Two-Factor Authentication
+            </h2>
+            <p className="mb-4 text-xs text-[#8a8aa0]">
+              Add an extra layer of security to your account with 2FA.
+            </p>
+            <div className="flex items-center justify-between rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3 py-3">
               <div>
-                <p className="text-sm font-medium">{activity.action}</p>
-                <p className="text-xs text-muted-foreground">
-                  {timeAgo(activity.timestamp)} • IP: {activity.ip}
-                </p>
+                <p className="text-sm font-semibold text-white">Authenticator App</p>
+                <p className="text-xs text-[#8a8aa0]">Disabled</p>
               </div>
+              <button
+                type="button"
+                className="relative h-6 w-11 rounded-full border border-[#2a2a3e] bg-[#2a2a3e] transition-colors"
+                aria-label="Toggle 2FA"
+              >
+                <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-[#8a8aa0] transition-transform" />
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* Danger zone */}
-      <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6">
-        <div className="flex items-center gap-2 mb-2">
-          <AlertTriangle className="size-5 text-destructive" />
-          <h2 className="font-semibold text-destructive">Danger zone</h2>
-        </div>
-        <p className="text-sm text-muted-foreground mb-4">
-          These actions are irreversible. Please proceed with caution.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="outline" className="text-destructive border-destructive/50 hover:bg-destructive/10">
-            Deactivate account
-          </Button>
-          <Button variant="outline" className="text-destructive border-destructive/50 hover:bg-destructive/10">
-            Delete all data
-          </Button>
+          <div className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5">
+            <h2 className="mb-3 text-sm font-bold text-white">Account Info</h2>
+            <dl className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-between text-sm">
+                <dt className="text-[#8a8aa0]">Account ID</dt>
+                <dd className="font-mono text-xs text-white">{user.id}</dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="text-[#8a8aa0]">Username</dt>
+                <dd className="font-semibold text-white">{user.username}</dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="text-[#8a8aa0]">Email</dt>
+                <dd className="font-semibold text-white">{user.email}</dd>
+              </div>
+            </dl>
+          </div>
         </div>
       </div>
-    </div>
+    </DashboardShell>
   );
 }

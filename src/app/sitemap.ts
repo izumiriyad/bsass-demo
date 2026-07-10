@@ -1,46 +1,47 @@
 import type { MetadataRoute } from "next";
-import { GAMES, PROMOTIONS, SITE } from "@/lib/catalog";
+import { SITE, ALL_GAMES, PROMOTIONS } from "@/lib/catalog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = SITE.url;
   const now = new Date();
 
-  const staticRoutes: MetadataRoute.Sitemap = [
-    "",
-    "/games",
-    "/live-casino",
-    "/sport",
-    "/slots",
-    "/promotions",
-    "/vip",
-    "/about",
-    "/support",
-    "/faq",
-    "/responsible-gaming",
-    "/terms",
-    "/privacy",
-    "/login",
-    "/register",
-  ].map((path) => ({
-    url: `${base}${path}`,
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: `${SITE.url}/`, lastModified: now, changeFrequency: "daily", priority: 1 },
+    { url: `${SITE.url}/games`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
+    { url: `${SITE.url}/popular`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/sports`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/cricket`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/slots`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/casino`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/table`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/fishing`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/lottery`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/arcade`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/crash`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/promotions`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${SITE.url}/vip`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${SITE.url}/login`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE.url}/register`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE.url}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE.url}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE.url}/support`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE.url}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE.url}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE.url}/responsible-gaming`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+  ];
+
+  const gamePages: MetadataRoute.Sitemap = ALL_GAMES.map((game) => ({
+    url: `${SITE.url}/games/${game.id}`,
     lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: path === "" ? 1 : 0.7,
+    changeFrequency: "weekly",
+    priority: 0.7,
   }));
 
-  const gameRoutes: MetadataRoute.Sitemap = GAMES.map((g) => ({
-    url: `${base}/games/${g.slug}`,
+  const promoPages: MetadataRoute.Sitemap = PROMOTIONS.map((promo) => ({
+    url: `${SITE.url}/promotions/${promo.id}`,
     lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    changeFrequency: "weekly",
+    priority: 0.7,
   }));
 
-  const promoRoutes: MetadataRoute.Sitemap = PROMOTIONS.map((p) => ({
-    url: `${base}/promotions/${p.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
-
-  return [...staticRoutes, ...gameRoutes, ...promoRoutes];
+  return [...staticPages, ...gamePages, ...promoPages];
 }

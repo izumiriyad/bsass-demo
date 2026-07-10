@@ -1,120 +1,127 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ShieldAlert } from "lucide-react";
-import { PageHero } from "@/components/site/page-hero";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { SITE } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  title: "Responsible Gaming",
-  description:
-    "Tools and resources to help you play responsibly, including deposit limits, session reminders, and self-exclusion.",
+  title: `Responsible Gaming — ${SITE.name} Bangladesh`,
+  description: `${SITE.name} is committed to responsible gaming. Learn about self-exclusion, deposit limits and where to get help in Bangladesh.`,
 };
 
-const TOOLS = [
-  { icon: "💸", title: "Deposit limits", text: "Set daily, weekly, or monthly caps on how much you can deposit." },
-  { icon: "⏰", title: "Reality checks", text: "Periodic reminders showing how long you've been playing and your net spend." },
-  { icon: "🚪", title: "Self-exclusion", text: "Take a break for a set period — from 24 hours to permanently." },
-  { icon: "🕐", title: "Time-outs", text: "Pause your account temporarily to cool off when you need to." },
+const TIPS = [
+  { emoji: "⏱️", title: "Set Time Limits", body: "Decide how long you'll play before you start, and stick to it. Take regular breaks." },
+  { emoji: "💰", title: "Set a Budget", body: "Only gamble with money you can afford to lose. Never chase losses or borrow to play." },
+  { emoji: "🚫", title: "Don't Chase Losses", body: "Losing is part of the game. Trying to win back losses usually leads to bigger losses." },
+  { emoji: "📵", title: "Avoid Emotional Play", body: "Don't gamble when you're upset, stressed or under the influence of alcohol." },
 ];
 
-const TIPS = [
-  "Only play with money you can afford to lose.",
-  "Set a budget and stick to it.",
-  "Take regular breaks.",
-  "Never chase your losses.",
-  "Treat gaming as entertainment, not a way to make money.",
+const TOOLS = [
+  { emoji: "📉", title: "Deposit Limits", body: "Set daily, weekly or monthly caps on how much you can deposit." },
+  { emoji: "⏸️", title: "Self-Exclusion", body: "Temporarily or permanently block access to your account." },
+  { emoji: "🕐", title: "Reality Checks", body: "Get reminders of how long you've been playing and how much you've spent." },
+  { emoji: "📊", title: "Transaction History", body: "Review all your deposits, withdrawals and bets anytime in your dashboard." },
+];
+
+const HELPLINES = [
+  { name: "BJ88 Self-Exclusion", detail: SITE.supportEmail, note: "Email us to self-exclude" },
+  { name: "Bangladesh Helpline", detail: "999 (National)", note: "National emergency helpline" },
+  { name: "GamCare", detail: "www.gamcare.org.uk", note: "International support & advice" },
 ];
 
 export default function ResponsibleGamingPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Play safe"
-        title={
-          <span className="flex items-center gap-3">
-            <ShieldAlert className="size-9 text-amber-400" /> Responsible Gaming
-          </span>
-        }
-        description="Gaming should always be fun. We provide tools and resources to help you stay in control."
-      />
-
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {TOOLS.map((t) => (
-            <Card key={t.title} className="bg-card/50">
-              <CardContent className="p-5">
-                <div className="text-3xl">{t.icon}</div>
-                <h3 className="mt-2 font-semibold">{t.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{t.text}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
-          <div className="rounded-xl border border-border/60 bg-card/50 p-6">
-            <h2 className="text-xl font-bold">Tips for staying in control</h2>
-            <ul className="mt-4 space-y-2">
-              {TIPS.map((t) => (
-                <li key={t} className="flex gap-2 text-sm text-muted-foreground">
-                  <span className="text-emerald-400">✓</span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <Button asChild variant="outline" className="mt-5">
-              <Link href="/dashboard/profile">Manage your limits</Link>
-            </Button>
-          </div>
-
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-6">
-            <h2 className="text-xl font-bold">Need help?</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              If gambling is affecting your life or someone you know, free and
-              confidential help is available. You are not alone.
-            </p>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li>
-                <a
-                  href="https://www.begambleaware.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  BeGambleAware.org →
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.gamcare.org.uk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  GamCare →
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.gamblersanonymous.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  Gamblers Anonymous →
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-8 rounded-xl border border-border/60 bg-card/40 p-5 text-sm text-muted-foreground">
-          Playverse is a fictional, demonstration platform for educational
-          purposes and uses play credits only. No real-money gambling takes
-          place. Must be 18+.
+    <div className="mx-auto max-w-4xl px-3 py-4">
+      <section
+        className="relative overflow-hidden rounded-2xl border border-[#f5a623]/30 p-6 text-center"
+        style={{ background: "linear-gradient(135deg, #064e3b, #065f46)" }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 0%, rgba(34,197,94,0.25), transparent 70%)",
+          }}
+        />
+        <div className="relative z-10 flex flex-col items-center gap-2">
+          <span className="text-4xl">🛡️</span>
+          <h1 className="text-2xl font-black text-white sm:text-3xl">
+            Responsible Gaming
+          </h1>
+          <p className="max-w-xl text-sm text-white/80">
+            {SITE.name} is committed to providing a safe and enjoyable
+            environment. Gambling should be fun entertainment — never a way to
+            make money or escape problems.
+          </p>
         </div>
       </section>
-    </>
+
+      <section className="mt-5">
+        <h2 className="mb-3 text-lg font-black text-white">Play Smart</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {TIPS.map((tip) => (
+            <div
+              key={tip.title}
+              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
+            >
+              <span className="text-2xl">{tip.emoji}</span>
+              <h3 className="mt-2 text-sm font-bold text-white">{tip.title}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-[#c8c8d6]">
+                {tip.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-5">
+        <h2 className="mb-3 text-lg font-black text-white">Tools We Offer</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {TOOLS.map((tool) => (
+            <div
+              key={tool.title}
+              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4 text-center"
+            >
+              <span className="text-2xl">{tool.emoji}</span>
+              <h3 className="mt-2 text-sm font-bold text-white">{tool.title}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-[#c8c8d6]">
+                {tool.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-5">
+        <h2 className="mb-3 text-lg font-black text-white">Get Help</h2>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {HELPLINES.map((line) => (
+            <div
+              key={line.name}
+              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
+            >
+              <h3 className="text-sm font-bold text-white">{line.name}</h3>
+              <p className="mt-1 text-sm font-semibold text-[#f5a623]">
+                {line.detail}
+              </p>
+              <p className="text-xs text-[#8a8aa0]">{line.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5 text-center">
+        <p className="text-sm text-[#c8c8d6]">
+          If you feel you may have a gambling problem, please contact our
+          support team to self-exclude or set limits — we&apos;re here to help,
+          judgement-free.
+        </p>
+        <Link
+          href="/support"
+          className="mt-3 inline-block rounded-full px-5 py-2 text-sm font-bold text-black transition-opacity hover:opacity-90"
+          style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
+        >
+          Contact Support
+        </Link>
+      </section>
+    </div>
   );
 }

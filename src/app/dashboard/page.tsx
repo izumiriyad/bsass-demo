@@ -1,190 +1,81 @@
-import Link from "next/link";
-import { ArrowDownToLine, ArrowUpFromLine, Gift, TrendingUp, Activity, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { TransactionRow } from "@/components/dashboard/transaction-row";
-import { getTransactions, requireUser } from "@/lib/auth";
-import { formatBDT } from "@/lib/bj88-utils";
-import { MiniChart } from "@/components/ui/charts";
-import type { Transaction } from "@/lib/types";
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/auth";
+import { formatBDT, timeAgo } from "@/lib/utils";
+import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 
-export const dynamic = "force-dynamic";
+const STATS = [
+  { id: "balance", label: "Current Balance", emoji: "💰", valueKey: "balance" },
+  { id: "deposited", label: "Total Deposited", emoji: "📥", value: 25000 },
+  { id: "withdrawn", label: "Total Withdrawn", emoji: "📤", value: 8000 },
+  { id: "bonuses", label: "Bonuses Earned", emoji: "🎁", value: 500 },
+] as const;
 
-const VIP_TIERS = [
-  { name: "Bronze", points: 0 },
-  { name: "Silver", points: 10000 },
-  { name: "Gold", points: 50000 },
-  { name: "Platinum", points: 200000 },
-  { name: "Diamond", points: 1000000 },
+const ACTIVITY = [
+  { id: "a1", text: "Deposited ৳1,000 via bKash", date: new Date(Date.now() - 1000 * 60 * 35) },
+  { id: "a2", text: "Played Gates of Olympus", date: new Date(Date.now() - 1000 * 60 * 60 * 3) },
+  { id: "a3", text: "Won ৳2,450 in Crazy Time", date: new Date(Date.now() - 1000 * 60 * 60 * 8) },
+  { id: "a4", text: "Claimed daily login bonus", date: new Date(Date.now() - 1000 * 60 * 60 * 24) },
+  { id: "a5", text: "Withdrew ৳3,000 via Nagad", date: new Date(Date.now() - 1000 * 60 * 60 * 48) },
 ];
 
-function vipProgress(points: number) {
-  const current = [...VIP_TIERS].reverse().find((t) => points >= t.points)!;
-  const next = VIP_TIERS.find((t) => t.points > points);
-  const pct = next
-    ? Math.min(100, Math.round(((points - current.points) / (next.points - current.points)) * 100))
-    : 100;
-  return { current, next, pct };
-}
-
 export default async function DashboardPage() {
-  const user = await requireUser();
-  const transactions = await getTransactions(user.id);
-  const recent = transactions.slice(0, 6);
+  const user = await getSessionUser();
+  if (!user) redirect("/login");
 
-  const sum = (type: Transaction["type"]) =>
-    transactions.filter((t) => t.type === type).reduce((s, t) => s + t.amount, 0);
+  const balanceBDT = user.balance * 110;
 
-  const deposits = sum("deposit");
-  const withdrawals = sum("withdraw");
-  const bonuses = sum("bonus") + sum("win");
-
-  const vip = vipProgress(user.vipPoints);
+  const statValues: Record<string, number> = {
+    balance: balanceBDT,
+    deposited: 25000,
+    withdrawn: 8000,
+    bonuses: 500,
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Welcome back, {user.username} 👋
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Here&apos;s a snapshot of your account.
-          </p>
-        </div>
-        <Button asChild variant="gradient">
-          <Link href="/dashboard/wallet">
-            <ArrowDownToLine className="size-4" /> Add funds
-          </Link>
-        </Button>
+    <DashboardShell active="overview">
+      <div className="mb-4">
+        <h1 className="text-2xl font-black text-white">Overview</h1>
+        <p className="mt-1 text-sm text-[#8a8aa0]">
+          Welcome back, {user.username}. Here&apos;s your account summary.
+        </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Current balance" value={formatBDT(user.balance * 110)} accent chart={[10, 25, 15, 30, 25, 40, 35]} />
-        <StatCard label="Total deposited" value={formatBDT(deposits * 110)} icon={<TrendingUp className="size-4 text-emerald-400" />} chart={[20, 35, 25, 45, 40, 50, 55]} />
-        <StatCard label="Total withdrawn" value={formatBDT(withdrawals * 110)} icon={<ArrowUpFromLine className="size-4 text-rose-400" />} chart={[15, 20, 10, 25, 20, 30, 25]} />
-        <StatCard label="Bonuses & wins" value={formatBDT(bonuses * 110)} icon={<Gift className="size-4 text-amber-400" />} chart={[5, 15, 10, 20, 18, 25, 30]} />
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <div className="rounded-xl border border-border/60 bg-card/50">
-            <div className="flex items-center justify-between border-b border-border/60 p-4">
-              <h2 className="font-semibold">Recent activity</h2>
-              <Button asChild variant="ghost" size="sm">
-                <Link href="/dashboard/history">View all</Link>
-              </Button>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {STATS.map((stat) => (
+          <div
+            key={stat.id}
+            className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-2xl">{stat.emoji}</span>
             </div>
-            {recent.length === 0 ? (
-              <div className="p-8 text-center text-sm text-muted-foreground">
-                No transactions yet. Make your first deposit to get started!
-              </div>
-            ) : (
-              <div className="divide-y divide-border/60">
-                {recent.map((t) => (
-                  <TransactionRow key={t.id} tx={t} />
-                ))}
-              </div>
-            )}
+            <p className="mt-2 text-xs text-[#8a8aa0]">{stat.label}</p>
+            <p className="mt-0.5 text-lg font-black text-[#f5a623]">
+              {formatBDT(statValues[stat.id])}
+            </p>
           </div>
-        </div>
-
-        <div className="rounded-xl border border-border/60 bg-card/50 p-5">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">👑</span>
-            <h2 className="font-semibold">VIP status</h2>
-          </div>
-          <div className="mt-3 flex items-baseline justify-between">
-            <span className="text-lg font-bold">{vip.current.name}</span>
-            <Badge variant="gold">{user.vipPoints.toLocaleString()} pts</Badge>
-          </div>
-          <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-600"
-              style={{ width: `${vip.pct}%` }}
-            />
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {vip.next
-              ? `${(vip.next.points - user.vipPoints).toLocaleString()} pts to ${vip.next.name}`
-              : "You've reached the highest tier! 🎉"}
-          </p>
-          <Button asChild variant="outline" size="sm" className="mt-4 w-full">
-            <Link href="/vip">View VIP benefits</Link>
-          </Button>
-        </div>
+        ))}
       </div>
 
-      <div>
-        <h2 className="mb-3 font-semibold">Quick actions</h2>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <QuickAction href="/dashboard/wallet" title="Deposit" desc="Add funds instantly" emoji="💸" />
-          <QuickAction href="/games" title="Play games" desc="Browse the library" emoji="🎮" />
-          <QuickAction href="/promotions" title="Promotions" desc="Claim bonuses" emoji="🎁" />
-        </div>
+      <div className="mt-5 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4">
+        <h2 className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
+          <span className="h-4 w-1 rounded-full bg-[#f5a623]" />
+          Recent Activity
+        </h2>
+        <ul className="flex flex-col gap-2">
+          {ACTIVITY.map((item) => (
+            <li
+              key={item.id}
+              className="flex items-center justify-between gap-3 rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3 py-2.5"
+            >
+              <span className="text-sm text-[#c8c8d6]">{item.text}</span>
+              <span className="shrink-0 text-xs text-[#8a8aa0]">
+                {timeAgo(item.date)}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  icon,
-  accent,
-  chart,
-}: {
-  label: string;
-  value: string;
-  icon?: React.ReactNode;
-  accent?: boolean;
-  chart?: number[];
-}) {
-  return (
-    <div className="rounded-xl border border-border/60 bg-card/50 p-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          {icon} {label}
-        </div>
-        {chart && <Activity className="size-3.5 text-primary/50" />}
-      </div>
-      <div className="flex items-end justify-between">
-        <div
-          className={`mt-1 text-xl font-bold ${
-            accent ? "text-gold-gradient" : ""
-          }`}
-        >
-          {value}
-        </div>
-        {chart && (
-          <MiniChart data={chart} type="line" width={60} height={24} className="opacity-60" />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function QuickAction({
-  href,
-  title,
-  desc,
-  emoji,
-}: {
-  href: string;
-  title: string;
-  desc: string;
-  emoji: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-3 rounded-xl border border-border/60 bg-card/50 p-4 transition-colors hover:border-primary/50"
-    >
-      <span className="text-2xl">{emoji}</span>
-      <div>
-        <div className="font-semibold">{title}</div>
-        <div className="text-xs text-muted-foreground">{desc}</div>
-      </div>
-    </Link>
+    </DashboardShell>
   );
 }
