@@ -1,5 +1,5 @@
 [build]
-  command = "rm -rf .next tsconfig.tsbuildinfo node_modules/.cache && npx next build"
+  command = "rm -rf .next .next/cache tsconfig.tsbuildinfo node_modules/.cache && npx next build"
   publish = ".next"
 
 [[plugins]]
