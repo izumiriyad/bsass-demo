@@ -1,24 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticate } from "@/lib/auth";
+import { createSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
-  const email = String(body.email ?? "");
+  const username = String(body.username ?? body.email ?? "").trim();
   const password = String(body.password ?? "");
 
-  if (!email || !password) {
+  if (!username || !password) {
     return NextResponse.json(
-      { error: "Email and password are required." },
+      { error: "Username and password are required." },
       { status: 400 },
     );
   }
 
-  const user = await authenticate(email, password);
+  const user = await createSession(username, password);
   if (!user) {
     return NextResponse.json(
-      { error: "Invalid email or password." },
+      { error: "Invalid credentials." },
       { status: 401 },
     );
   }
