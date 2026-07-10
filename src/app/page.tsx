@@ -1,267 +1,286 @@
+import Link from "next/link";
+import { GameCard, FeatureCard, GameGrid } from "@/components/bj88/game-card";
+import { HeroBanner } from "@/components/bj88/hero-banner";
+import { WinnersTicker, JackpotTicker } from "@/components/bj88/tickers";
+import { CategoryTabs } from "@/components/bj88/category-tabs";
+import { GameSection } from "@/components/bj88/game-section";
 import {
+  SITE,
   POPULAR_GAMES,
   SLOTS_GAMES,
   CASINO_GAMES,
-  FISHING_GAMES,
-  ARCADE_GAMES,
   CRASH_GAMES,
+  COCKFIGHTING_GAMES,
   FEATURED_GAMES,
-  TOURNAMENTS,
   SPORTS_EVENTS,
   PROMOTIONS,
   PROVIDERS,
-  SITE,
 } from "@/lib/catalog";
-import { WinnersTicker, JackpotTicker } from "@/components/bj88/tickers";
-import { HeroBanner } from "@/components/bj88/hero-banner";
-import { CategoryTabs } from "@/components/bj88/category-tabs";
-import { GameSection } from "@/components/bj88/game-section";
-import { FeatureCard } from "@/components/bj88/game-card";
 
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-6xl px-3 py-3">
+    <div className="space-y-5 px-3 py-4 sm:px-5 sm:py-6">
       <WinnersTicker />
-      <div className="mt-3">
-        <HeroBanner />
-      </div>
+
+      <HeroBanner />
+
       <CategoryTabs />
 
       <GameSection
         title="Popular"
-        icon="⭐"
+        emoji="⭐"
         games={POPULAR_GAMES}
         href="/popular"
         columns={10}
       />
 
-      <section className="mt-5">
-        <div className="flex items-center gap-2.5 py-2">
-          <span
-            className="h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-          />
-          <span className="text-base">✨</span>
-          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="section-title-bar" />
+          <span className="text-lg">🔥</span>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
             Featured Games
           </h2>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_GAMES.map((g) => (
-            <FeatureCard key={g.id} game={g} badge="FEATURED" />
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {FEATURED_GAMES.map((game) => (
+            <FeatureCard key={game.id} game={game} />
           ))}
         </div>
       </section>
 
       <GameSection
         title="Slots"
-        icon="🎰"
+        emoji="🎰"
         games={SLOTS_GAMES}
         href="/slots"
         columns={10}
       />
 
       <GameSection
-        title="Live Casino"
-        icon="🃏"
+        title="Casino"
+        emoji="🃏"
         games={CASINO_GAMES}
         href="/casino"
-        columns={8}
+        columns={10}
       />
 
-      <section className="mt-5">
-        <div className="flex items-center gap-2.5 py-2">
-          <span
-            className="h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-          />
-          <span className="text-base">🏆</span>
-          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="section-title-bar" />
+          <span className="text-lg">🏆</span>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
             Tournaments
           </h2>
+          <Link
+            href="/vip"
+            className="ml-auto text-xs font-semibold text-[#22c55e] transition hover:text-[#00a86d]"
+          >
+            See All →
+          </Link>
         </div>
-        <div className="grid gap-2 sm:grid-cols-3">
-          {TOURNAMENTS.map((g) => (
-            <FeatureCard key={g.id} game={g} badge={g.provider} />
-          ))}
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <FeatureCard
+            game={{
+              id: "tournament-slots",
+              title: "Slots Championship",
+              provider: "৳5,000,000 Prize Pool",
+              category: "popular",
+              gradient: ["#2e1065", "#5b21b6"],
+              emoji: "🎰",
+              isFeatured: true,
+            }}
+          />
+          <FeatureCard
+            game={{
+              id: "tournament-cricket",
+              title: "Cricket Betting Cup",
+              provider: "৳2,000,000 Prize Pool",
+              category: "popular",
+              gradient: ["#0c4a6e", "#1d4ed8"],
+              emoji: "🏏",
+              isFeatured: true,
+            }}
+          />
         </div>
       </section>
-
-      <GameSection
-        title="Fishing"
-        icon="🎣"
-        games={FISHING_GAMES}
-        href="/fishing"
-        columns={8}
-      />
-
-      <GameSection
-        title="Arcade"
-        icon="🕹️"
-        games={ARCADE_GAMES}
-        href="/arcade"
-        columns={8}
-      />
 
       <GameSection
         title="Crash"
-        icon="🚀"
+        emoji="🚀"
         games={CRASH_GAMES}
         href="/crash"
-        columns={7}
+        columns={10}
       />
 
-      <section className="mt-5">
-        <div className="flex items-center gap-2.5 py-2">
-          <span
-            className="h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-          />
-          <span className="text-base">🎁</span>
-          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+      <GameSection
+        title="Cockfighting"
+        emoji="🐓"
+        games={COCKFIGHTING_GAMES}
+        href="/cockfighting"
+        columns={10}
+      />
+
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="section-title-bar" />
+          <span className="text-lg">🎁</span>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
             Promotions
           </h2>
+          <Link
+            href="/promotions"
+            className="ml-auto text-xs font-semibold text-[#22c55e] transition hover:text-[#00a86d]"
+          >
+            See All →
+          </Link>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {PROMOTIONS.map((p) => (
-            <div
-              key={p.id}
-              className="relative overflow-hidden rounded-xl p-4"
-              style={{
-                background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})`,
-              }}
-            >
-              <div
-                className="pointer-events-none absolute inset-0"
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {PROMOTIONS.map((promo) => {
+            const [c1, c2] = promo.gradient;
+            return (
+              <Link
+                key={promo.id}
+                href="/promotions"
+                className="relative overflow-hidden rounded-xl p-4 transition hover:opacity-95"
                 style={{
-                  background:
-                    "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.18), transparent 60%)",
+                  background: `linear-gradient(135deg, ${c1}, ${c2})`,
                 }}
-              />
-              <div className="relative z-10">
-                <span className="text-3xl">{p.emoji}</span>
-                <span className="mt-2 block rounded-full bg-black/30 px-2 py-0.5 text-[9px] font-bold text-white w-fit">
-                  {p.badge}
-                </span>
-                <h3 className="mt-1.5 text-sm font-bold text-white">{p.title}</h3>
-                <p className="text-[11px] text-white/80">{p.subtitle}</p>
-              </div>
-            </div>
-          ))}
+              >
+                <div
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15), transparent 55%)",
+                  }}
+                />
+                <div className="relative flex items-start justify-between">
+                  <div className="space-y-1">
+                    <span className="inline-block rounded bg-black/25 px-2 py-0.5 text-[10px] font-bold text-white">
+                      {promo.badge}
+                    </span>
+                    <h3 className="text-base font-bold text-white">
+                      {promo.title}
+                    </h3>
+                    <p className="text-xs text-white/80">{promo.subtitle}</p>
+                  </div>
+                  <span
+                    className="text-3xl"
+                    style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4))" }}
+                  >
+                    {promo.emoji}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
-      <section className="mt-5">
-        <div className="flex items-center gap-2.5 py-2">
-          <span
-            className="h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-          />
-          <span className="text-base">🏟️</span>
-          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="section-title-bar" />
+          <span className="text-lg">⚽</span>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
             Sportsbook
           </h2>
-          <a
+          <Link
             href="/sports"
-            className="text-xs font-semibold text-[#f5a623] transition-opacity hover:opacity-80"
+            className="ml-auto text-xs font-semibold text-[#22c55e] transition hover:text-[#00a86d]"
           >
             See All →
-          </a>
+          </Link>
         </div>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {SPORTS_EVENTS.map((e) => (
+        <div className="space-y-2">
+          {SPORTS_EVENTS.map((event) => (
             <div
-              key={e.id}
-              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-3"
+              key={event.id}
+              className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-[#8a8aa0]">
-                  {e.league}
+              <div className="mb-2 flex items-center gap-2">
+                <span className="text-xs font-semibold text-[#9ca3af]">
+                  {event.league}
                 </span>
-                {e.status === "live" ? (
-                  <span className="flex items-center gap-1 rounded bg-red-600/20 px-1.5 py-0.5 text-[9px] font-bold text-red-400">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
-                    LIVE {e.minute}
+                {event.status === "live" ? (
+                  <span className="flex items-center gap-1 rounded bg-[#ef4444]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#ef4444]">
+                    <span className="live-dot live-dot-pulse" style={{ background: "#ef4444" }} />
+                    LIVE {event.minute}
                   </span>
                 ) : (
-                  <span className="rounded bg-[#2a2a3e] px-1.5 py-0.5 text-[9px] font-bold text-[#8a8aa0]">
+                  <span className="rounded bg-[#2a2c30] px-1.5 py-0.5 text-[10px] font-bold text-[#9ca3af]">
                     UPCOMING
                   </span>
                 )}
               </div>
-              <div className="mt-2 flex items-center justify-between text-sm font-bold text-white">
-                <span className="truncate">{e.team1}</span>
-                <span className="text-[#8a8aa0]">vs</span>
-                <span className="truncate">{e.team2}</span>
-              </div>
-              <div className="mt-2.5 grid grid-cols-3 gap-1.5">
-                {e.odds.map((o, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className="rounded-md border border-[#2a2a3e] bg-[#0d0d18] py-1.5 text-xs font-bold text-white transition-colors hover:border-[#f5a623] hover:text-[#f5a623]"
-                  >
-                    {o.toFixed(2)}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-[#f0f0f0]">
+                    {event.team1}
+                  </p>
+                  <p className="truncate text-sm font-semibold text-[#f0f0f0]">
+                    {event.team2}
+                  </p>
+                </div>
+                <div className="flex shrink-0 gap-1.5">
+                  {event.odds.map((odd, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className="rounded-md border border-[#2a2c30] bg-[#242628] px-3 py-2 text-center transition hover:border-[#008d5b] hover:bg-[#008d5b]/10"
+                    >
+                      <p className="text-[9px] uppercase text-[#6b7280]">
+                        {i === 0 ? "1" : i === 1 ? "X" : "2"}
+                      </p>
+                      <p className="text-sm font-bold text-[#f0f0f0]">
+                        {odd.toFixed(2)}
+                      </p>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-5">
-        <div className="relative overflow-hidden rounded-xl border border-[#f5a623]/30 p-5 text-center" style={{ background: "linear-gradient(135deg, #1e1b4b, #4c1d95)" }}>
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at 50% 0%, rgba(245,166,35,0.25), transparent 70%)",
-            }}
-          />
-          <div className="relative z-10 flex flex-col items-center gap-2">
-            <JackpotTicker />
-            <p className="text-xs text-white/70">
-              Play any slot game for a chance to win the progressive jackpot!
-            </p>
-          </div>
-        </div>
-      </section>
+      <JackpotTicker />
 
-      <section className="mt-5">
-        <div className="flex items-center gap-2.5 py-2">
-          <span
-            className="h-5 w-[3px] rounded-full"
-            style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-          />
-          <span className="text-base">🤝</span>
-          <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
-            Top Providers
+      <section className="space-y-3">
+        <div className="flex items-center gap-2">
+          <span className="section-title-bar" />
+          <span className="text-lg">🏢</span>
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
+            Providers
           </h2>
         </div>
-        <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-          {PROVIDERS.map((p) => (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {PROVIDERS.map((provider) => (
             <div
-              key={p.name}
-              className="flex flex-col items-center gap-1 rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-2 transition-colors hover:border-[#f5a623]/50"
+              key={provider.name}
+              className="flex items-center gap-2 rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 transition hover:border-[#383b3f]"
             >
-              <span className="text-2xl">{p.emoji}</span>
-              <span className="text-center text-[8px] font-semibold leading-tight text-[#c8c8d6]">
-                {p.name}
+              <span className="text-2xl">{provider.emoji}</span>
+              <span className="truncate text-xs font-bold text-[#f0f0f0]">
+                {provider.name}
               </span>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-6 border-t border-[#2a2a3e] pt-4">
-        <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-4 text-center">
-          <p className="text-xs text-[#8a8aa0]">
-            🛡️ {SITE.name} promotes responsible gaming. Only persons aged 18+ may
-            play. Gambling can be addictive — please play responsibly. If you need
-            help, contact support at {SITE.supportEmail}.
-          </p>
-        </div>
+      <section className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-4 text-center">
+        <p className="text-xs text-[#9ca3af]">
+          <span className="font-bold text-[#ffdf19]">{SITE.shortName}</span> is
+          committed to responsible gaming. Play responsibly. 18+ only. If you
+          need help, contact{" "}
+          <a
+            href={`mailto:${SITE.supportEmail}`}
+            className="text-[#22c55e] underline hover:text-[#00a86d]"
+          >
+            {SITE.supportEmail}
+          </a>
+          .
+        </p>
       </section>
     </div>
   );

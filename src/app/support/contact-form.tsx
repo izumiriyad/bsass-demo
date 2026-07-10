@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export function ContactForm() {
@@ -10,88 +10,77 @@ export function ContactForm() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) {
-      toast.error("Please fill in your name, email and message.");
+    if (!name || !email || !message) {
+      toast.error("Please fill in all required fields");
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    toast.success("Message sent! Our team will reply within 24 hours.");
-    setName("");
-    setEmail("");
-    setSubject("");
-    setMessage("");
-    setLoading(false);
-  }
+    try {
+      await new Promise((r) => setTimeout(r, 500));
+      toast.success("Message sent! We'll get back to you soon.");
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to send message");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="c-name" className="text-xs font-semibold text-[#c8c8d6]">
-            Name
-          </label>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-[#9ca3af]">Name *</label>
           <input
-            id="c-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Your name"
-            className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+            className="w-full rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
           />
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor="c-email" className="text-xs font-semibold text-[#c8c8d6]">
-            Email
-          </label>
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-[#9ca3af]">Email *</label>
           <input
-            id="c-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+            className="w-full rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
           />
         </div>
       </div>
-
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="c-subject" className="text-xs font-semibold text-[#c8c8d6]">
-          Subject
-        </label>
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-[#9ca3af]">Subject</label>
         <input
-          id="c-subject"
           type="text"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
           placeholder="What is this about?"
-          className="rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+          className="w-full rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
         />
       </div>
-
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="c-message" className="text-xs font-semibold text-[#c8c8d6]">
-          Message
-        </label>
+      <div>
+        <label className="mb-1.5 block text-sm font-medium text-[#9ca3af]">Message *</label>
         <textarea
-          id="c-message"
-          rows={5}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Tell us how we can help…"
-          className="resize-none rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3.5 py-2.5 text-sm text-white outline-none transition-colors placeholder:text-[#5a5a72] focus:border-[#f5a623]"
+          placeholder="How can we help you?"
+          rows={5}
+          className="w-full resize-none rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
         />
       </div>
-
       <button
         type="submit"
         disabled={loading}
-        className="w-fit rounded-lg px-5 py-2.5 text-sm font-bold text-black transition-opacity hover:opacity-90 disabled:opacity-60"
-        style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
+        className="btn-primary w-full py-2.5 text-sm font-semibold disabled:opacity-50"
       >
-        {loading ? "Sending…" : "Send Message"}
+        {loading ? "Sending..." : "Send Message"}
       </button>
     </form>
   );

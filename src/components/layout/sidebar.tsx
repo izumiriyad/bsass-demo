@@ -1,340 +1,186 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, PanelLeftClose } from "lucide-react";
+import { GAME_CATEGORIES } from "@/lib/catalog";
+import { useSidebar } from "./sidebar-provider";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
-  id: string;
-  label: string;
-  emoji: string;
-  href: string;
-  circle: [string, string];
-  sub?: { label: string; href: string }[];
-}
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    id: "home",
-    label: "Home",
-    emoji: "🏠",
-    href: "/",
-    circle: ["#f5a623", "#e8920f"],
-    sub: [
-      { label: "All Games", href: "/games" },
-      { label: "Promotions", href: "/promotions" },
-    ],
-  },
-  {
-    id: "popular",
-    label: "POPULAR",
-    emoji: "⭐",
-    href: "/popular",
-    circle: ["#f5a623", "#e8920f"],
-    sub: [
-      { label: "Hot Games", href: "/popular?filter=hot" },
-      { label: "New Games", href: "/popular?filter=new" },
-    ],
-  },
-  {
-    id: "sports",
-    label: "SPORTS",
-    emoji: "⚽",
-    href: "/sports",
-    circle: ["#22c55e", "#15803d"],
-    sub: [
-      { label: "Football", href: "/sports?tab=football" },
-      { label: "Kabaddi", href: "/sports?tab=kabaddi" },
-      { label: "Esports", href: "/sports?tab=esports" },
-    ],
-  },
-  {
-    id: "cricket",
-    label: "CRICKET",
-    emoji: "🏏",
-    href: "/cricket",
-    circle: ["#3b82f6", "#1d4ed8"],
-    sub: [
-      { label: "BPL T20", href: "/cricket?league=bpl" },
-      { label: "IPL", href: "/cricket?league=ipl" },
-      { label: "ICC World Cup", href: "/cricket?league=icc" },
-    ],
-  },
-  {
-    id: "slots",
-    label: "SLOTS",
-    emoji: "🎰",
-    href: "/slots",
-    circle: ["#a855f7", "#7c3aed"],
-    sub: [
-      { label: "Pragmatic Play", href: "/slots?provider=pragmatic" },
-      { label: "JILI", href: "/slots?provider=jili" },
-      { label: "PG Soft", href: "/slots?provider=pgsoft" },
-    ],
-  },
-  {
-    id: "casino",
-    label: "CASINO",
-    emoji: "🃏",
-    href: "/casino",
-    circle: ["#ef4444", "#b91c1c"],
-    sub: [
-      { label: "Evolution", href: "/casino?provider=evolution" },
-      { label: "AE Sexy", href: "/casino?provider=sexy" },
-      { label: "Ezugi", href: "/casino?provider=ezugi" },
-    ],
-  },
-  {
-    id: "table",
-    label: "TABLE",
-    emoji: "🎲",
-    href: "/table",
-    circle: ["#06b6d4", "#0891b2"],
-    sub: [
-      { label: "Poker", href: "/table?type=poker" },
-      { label: "Blackjack", href: "/table?type=blackjack" },
-      { label: "Baccarat", href: "/table?type=baccarat" },
-      { label: "Sic Bo", href: "/table?type=sicbo" },
-    ],
-  },
-  {
-    id: "fishing",
-    label: "FISHING",
-    emoji: "🎣",
-    href: "/fishing",
-    circle: ["#14b8a6", "#0d9488"],
-    sub: [
-      { label: "JILI", href: "/fishing?provider=jili" },
-      { label: "Fa Chai", href: "/fishing?provider=fachai" },
-      { label: "JDB", href: "/fishing?provider=jdb" },
-    ],
-  },
-  {
-    id: "lottery",
-    label: "LOTTERY",
-    emoji: "🎟️",
-    href: "/lottery",
-    circle: ["#f97316", "#ea580c"],
-    sub: [
-      { label: "Keno", href: "/lottery?type=keno" },
-      { label: "Bingo", href: "/lottery?type=bingo" },
-      { label: "Power Ball", href: "/lottery?type=power" },
-    ],
-  },
-  {
-    id: "arcade",
-    label: "ARCADE",
-    emoji: "🕹️",
-    href: "/arcade",
-    circle: ["#8b5cf6", "#6d28d9"],
-    sub: [
-      { label: "Spribe", href: "/arcade?provider=spribe" },
-      { label: "Plinko", href: "/arcade?game=plinko" },
-      { label: "Mines", href: "/arcade?game=mines" },
-    ],
-  },
-  {
-    id: "crash",
-    label: "CRASH",
-    emoji: "🚀",
-    href: "/crash",
-    circle: ["#ec4899", "#be185d"],
-    sub: [
-      { label: "Aviator", href: "/crash?game=aviator" },
-      { label: "JetX", href: "/crash?game=jetx" },
-      { label: "High Flyer", href: "/crash?game=high-flyer" },
-    ],
-  },
+const BOTTOM_ITEMS = [
+  { id: "promotions", label: "PROMOTIONS", emoji: "🎁", href: "/promotions" },
+  { id: "vip", label: "VIP", emoji: "👑", href: "/vip" },
 ];
 
-const BOTTOM_ITEMS: NavItem[] = [
-  {
-    id: "promotions",
-    label: "Promotions",
-    emoji: "🎁",
-    href: "/promotions",
-    circle: ["#f5a623", "#e8920f"],
-  },
-  {
-    id: "vip",
-    label: "VIP CLUB",
-    emoji: "👑",
-    href: "/vip",
-    circle: ["#f5a623", "#d97706"],
-  },
-  {
-    id: "leaderboard",
-    label: "Leaderboard",
-    emoji: "🏆",
-    href: "/dashboard/leaderboard",
-    circle: ["#f97316", "#ea580c"],
-  },
-  {
-    id: "download",
-    label: "Download",
-    emoji: "📥",
-    href: "/dashboard/download",
-    circle: ["#3b82f6", "#1d4ed8"],
-  },
-  {
-    id: "affiliate",
-    label: "Affiliate",
-    emoji: "🤝",
-    href: "/dashboard/affiliate",
-    circle: ["#22c55e", "#15803d"],
-  },
-  {
-    id: "ambassador",
-    label: "Ambassador",
-    emoji: "⭐",
-    href: "/dashboard/ambassador",
-    circle: ["#f5a623", "#e8920f"],
-  },
-  {
-    id: "referral",
-    label: "Referral Program",
-    emoji: "👥",
-    href: "/dashboard/referral",
-    circle: ["#8b5cf6", "#6d28d9"],
-  },
-  {
-    id: "help",
-    label: "Help Page",
-    emoji: "❓",
-    href: "/support",
-    circle: ["#06b6d4", "#0891b2"],
-  },
-];
+const SUBMENU_MAP: Record<string, { label: string; href: string }[]> = {
+  sports: [
+    { label: "Live Betting", href: "/sports?filter=live" },
+    { label: "Football", href: "/sports?filter=football" },
+    { label: "Cricket", href: "/sports?filter=cricket" },
+    { label: "Kabaddi", href: "/sports?filter=kabaddi" },
+    { label: "Esports", href: "/sports?filter=esports" },
+  ],
+  cricket: [
+    { label: "BPL T20", href: "/cricket?filter=bpl" },
+    { label: "IPL", href: "/cricket?filter=ipl" },
+    { label: "ICC World Cup", href: "/cricket?filter=worldcup" },
+    { label: "Asia Cup", href: "/cricket?filter=asiacup" },
+  ],
+  slots: [
+    { label: "JILI", href: "/slots?provider=jili" },
+    { label: "Pragmatic Play", href: "/slots?provider=pragmatic" },
+    { label: "PG Soft", href: "/slots?provider=pgsoft" },
+    { label: "JDB", href: "/slots?provider=jdb" },
+  ],
+  casino: [
+    { label: "Live Casino", href: "/casino?filter=live" },
+    { label: "Baccarat", href: "/casino?filter=baccarat" },
+    { label: "Roulette", href: "/casino?filter=roulette" },
+    { label: "Blackjack", href: "/casino?filter=blackjack" },
+  ],
+};
 
-function isPathActive(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/";
-  // Strip query string for active matching on category roots.
-  const clean = href.split("?")[0];
-  return pathname === clean || pathname.startsWith(clean + "/");
-}
+export function Sidebar() {
+  const pathname = usePathname();
+  const { collapsed, toggle, mobileOpen, setMobileOpen } = useSidebar();
+  const [expanded, setExpanded] = useState<string | null>(null);
 
-function CircleIcon({ emoji, gradient }: { emoji: string; gradient: [string, string] }) {
-  return (
-    <span
-      className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs"
-      style={{
-        background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
-      }}
-    >
-      {emoji}
-    </span>
-  );
-}
+  const handleExpand = (id: string) => {
+    if (collapsed) return;
+    setExpanded(expanded === id ? null : id);
+  };
 
-function NavRow({
-  item,
-  pathname,
-}: {
-  item: NavItem;
-  pathname: string;
-}) {
-  const active = isPathActive(pathname, item.href);
-  const [expanded, setExpanded] = useState(active);
-  const hasSub = Boolean(item.sub?.length);
+  const isActive = (href: string) => {
+    const base = href.split("?")[0];
+    return pathname === base || pathname.startsWith(base + "/");
+  };
 
-  return (
-    <div>
-      <div
-        className={cn(
-          "group flex items-center gap-2 rounded-md px-2 py-1.5 text-[13px] font-medium transition-colors",
-          active ? "text-[#f5a623]" : "text-[#c8c8d6] hover:text-white"
-        )}
-      >
-        <CircleIcon emoji={item.emoji} gradient={item.circle} />
-        <a href={item.href} className="flex-1 truncate leading-tight">
-          {item.label}
-        </a>
-        {hasSub && (
-          <button
-            type="button"
-            aria-label={expanded ? "Collapse" : "Expand"}
-            onClick={() => setExpanded((e) => !e)}
-            className="shrink-0 rounded p-0.5 text-[#8a8aa0] hover:text-white"
-          >
-            <ChevronDown
-              className={cn(
-                "h-3.5 w-3.5 transition-transform duration-200",
-                expanded && "rotate-180"
-              )}
-            />
-          </button>
-        )}
-      </div>
-
-      {hasSub && expanded && (
-        <div className="ml-8 mt-0.5 flex flex-col gap-0.5 border-l border-[#2a2a3e] pl-2.5 animate-fade-in">
-          {item.sub!.map((sub) => {
-            const subActive =
-              pathname === sub.href.split("?")[0] && sub.href.includes("?");
-            return (
-              <a
-                key={sub.href}
-                href={sub.href}
-                className={cn(
-                  "truncate rounded px-2 py-1 text-[11.5px] leading-tight transition-colors",
-                  subActive
-                    ? "text-[#f5a623]"
-                    : "text-[#8a8aa0] hover:text-white"
-                )}
-              >
-                {sub.label}
-              </a>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export function Sidebar({ onToggle }: { onToggle: () => void }) {
-  const pathname = usePathname() ?? "/";
-
-  return (
-    <aside
-      className="fixed left-0 top-0 z-30 flex h-[100dvh] w-[165px] flex-col border-r border-[#2a2a3e]"
-      style={{ background: "#1e1e2d" }}
-    >
-      {/* Top: SLOTS active pill + collapse button */}
-      <div className="flex items-center gap-1 border-b border-[#2a2a3e] px-2 py-2.5">
-        <span
-          className="flex flex-1 items-center justify-center rounded-full px-3 py-1.5 text-xs font-bold tracking-wide text-black"
-          style={{
-            background: "linear-gradient(135deg, #f5a623, #e8920f)",
-          }}
-        >
-          🎰 SLOTS
-        </span>
+  const sidebarContent = (
+    <div className="flex h-full flex-col bg-[#1b1c1e]">
+      <div className="flex h-[72px] items-center gap-2 border-b border-[#2a2c30] px-4">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-xl font-bold text-[#008d5b]">BSL</span>
+          {!collapsed && <span className="text-xl font-bold text-[#ffdf19]">Gaming</span>}
+        </Link>
         <button
-          type="button"
-          onClick={onToggle}
-          aria-label="Collapse sidebar"
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[#8a8aa0] transition-colors hover:bg-[#2a2a3e] hover:text-white"
+          onClick={toggle}
+          aria-label="Toggle sidebar"
+          className="ml-auto hidden h-7 w-7 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0] lg:flex"
         >
-          <PanelLeftClose className="h-4 w-4" />
+          {collapsed ? "›" : "‹"}
+        </button>
+        <button
+          onClick={() => setMobileOpen(false)}
+          aria-label="Close sidebar"
+          className="ml-auto flex h-7 w-7 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0] lg:hidden"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
         </button>
       </div>
 
-      {/* Primary nav */}
-      <nav className="no-scrollbar flex-1 overflow-y-auto px-1.5 py-2">
-        {NAV_ITEMS.map((item) => (
-          <NavRow key={item.id} item={item} pathname={pathname} />
-        ))}
+      <nav className="no-scrollbar flex-1 overflow-y-auto py-2">
+        {GAME_CATEGORIES.map((cat) => {
+          const href = `/${cat.id}`;
+          const active = isActive(href);
+          const hasSubmenu = !!SUBMENU_MAP[cat.id];
+          const isExpanded = expanded === cat.id;
+          const showLiveDot = cat.id === "sports";
 
-        {/* Divider */}
-        <div className="my-2 h-px bg-[#2a2a3e]" />
-
-        {/* Bottom section */}
-        {BOTTOM_ITEMS.map((item) => (
-          <NavRow key={item.id} item={item} pathname={pathname} />
-        ))}
+          return (
+            <div key={cat.id}>
+              <div
+                className={cn(
+                  "flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition cursor-pointer",
+                  collapsed && "justify-center px-0",
+                  active
+                    ? "bg-[#ffdf19]/[0.08] text-[#ffdf19]"
+                    : "text-[#9ca3af] hover:bg-[#242628] hover:text-[#f0f0f0]"
+                )}
+                onClick={() => {
+                  if (hasSubmenu && !collapsed) {
+                    handleExpand(cat.id);
+                  }
+                }}
+              >
+                <Link href={href} className="flex items-center gap-3" onClick={(e) => {
+                  if (hasSubmenu && !collapsed) e.preventDefault();
+                }}>
+                  <span className="text-lg" style={{ color: cat.color }}>{cat.emoji}</span>
+                  {!collapsed && <span className="flex-1">{cat.label}</span>}
+                  {!collapsed && showLiveDot && <span className="live-dot live-dot-pulse" />}
+                </Link>
+                {!collapsed && hasSubmenu && (
+                  <span
+                    className={cn("text-xs text-[#6b7280] transition-transform", isExpanded && "rotate-180")}
+                  >
+                    ▾
+                  </span>
+                )}
+              </div>
+              {!collapsed && hasSubmenu && isExpanded && (
+                <div className="ml-11 border-l border-[#2a2c30] py-1">
+                  {SUBMENU_MAP[cat.id].map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className="block px-4 py-1.5 text-xs text-[#6b7280] transition hover:text-[#f0f0f0]"
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </nav>
-    </aside>
+
+      <div className="border-t border-[#2a2c30] py-2">
+        {BOTTOM_ITEMS.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition",
+                collapsed && "justify-center px-0",
+                active
+                  ? "bg-[#ffdf19]/[0.08] text-[#ffdf19]"
+                  : "text-[#9ca3af] hover:bg-[#242628] hover:text-[#f0f0f0]"
+              )}
+            >
+              <span className="text-lg">{item.emoji}</span>
+              {!collapsed && <span>{item.label}</span>}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-40 h-full border-r border-[#2a2c30] transition-all duration-300",
+          collapsed ? "w-[63px]" : "w-[260px]"
+        )}
+        style={{ display: mobileOpen ? "block" : undefined }}
+      >
+        <div className="hidden h-full lg:block">{sidebarContent}</div>
+      </aside>
+
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="absolute left-0 top-0 h-full w-[260px] animate-slide-in-left">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

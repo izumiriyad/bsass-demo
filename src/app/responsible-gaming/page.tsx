@@ -1,127 +1,122 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Shield, TriangleAlert as AlertTriangle, Phone, Clock, Ban } from "lucide-react";
 import { SITE } from "@/lib/catalog";
 
 export const metadata: Metadata = {
-  title: `Responsible Gaming — ${SITE.name} Bangladesh`,
-  description: `${SITE.name} is committed to responsible gaming. Learn about self-exclusion, deposit limits and where to get help in Bangladesh.`,
+  title: "Responsible Gaming",
+  description: `Responsible gaming at ${SITE.name}`,
 };
 
-const TIPS = [
-  { emoji: "⏱️", title: "Set Time Limits", body: "Decide how long you'll play before you start, and stick to it. Take regular breaks." },
-  { emoji: "💰", title: "Set a Budget", body: "Only gamble with money you can afford to lose. Never chase losses or borrow to play." },
-  { emoji: "🚫", title: "Don't Chase Losses", body: "Losing is part of the game. Trying to win back losses usually leads to bigger losses." },
-  { emoji: "📵", title: "Avoid Emotional Play", body: "Don't gamble when you're upset, stressed or under the influence of alcohol." },
+const PRINCIPLES = [
+  {
+    icon: Shield,
+    title: "Play for Fun, Not Profit",
+    desc: "Treat gaming as entertainment, not as a way to make money. Only play with money you can afford to lose.",
+  },
+  {
+    icon: Clock,
+    title: "Set Time Limits",
+    desc: "Decide how much time you want to spend gaming and stick to it. Take regular breaks.",
+  },
+  {
+    icon: Ban,
+    title: "Set Deposit Limits",
+    desc: "Set daily, weekly, or monthly deposit limits in your account settings to control your spending.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Know the Signs",
+    desc: "If gaming is affecting your finances, relationships, or mental health, it may be time to seek help.",
+  },
 ];
 
-const TOOLS = [
-  { emoji: "📉", title: "Deposit Limits", body: "Set daily, weekly or monthly caps on how much you can deposit." },
-  { emoji: "⏸️", title: "Self-Exclusion", body: "Temporarily or permanently block access to your account." },
-  { emoji: "🕐", title: "Reality Checks", body: "Get reminders of how long you've been playing and how much you've spent." },
-  { emoji: "📊", title: "Transaction History", body: "Review all your deposits, withdrawals and bets anytime in your dashboard." },
-];
-
-const HELPLINES = [
-  { name: "BJ88 Self-Exclusion", detail: SITE.supportEmail, note: "Email us to self-exclude" },
-  { name: "Bangladesh Helpline", detail: "999 (National)", note: "National emergency helpline" },
-  { name: "GamCare", detail: "www.gamcare.org.uk", note: "International support & advice" },
+const SIGNS = [
+  "Spending more money than you can afford",
+  "Chasing losses by betting more",
+  "Neglecting work, family, or personal responsibilities",
+  "Borrowing money to gamble",
+  "Feeling anxious or irritable when not gambling",
+  "Lying about your gambling habits",
 ];
 
 export default function ResponsibleGamingPage() {
   return (
-    <div className="mx-auto max-w-4xl px-3 py-4">
-      <section
-        className="relative overflow-hidden rounded-2xl border border-[#f5a623]/30 p-6 text-center"
-        style={{ background: "linear-gradient(135deg, #064e3b, #065f46)" }}
-      >
+    <div className="space-y-6 px-3 py-4 sm:px-5 sm:py-6">
+      <div className="relative overflow-hidden rounded-2xl border border-[#008d5b]/30 bg-gradient-to-br from-[#1b1c1e] via-[#242628] to-[#1b1c1e] p-8 text-center">
         <div
           className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 0%, rgba(34,197,94,0.25), transparent 70%)",
-          }}
+          style={{ background: "radial-gradient(circle at 50% 0%, rgba(0,141,91,0.15), transparent 60%)" }}
         />
-        <div className="relative z-10 flex flex-col items-center gap-2">
-          <span className="text-4xl">🛡️</span>
-          <h1 className="text-2xl font-black text-white sm:text-3xl">
-            Responsible Gaming
-          </h1>
-          <p className="max-w-xl text-sm text-white/80">
-            {SITE.name} is committed to providing a safe and enjoyable
-            environment. Gambling should be fun entertainment — never a way to
-            make money or escape problems.
+        <div className="relative">
+          <Shield className="mx-auto h-12 w-12 text-[#00a86d]" />
+          <h1 className="mt-4 text-2xl font-bold text-[#f0f0f0] sm:text-3xl">Responsible Gaming</h1>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-[#9ca3af]">
+            At {SITE.name}, we are committed to promoting responsible gaming. Gaming should be fun and entertaining — never a financial burden.
           </p>
         </div>
-      </section>
+      </div>
 
-      <section className="mt-5">
-        <h2 className="mb-3 text-lg font-black text-white">Play Smart</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {TIPS.map((tip) => (
-            <div
-              key={tip.title}
-              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
-            >
-              <span className="text-2xl">{tip.emoji}</span>
-              <h3 className="mt-2 text-sm font-bold text-white">{tip.title}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-[#c8c8d6]">
-                {tip.body}
-              </p>
-            </div>
-          ))}
+      <section>
+        <h2 className="mb-4 text-lg font-bold text-[#f0f0f0]">Our Principles</h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {PRINCIPLES.map((p) => {
+            const Icon = p.icon;
+            return (
+              <div key={p.title} className="rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-5">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#008d5b]/15">
+                  <Icon className="h-5 w-5 text-[#00a86d]" />
+                </div>
+                <h3 className="mt-3 text-sm font-bold text-[#f0f0f0]">{p.title}</h3>
+                <p className="mt-1 text-xs text-[#9ca3af]">{p.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      <section className="mt-5">
-        <h2 className="mb-3 text-lg font-black text-white">Tools We Offer</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {TOOLS.map((tool) => (
-            <div
-              key={tool.title}
-              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4 text-center"
-            >
-              <span className="text-2xl">{tool.emoji}</span>
-              <h3 className="mt-2 text-sm font-bold text-white">{tool.title}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-[#c8c8d6]">
-                {tool.body}
-              </p>
-            </div>
-          ))}
+      <section className="rounded-xl border border-[#ffdf19]/30 bg-[#1b1c1e] p-5">
+        <div className="mb-3 flex items-center gap-2">
+          <AlertTriangle className="h-5 w-5 text-[#ffdf19]" />
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#ffdf19]">Signs of Problem Gaming</h2>
         </div>
+        <ul className="space-y-2">
+          {SIGNS.map((sign) => (
+            <li key={sign} className="flex items-start gap-2 text-sm text-[#9ca3af]">
+              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ffdf19]" />
+              <span>{sign}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <section className="mt-5">
-        <h2 className="mb-3 text-lg font-black text-white">Get Help</h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {HELPLINES.map((line) => (
-            <div
-              key={line.name}
-              className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
-            >
-              <h3 className="text-sm font-bold text-white">{line.name}</h3>
-              <p className="mt-1 text-sm font-semibold text-[#f5a623]">
-                {line.detail}
-              </p>
-              <p className="text-xs text-[#8a8aa0]">{line.note}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-6 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5 text-center">
-        <p className="text-sm text-[#c8c8d6]">
-          If you feel you may have a gambling problem, please contact our
-          support team to self-exclude or set limits — we&apos;re here to help,
-          judgement-free.
+      <section className="rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-5">
+        <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-[#f0f0f0]">Self-Exclusion</h2>
+        <p className="text-sm leading-relaxed text-[#9ca3af]">
+          If you feel you need a break from gaming, you can self-exclude from {SITE.name} for a period of your choice. During self-exclusion, you will not be able to access your account or make deposits. Contact our support team to request self-exclusion.
         </p>
-        <Link
-          href="/support"
-          className="mt-3 inline-block rounded-full px-5 py-2 text-sm font-bold text-black transition-opacity hover:opacity-90"
-          style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
-        >
+      </section>
+
+      <section className="rounded-xl border border-[#008d5b]/30 bg-[#008d5b]/10 p-5">
+        <div className="flex items-center gap-2">
+          <Phone className="h-5 w-5 text-[#00a86d]" />
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#00a86d]">Get Help</h2>
+        </div>
+        <p className="mt-2 text-sm text-[#9ca3af]">
+          If you or someone you know is struggling with problem gaming, reach out for help. Contact our support team at{" "}
+          <a href={`mailto:${SITE.supportEmail}`} className="font-semibold text-[#00a86d] underline hover:text-[#00a86d]/80">
+            {SITE.supportEmail}
+          </a>{" "}
+          or visit the support page for more options.
+        </p>
+        <Link href="/support" className="btn-primary mt-4 inline-block px-6 py-2.5 text-sm font-semibold">
           Contact Support
         </Link>
       </section>
+
+      <p className="text-center text-xs text-[#6b7280]">
+        {SITE.name} is committed to responsible gaming. 18+ only. Play responsibly.
+      </p>
     </div>
   );
 }

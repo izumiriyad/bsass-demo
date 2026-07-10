@@ -1,3 +1,6 @@
+import { WinnersTicker } from "./tickers";
+import { CategoryTabs } from "./category-tabs";
+import { GameSection } from "./game-section";
 import {
   POPULAR_GAMES,
   SLOTS_GAMES,
@@ -7,13 +10,19 @@ import {
   LOTTERY_GAMES,
   CRASH_GAMES,
   TABLE_GAMES,
-  SPORTS_GAMES_LIST,
+  COCKFIGHTING_GAMES,
   CRICKET_GAMES_LIST,
-  type BJ88Game,
+  SPORTS_GAMES_LIST,
+  type BSLGame,
 } from "@/lib/catalog";
-import { WinnersTicker } from "./tickers";
-import { CategoryTabs } from "./category-tabs";
-import { GameSection } from "./game-section";
+
+interface CategoryPageProps {
+  title: string;
+  emoji: string;
+  games: BSLGame[];
+  description?: string;
+  active: string;
+}
 
 export function CategoryPage({
   title,
@@ -21,30 +30,27 @@ export function CategoryPage({
   games,
   description,
   active,
-}: {
-  title: string;
-  emoji: string;
-  games: BJ88Game[];
-  description: string;
-  active: string;
-}) {
+}: CategoryPageProps) {
   return (
-    <div className="mx-auto max-w-6xl px-3 py-3">
+    <div className="space-y-5 px-3 py-4 sm:px-5 sm:py-6">
       <WinnersTicker />
       <CategoryTabs active={active} />
-      <div className="mt-4 flex items-center gap-3">
-        <span className="text-4xl">{emoji}</span>
-        <div>
-          <h1 className="text-2xl font-black text-white">{title}</h1>
-          <p className="text-sm text-[#8a8aa0]">{description}</p>
-        </div>
+      <div className="flex items-center gap-2">
+        <span className="section-title-bar" />
+        <span className="text-xl">{emoji}</span>
+        <h1 className="text-lg font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-2xl">
+          {title}
+        </h1>
       </div>
+      {description && (
+        <p className="max-w-2xl text-sm text-[#9ca3af]">{description}</p>
+      )}
       <GameSection
         title={title}
-        icon={emoji}
+        emoji={emoji}
         games={games}
         href={`/${active}`}
-        columns={7}
+        columns={10}
       />
     </div>
   );
@@ -53,95 +59,11 @@ export function CategoryPage({
 export function PopularPage() {
   return (
     <CategoryPage
-      title="Popular Games"
+      title="Popular"
       emoji="⭐"
       games={POPULAR_GAMES}
-      description="The hottest games on BJ88 right now."
       active="popular"
-    />
-  );
-}
-
-export function SlotsPage() {
-  return (
-    <CategoryPage
-      title="Slots"
-      emoji="🎰"
-      games={SLOTS_GAMES}
-      description="Spin and win on the best slot games."
-      active="slots"
-    />
-  );
-}
-
-export function CasinoPage() {
-  return (
-    <CategoryPage
-      title="Live Casino"
-      emoji="🃏"
-      games={CASINO_GAMES}
-      description="Real dealers, real thrill — live casino action."
-      active="casino"
-    />
-  );
-}
-
-export function FishingPage() {
-  return (
-    <CategoryPage
-      title="Fishing Games"
-      emoji="🎣"
-      games={FISHING_GAMES}
-      description="Aim, shoot, and catch the biggest rewards."
-      active="fishing"
-    />
-  );
-}
-
-export function ArcadePage() {
-  return (
-    <CategoryPage
-      title="Arcade Games"
-      emoji="🕹️"
-      games={ARCADE_GAMES}
-      description="Quick-play arcade games with instant wins."
-      active="arcade"
-    />
-  );
-}
-
-export function LotteryPage() {
-  return (
-    <CategoryPage
-      title="Lottery"
-      emoji="🎟️"
-      games={LOTTERY_GAMES}
-      description="Keno, Bingo, and more — test your luck."
-      active="lottery"
-    />
-  );
-}
-
-export function CrashPage() {
-  return (
-    <CategoryPage
-      title="Crash Games"
-      emoji="🚀"
-      games={CRASH_GAMES}
-      description="Cash out before it crashes!"
-      active="crash"
-    />
-  );
-}
-
-export function TablePage() {
-  return (
-    <CategoryPage
-      title="Table Games"
-      emoji="🎲"
-      games={TABLE_GAMES}
-      description="Poker, Blackjack, Baccarat and more."
-      active="table"
+      description="The most-played games on BSL Gaming right now. Trending slots, live casino, and crash games loved by players across Bangladesh."
     />
   );
 }
@@ -152,8 +74,8 @@ export function SportsPage() {
       title="Sports"
       emoji="⚽"
       games={SPORTS_GAMES_LIST}
-      description="Bet on football, cricket, kabaddi and more."
       active="sports"
+      description="Bet on football, cricket, basketball, tennis, kabaddi, esports and more with the best odds in Bangladesh."
     />
   );
 }
@@ -164,8 +86,104 @@ export function CricketPage() {
       title="Cricket"
       emoji="🏏"
       games={CRICKET_GAMES_LIST}
-      description="BPL, IPL, ICC World Cup — all the cricket action."
       active="cricket"
+      description="Live cricket betting on BPL T20, IPL, ICC World Cup, Asia Cup and more. Best cricket odds in Bangladesh."
+    />
+  );
+}
+
+export function CockfightingPage() {
+  return (
+    <CategoryPage
+      title="Cockfighting"
+      emoji="🐓"
+      games={COCKFIGHTING_GAMES}
+      active="cockfighting"
+      description="Live SV388 cockfighting derbies and arenas. Watch and bet on live cockfights 24/7."
+    />
+  );
+}
+
+export function SlotsPage() {
+  return (
+    <CategoryPage
+      title="Slots"
+      emoji="🎰"
+      games={SLOTS_GAMES}
+      active="slots"
+      description="Premium slots from Pragmatic Play, JILI, PG Soft and more. Spin to win big jackpots."
+    />
+  );
+}
+
+export function CasinoPage() {
+  return (
+    <CategoryPage
+      title="Casino"
+      emoji="🃏"
+      games={CASINO_GAMES}
+      active="casino"
+      description="Live casino with real dealers. Baccarat, roulette, blackjack, game shows and more from Evolution and AE Sexy."
+    />
+  );
+}
+
+export function FishingPage() {
+  return (
+    <CategoryPage
+      title="Fishing"
+      emoji="🎣"
+      games={FISHING_GAMES}
+      active="fishing"
+      description="Arcade fishing games from JILI, Fa Chai, JDB and Spade Gaming. Aim, shoot, and reel in big wins."
+    />
+  );
+}
+
+export function ArcadePage() {
+  return (
+    <CategoryPage
+      title="Arcade"
+      emoji="🕹️"
+      games={ARCADE_GAMES}
+      active="arcade"
+      description="Instant-win arcade games from Spribe: Plinko, Mines, Dice, Tower, Crash and more."
+    />
+  );
+}
+
+export function LotteryPage() {
+  return (
+    <CategoryPage
+      title="Lottery"
+      emoji="🎟️"
+      games={LOTTERY_GAMES}
+      active="lottery"
+      description="Keno, Bingo, Lucky 5 and Power Ball. Try your luck with daily lottery draws."
+    />
+  );
+}
+
+export function CrashPage() {
+  return (
+    <CategoryPage
+      title="Crash"
+      emoji="🚀"
+      games={CRASH_GAMES}
+      active="crash"
+      description="Aviator, JetX, High Flyer, Spaceman and more crash games. Cash out before it crashes!"
+    />
+  );
+}
+
+export function TablePage() {
+  return (
+    <CategoryPage
+      title="Table"
+      emoji="🎲"
+      games={TABLE_GAMES}
+      active="table"
+      description="Classic table games: Texas Hold'em, Blackjack, Baccarat, Sic Bo, Dragon Tiger and more."
     />
   );
 }

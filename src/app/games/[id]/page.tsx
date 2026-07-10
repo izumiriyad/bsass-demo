@@ -1,171 +1,117 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { ALL_GAMES, SITE, type BJ88Game } from "@/lib/catalog";
+import { notFound } from "next/navigation";
+import { ALL_GAMES, GAME_CATEGORIES } from "@/lib/catalog";
 import { getSessionUser } from "@/lib/auth";
-import { GameLauncher as BJ88GameLauncher } from "@/components/bj88/game-launcher";
-import { WinnersTicker } from "@/components/bj88/tickers";
 import { GameGrid } from "@/components/bj88/game-card";
 
-interface GameDetailPageProps {
-  params: Promise<{ id: string }>;
-}
-
-export async function generateMetadata({
-  params,
-}: GameDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const game = ALL_GAMES.find((g) => g.id === id);
   if (!game) return { title: "Game Not Found" };
-  return {
-    title: `${game.title} — ${SITE.name} Bangladesh`,
-    description: `Play ${game.title} by ${game.provider} on ${SITE.name} Bangladesh.`,
-  };
+  return { title: game.title };
 }
 
-export default async function GameDetailPage({ params }: GameDetailPageProps) {
+export default async function GameDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const game = ALL_GAMES.find((g) => g.id === id);
   if (!game) notFound();
 
   const user = await getSessionUser();
   const [c1, c2] = game.gradient;
-
-  const related = ALL_GAMES.filter(
-    (g: BJ88Game) => g.category === game.category && g.id !== game.id
-  ).slice(0, 10);
-
-  const providerCount = ALL_GAMES.filter((g) => g.provider === game.provider).length;
-  const categoryCount = ALL_GAMES.filter((g) => g.category === game.category).length;
+  const category = GAME_CATEGORIES.find((cat) => cat.id === game.category);
+  const related = ALL_GAMES.filter((g) => g.category === game.category && g.id !== game.id).slice(0, 6);
 
   return (
-    <div className="mx-auto max-w-5xl px-3 py-3">
-      <WinnersTicker />
-
-      <Link
-        href="/games"
-        className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-[#8a8aa0] transition-colors hover:text-white"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to All Games
+    <div className="space-y-6 px-3 py-4 sm:px-5 sm:py-6">
+      <Link href={`/${game.category}`} className="text-sm font-semibold text-[#22c55e] transition hover:text-[#00a86d]">
+        ← Back to {category?.label ?? "Games"}
       </Link>
 
-      <section className="mt-3 grid gap-4 lg:grid-cols-[300px_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[1fr_2fr]">
         <div
-          className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded-xl"
+          className="relative aspect-[3/4] w-full overflow-hidden rounded-xl"
           style={{ background: `linear-gradient(150deg, ${c1}, ${c2})` }}
         >
           <div
             className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.22), transparent 55%)",
-            }}
+            style={{ background: "radial-gradient(circle at 25% 15%, rgba(255,255,255,0.18), transparent 55%)" }}
           />
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at 85% 90%, rgba(0,0,0,0.45), transparent 60%)",
-            }}
-          />
-          <span className="relative text-7xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]">
-            {game.emoji}
-          </span>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-7xl" style={{ filter: "drop-shadow(0 6px 12px rgba(0,0,0,0.55))" }}>
+              {game.emoji}
+            </span>
+          </div>
           {game.isHot && (
-            <span
-              className="absolute left-2 top-2 rounded px-1.5 py-0.5 text-[10px] font-black leading-none text-white"
-              style={{ background: "#ef4444" }}
-            >
-              HOT
+            <span className="absolute left-3 top-3 rounded bg-[#ef4444] px-2 py-0.5 text-xs font-bold text-white">
+              🔥 HOT
             </span>
           )}
-          {game.isNew && (
-            <span
-              className="absolute left-2 top-2 rounded px-1.5 py-0.5 text-[10px] font-black leading-none text-white"
-              style={{ background: "#22c55e" }}
-            >
+          {game.isNew && !game.isHot && (
+            <span className="absolute left-3 top-3 rounded bg-[#22c55e] px-2 py-0.5 text-xs font-bold text-white">
               NEW
             </span>
           )}
-          <span
-            className="absolute right-2 top-2 rounded px-1 py-0.5 text-[9px] font-black italic leading-none text-black"
-            style={{ background: "#f5a623" }}
-          >
-            bj
-          </span>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-3xl font-black text-white">{game.title}</h1>
-            <p className="mt-1 text-sm text-[#8a8aa0]">by {game.provider}</p>
+            <span className="inline-block rounded bg-[#2a2c30] px-2 py-0.5 text-xs font-semibold text-[#9ca3af]">
+              {category?.label ?? game.category}
+            </span>
+            <h1 className="mt-2 text-2xl font-bold text-[#f0f0f0] sm:text-3xl">{game.title}</h1>
+            <p className="text-sm text-[#9ca3af]">by {game.provider}</p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            <div className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 text-center">
+              <p className="text-xs text-[#9ca3af]">Players</p>
+              <p className="text-sm font-bold text-[#f0f0f0]">
+                {typeof game.players === "number" ? new Intl.NumberFormat("en-BD").format(game.players) : "—"}
+              </p>
+            </div>
+            <div className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 text-center">
+              <p className="text-xs text-[#9ca3af]">Category</p>
+              <p className="text-sm font-bold text-[#f0f0f0]">{category?.label ?? game.category}</p>
+            </div>
+            <div className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 text-center">
+              <p className="text-xs text-[#9ca3af]">Provider</p>
+              <p className="text-sm font-bold text-[#f0f0f0]">{game.provider}</p>
+            </div>
           </div>
 
           {user ? (
-            <BJ88GameLauncher gameId={game.id} title={game.title} emoji={game.emoji} />
+            <button type="button" className="btn-primary w-full py-3 text-base font-semibold">
+              ▶ Play Now
+            </button>
           ) : (
             <Link
               href="/login"
-              className="w-full rounded-full bg-gradient-to-r from-[#f5a623] to-[#e8920f] px-6 py-2.5 text-center text-sm font-bold text-black transition-opacity hover:opacity-90"
+              className="btn-primary w-full py-3 text-center text-base font-semibold"
             >
-              ▶ Login to Play
+              Login to Play
             </Link>
           )}
 
-          <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-3 text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[#8a8aa0]">
-                Players
-              </p>
-              <p className="mt-1 text-lg font-bold text-[#f5a623]">
-                {game.players ? (game.players >= 1000 ? `${(game.players / 1000).toFixed(1)}K` : game.players) : "—"}
-              </p>
-            </div>
-            <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-3 text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[#8a8aa0]">
-                Category
-              </p>
-              <p className="mt-1 text-sm font-bold capitalize text-white">
-                {game.category}
-              </p>
-            </div>
-            <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-3 text-center">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[#8a8aa0]">
-                Provider Games
-              </p>
-              <p className="mt-1 text-lg font-bold text-white">{providerCount}</p>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-[#2a2a3e] bg-[#1e1e2d] p-4">
-            <h2 className="text-sm font-bold uppercase tracking-wide text-white">
-              About {game.title}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#c8c8d6]">
-              {game.title} is a {game.category} game from {game.provider}, available
-              now on {SITE.name} Bangladesh. {game.subcategory ? `Tagged under ${game.subcategory}, ` : ""}
-              this title is part of a library of {categoryCount} games in the {game.category}{" "}
-              category. Play in BDT with instant deposits via bKash, Nagad, and Rocket.
-              Enjoy 24/7 support and responsible gaming tools.
+          <div className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-4">
+            <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-[#f0f0f0]">About {game.title}</h2>
+            <p className="text-sm leading-relaxed text-[#9ca3af]">
+              {game.title} by {game.provider} is one of the most popular {category?.label.toLowerCase() ?? "games"} games on BSL Gaming Bangladesh. Enjoy smooth gameplay, exciting features, and the chance to win big in BDT. Join thousands of players across Bangladesh already enjoying this title.
             </p>
           </div>
         </div>
-      </section>
+      </div>
 
       {related.length > 0 && (
-        <section className="mt-6">
-          <div className="flex items-center gap-2.5 py-2">
-            <span
-              className="h-5 w-[3px] rounded-full"
-              style={{ background: "linear-gradient(to bottom, #f5a623, #e8920f)" }}
-            />
-            <h2 className="flex-1 text-sm font-bold uppercase tracking-wide text-white">
+        <section className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="section-title-bar" />
+            <span className="text-lg">🎯</span>
+            <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
               Related Games
             </h2>
           </div>
-          <GameGrid games={related} columns={10} />
+          <GameGrid games={related} columns={7} />
         </section>
       )}
     </div>

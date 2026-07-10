@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { GAME_CATEGORIES } from "@/lib/catalog";
 import { cn } from "@/lib/utils";
+import { GAME_CATEGORIES } from "@/lib/catalog";
 
-export function CategoryTabs({ active }: { active?: string }) {
+interface CategoryTabsProps {
+  active?: string;
+}
+
+export function CategoryTabs({ active }: CategoryTabsProps) {
   return (
-    <div className="no-scrollbar flex items-center gap-2 overflow-x-auto py-2">
+    <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
       {GAME_CATEGORIES.map((cat) => {
         const isActive = active === cat.id;
         return (
@@ -14,16 +18,11 @@ export function CategoryTabs({ active }: { active?: string }) {
             key={cat.id}
             href={`/${cat.id}`}
             className={cn(
-              "flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold transition-colors",
+              "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
               isActive
-                ? "text-black"
-                : "border border-[#2a2a3e] bg-[#1e1e2d] text-[#c8c8d6] hover:text-white"
+                ? "border-transparent bg-primary-gradient text-white"
+                : "border-[#2a2c30] bg-[#1b1c1e] text-[#9ca3af] hover:border-[#383b3f] hover:text-[#f0f0f0]"
             )}
-            style={
-              isActive
-                ? { background: `linear-gradient(135deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }
-                : undefined
-            }
           >
             <span className="text-sm">{cat.emoji}</span>
             <span>{cat.label}</span>

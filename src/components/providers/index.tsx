@@ -1,26 +1,20 @@
-import type { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Toaster } from "sonner";
-import type { AuthUser } from "@/lib/auth";
 import { AuthProvider } from "./auth-provider";
+import type { AuthUser } from "@/lib/auth";
 
-export function Providers({
-  initialUser,
-  children,
-}: {
-  initialUser: AuthUser | null;
-  children: ReactNode;
-}) {
+export function Providers({ initialUser, children }: { initialUser: AuthUser | null; children: ReactNode }) {
   return (
     <AuthProvider initialUser={initialUser}>
       {children}
       <Toaster
-        theme="dark"
         position="top-center"
+        theme="dark"
         toastOptions={{
           style: {
-            background: "#1e1e2d",
-            border: "1px solid #2a2a3e",
-            color: "#e5e5ef",
+            background: "#1b1c1e",
+            border: "1px solid #2a2c30",
+            color: "#f0f0f0",
           },
         }}
       />

@@ -1,73 +1,49 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
 import type { AuthUser } from "@/lib/auth";
 
 interface AuthContextValue {
   user: AuthUser | null;
-  signIn: (username: string, password: string) => Promise<AuthUser | null>;
+  signIn: (username: string, password: string) => Promise<AuthUser>;
   signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<AuthUser | null>;
 }
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({
-  initialUser,
-  children,
-}: {
-  initialUser: AuthUser | null;
-  children: ReactNode;
-}) {
+export function AuthProvider({ initialUser, children }: { initialUser: AuthUser | null; children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(initialUser);
 
-  // Keep client state in sync if the server-provided initialUser changes
-  // (e.g. after a full navigation or re-render with new props).
-  useEffect(() => {
-    setUser(initialUser);
-  }, [initialUser]);
+  const signIn = useCallback(async (username: string, password: string) => {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error ?? "Login failed");
+    setUser(data.user);
+    return data.user as AuthUser;
+  }, []);
 
-  const signIn = useCallback(
-    async (username: string, password: string): Promise<AuthUser | null> => {
-      const res = await fetch("/api/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      if (!res.ok) return null;
-      const data = (await res.json()) as { user: AuthUser | null };
-      if (data.user) {
-        setUser(data.user);
-        return data.user;
-      }
-      return null;
-    },
-    []
-  );
-
-  const signOut = useCallback(async (): Promise<void> => {
-    await fetch("/api/auth", { method: "DELETE" });
+  const signOut = useCallback(async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
     setUser(null);
   }, []);
 
-  const refreshUser = useCallback(async (): Promise<void> => {
+  const refreshUser = useCallback(async () => {
     try {
-      const res = await fetch("/api/auth", { method: "GET" });
+      const res = await fetch("/api/auth/me");
       if (!res.ok) {
         setUser(null);
-        return;
+        return null;
       }
-      const data = (await res.json()) as { user: AuthUser | null };
+      const data = await res.json();
       setUser(data.user);
+      return data.user as AuthUser;
     } catch {
-      setUser(null);
+      return null;
     }
   }, []);
 
@@ -78,10 +54,8 @@ export function AuthProvider({
   );
 }
 
-export function useAuth(): AuthContextValue {
+export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }

@@ -1,181 +1,127 @@
 import type { Metadata } from "next";
-import { WinnersTicker } from "@/components/bj88/tickers";
-import { SITE } from "@/lib/catalog";
+import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "VIP Club — BJ88 Bangladesh",
-  description:
-    "Join the BJ88 Bangladesh VIP Club. Five tiers — Bronze, Silver, Gold, Platinum and Diamond — with exclusive cashback, perks and rewards.",
-};
+export const metadata: Metadata = { title: "VIP Club" };
 
-interface VIPTier {
+interface VipTier {
   name: string;
   emoji: string;
   threshold: string;
   cashback: string;
-  gradient: [string, string];
   perks: string[];
+  gradient: [string, string];
 }
 
-const VIP_TIERS: VIPTier[] = [
+const VIP_TIERS: VipTier[] = [
   {
     name: "Bronze",
     emoji: "🥉",
-    threshold: "৳0",
-    cashback: "1%",
-    gradient: ["#713f12", "#92400e"],
-    perks: [
-      "Welcome to the VIP program",
-      "1% weekly cashback",
-      "Birthday bonus ৳500",
-      "Standard support response",
-    ],
+    threshold: "৳5,000",
+    cashback: "0.5%",
+    gradient: ["#7c2d12", "#9a3412"],
+    perks: ["Daily login bonus", "Email support", "Basic promotions access"],
   },
   {
     name: "Silver",
     emoji: "🥈",
-    threshold: "৳50,000",
-    cashback: "3%",
-    gradient: ["#475569", "#334155"],
-    perks: [
-      "3% weekly cashback",
-      "Birthday bonus ৳1,000",
-      "Priority support",
-      "Exclusive weekly reload bonus",
-    ],
+    threshold: "৳25,000",
+    cashback: "1%",
+    gradient: ["#475569", "#64748b"],
+    perks: ["Weekly bonus", "Priority email support", "Exclusive promotions", "Birthday bonus"],
   },
   {
     name: "Gold",
     emoji: "🥇",
-    threshold: "৳200,000",
-    cashback: "5%",
-    gradient: ["#b45309", "#d97706"],
-    perks: [
-      "5% weekly cashback",
-      "Birthday bonus ৳2,500",
-      "Dedicated account manager",
-      "Monthly VIP tournament access",
-      "Higher deposit limits",
-    ],
+    threshold: "৳100,000",
+    cashback: "2%",
+    gradient: ["#713f12", "#d97706"],
+    perks: ["Monthly bonus", "Live chat support", "Higher withdrawal limits", "Personal account manager", "Exclusive tournaments"],
   },
   {
     name: "Platinum",
-    emoji: "💠",
-    threshold: "৳1,000,000",
-    cashback: "8%",
-    gradient: ["#4338ca", "#6366f1"],
-    perks: [
-      "8% weekly cashback",
-      "Birthday bonus ৳5,000",
-      "Personal VIP host",
-      "Exclusive high-roller tables",
-      "Custom withdrawal limits",
-      "Invitation to VIP-only events",
-    ],
+    emoji: "💎",
+    threshold: "৳500,000",
+    cashback: "3%",
+    gradient: ["#0c4a6e", "#0369a1"],
+    perks: ["Weekly cashback", "24/7 VIP support", "Instant withdrawals", "Custom promotions", "VIP events access", "Dedicated VIP host"],
   },
   {
     name: "Diamond",
-    emoji: "💎",
-    threshold: "৳5,000,000",
-    cashback: "12%",
-    gradient: ["#1e1b4b", "#5b21b6"],
-    perks: [
-      "12% weekly cashback",
-      "Birthday bonus ৳10,000",
-      "24/7 personal VIP concierge",
-      "Tailored promotions & bonuses",
-      "No maximum withdrawal limit",
-      "Luxury gifts & travel rewards",
-      "Invitation to exclusive BJ88 gala",
-    ],
+    emoji: "👑",
+    threshold: "৳1,000,000",
+    cashback: "5%",
+    gradient: ["#2e1065", "#5b21b6"],
+    perks: ["Daily cashback", "Personal VIP manager", "No withdrawal limits", "Exclusive luxury gifts", "Invitation to exclusive events", "Custom betting limits", "Premium 24/7 support"],
   },
 ];
 
-export default function VIPPage() {
+export default function VipPage() {
   return (
-    <div className="mx-auto max-w-6xl px-3 py-3">
-      <WinnersTicker />
+    <div className="space-y-6 px-3 py-4 sm:px-5 sm:py-6">
+      <div className="flex items-center gap-2">
+        <span className="section-title-bar" />
+        <span className="text-xl">👑</span>
+        <h1 className="text-lg font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-2xl">
+          VIP Club
+        </h1>
+      </div>
+      <p className="max-w-2xl text-sm text-[#9ca3af]">
+        Join the BSL Gaming VIP Club and unlock exclusive rewards, higher cashback, personal managers, and luxury perks. The more you play, the higher you climb.
+      </p>
 
-      <section className="mt-4 overflow-hidden rounded-2xl border border-[#f5a623]/30 p-6 text-center" style={{ background: "linear-gradient(135deg, #1e1b4b, #4c1d95)" }}>
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at 50% 0%, rgba(245,166,35,0.25), transparent 70%)",
-          }}
-        />
-        <div className="relative z-10 flex flex-col items-center gap-2">
-          <span className="text-4xl">👑</span>
-          <h1 className="text-3xl font-black text-white sm:text-4xl">VIP Club</h1>
-          <p className="max-w-xl text-sm text-white/80">
-            Climb the ranks and unlock exclusive rewards. The more you play, the
-            higher you go — earn cashback, bonuses and luxury perks at {SITE.name} Bangladesh.
-          </p>
-        </div>
-      </section>
-
-      <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {VIP_TIERS.map((tier) => {
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {VIP_TIERS.map((tier, i) => {
           const [c1, c2] = tier.gradient;
           return (
             <div
               key={tier.name}
-              className="relative overflow-hidden rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5"
+              className="relative overflow-hidden rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-5"
             >
               <div
-                className="pointer-events-none absolute inset-0 opacity-90"
-                style={{
-                  background: `linear-gradient(135deg, ${c1}22, ${c2}11)`,
-                }}
+                className="pointer-events-none absolute inset-x-0 top-0 h-1"
+                style={{ background: `linear-gradient(to right, ${c1}, ${c2})` }}
               />
-              <div className="relative z-10 flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <span
-                    className="flex h-12 w-12 items-center justify-center rounded-full text-2xl"
-                    style={{
-                      background: `linear-gradient(135deg, ${c1}, ${c2})`,
-                    }}
-                  >
-                    {tier.emoji}
-                  </span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-3xl">{tier.emoji}</span>
                   <div>
-                    <h2 className="text-lg font-black text-white">{tier.name}</h2>
-                    <p className="text-[11px] text-[#8a8aa0]">
-                      Threshold: {tier.threshold}
-                    </p>
+                    <h2 className="text-lg font-bold text-[#f0f0f0]">{tier.name}</h2>
+                    <p className="text-xs text-[#9ca3af]">Tier {i + 1}</p>
                   </div>
-                  <span
-                    className="ml-auto rounded-full px-2.5 py-1 text-xs font-bold text-black"
-                    style={{ background: "#f5a623" }}
-                  >
-                    {tier.cashback} Cashback
-                  </span>
                 </div>
-
-                <ul className="flex flex-col gap-1.5">
-                  {tier.perks.map((perk, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-2 text-xs text-[#c8c8d6]"
-                    >
-                      <span className="mt-0.5 shrink-0 text-[#f5a623]">✦</span>
-                      <span>{perk}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <div className="rounded-lg bg-[#121315] p-2 text-center">
+                  <p className="text-xs text-[#9ca3af]">Threshold</p>
+                  <p className="text-sm font-bold text-[#ffdf19]">{tier.threshold}</p>
+                </div>
+                <div className="rounded-lg bg-[#121315] p-2 text-center">
+                  <p className="text-xs text-[#9ca3af]">Cashback</p>
+                  <p className="text-sm font-bold text-[#00a86d]">{tier.cashback}</p>
+                </div>
+              </div>
+              <ul className="mt-4 space-y-1.5">
+                {tier.perks.map((perk) => (
+                  <li key={perk} className="flex items-start gap-2 text-xs text-[#9ca3af]">
+                    <span className="text-[#00a86d]">✓</span>
+                    <span>{perk}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           );
         })}
       </div>
 
-      <section className="mt-6 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4 text-center">
-        <p className="text-xs text-[#8a8aa0]">
-          VIP status is reviewed monthly based on your total betting volume in BDT.
-          All cashback is credited every Monday. {SITE.name} reserves the right to
-          modify the VIP program at any time. 18+ — please play responsibly.
+      <div className="rounded-lg border border-[#ffdf19]/30 bg-gradient-to-r from-[#1b1c1e] via-[#242628] to-[#1b1c1e] p-5 text-center">
+        <h2 className="text-base font-bold text-[#ffdf19]">Ready to join the VIP Club?</h2>
+        <p className="mt-1 text-sm text-[#9ca3af]">
+          Start playing today and climb the ranks to unlock exclusive rewards.
         </p>
-      </section>
+        <Link href="/register" className="btn-primary mt-4 inline-block px-6 py-2.5 text-sm font-semibold">
+          Join Now
+        </Link>
+      </div>
     </div>
   );
 }

@@ -1,70 +1,68 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { SITE } from "@/lib/catalog";
 import { FAQAccordion } from "./faq-accordion";
 
 export const metadata: Metadata = {
-  title: `FAQ — ${SITE.name} Bangladesh`,
-  description: `Frequently asked questions about ${SITE.name} Bangladesh — deposits, withdrawals, bonuses, account security and more.`,
+  title: "FAQ",
+  description: "Frequently asked questions about BSL Gaming Bangladesh",
 };
 
 const FAQS = [
   {
-    q: "How do I deposit money into my BJ88 account?",
-    a: "Log in, go to Dashboard → Wallet, choose a payment method (bKash, Nagad, Rocket, bank transfer or crypto), enter the amount and confirm. Deposits are instant and the minimum is ৳100. There are no deposit fees.",
+    q: "How do I create an account?",
+    a: "Click the 'Sign Up' button at the top of the page, fill in your username, email, and password, and you're ready to go. New members receive a ৳500 welcome credit to get started.",
+  },
+  {
+    q: "What payment methods are available?",
+    a: "We support bKash, Nagad, Rocket, Bank Transfer, and Crypto. All deposits are instant except bank transfers which may take 1–3 hours. Withdrawals are processed quickly to your preferred method.",
   },
   {
     q: "How long do withdrawals take?",
-    a: "bKash, Nagad, Rocket and crypto withdrawals are processed instantly. Bank transfers take 1–3 hours. The minimum withdrawal is ৳200 and you can only withdraw up to your available balance.",
+    a: "Withdrawals via bKash, Nagad, and Rocket are typically instant. Bank transfers may take 1–3 hours. The minimum withdrawal amount is ৳200.",
   },
   {
-    q: "What bonuses are available for new players?",
-    a: "Every new player receives a ৳500 welcome credit on sign-up, plus a 100% first-deposit bonus up to ৳10,000. We also offer daily reload bonuses, sports cashback and free spins on selected slots.",
+    q: "Is BSL Gaming safe and legal?",
+    a: "Yes. BSL Gaming uses industry-standard encryption to protect your data and funds. We are committed to responsible gaming and comply with all applicable regulations. Players must be 18+ to participate.",
   },
   {
-    q: "Is my account and money safe on BJ88?",
-    a: "Yes. We use 256-bit SSL encryption for all transactions, provably fair algorithms for our games, and your funds are held in segregated accounts. You can also enable two-factor authentication from your Security settings.",
+    q: "What is the minimum deposit?",
+    a: "The minimum deposit amount is ৳100. We offer quick deposit options of ৳500, ৳1,000, ৳5,000, and ৳10,000 for your convenience.",
   },
   {
-    q: "Can I play with BDT (Bangladeshi Taka)?",
-    a: "Absolutely. BJ88 is built for Bangladesh — your account, deposits, withdrawals and all bets are in BDT. No currency conversion fees, no surprises.",
+    q: "How do I claim bonuses?",
+    a: "Visit the Promotions page to see all available offers. Click on any promotion to view details and claim it. Some bonuses are automatically credited to your account.",
   },
   {
-    q: "What games can I play on BJ88?",
-    a: "Over 2,500 games across slots, live casino, sports betting, cricket, fishing, table games, lottery, arcade and crash games — from top providers like Pragmatic Play, Evolution, JILI, PG Soft and Spribe.",
+    q: "What games are available?",
+    a: "We offer 100+ games including sports betting, cricket betting, live casino (baccarat, roulette, blackjack), slots, cockfighting, fishing games, lottery, arcade games, and crash games from top providers like Pragmatic Play, Evolution, JILI, and PG Soft.",
   },
   {
-    q: "How do I join the VIP Club?",
-    a: "You're automatically enrolled in the VIP program from your first bet. Climb five tiers — Bronze, Silver, Gold, Platinum and Diamond — based on your monthly betting volume to unlock higher cashback, birthday bonuses and a dedicated VIP host.",
+    q: "How does the VIP Club work?",
+    a: "The VIP Club has 5 tiers: Bronze, Silver, Gold, Platinum, and Diamond. As you play more, you climb the tiers and unlock better rewards including higher cashback, personal account managers, exclusive promotions, and luxury gifts.",
   },
   {
-    q: "Is BJ88 legal in Bangladesh?",
-    a: "BJ88 operates under an international gaming license. Players must be 18 or older. We encourage all players to review local regulations and to play responsibly.",
+    q: "Can I set deposit limits?",
+    a: "Yes. We encourage responsible gaming. You can set daily, weekly, or monthly deposit limits in your account settings. If you need help, please contact our support team.",
+  },
+  {
+    q: "How do I contact support?",
+    a: "Our support team is available 24/7. You can reach us via email at support@bslgaming.com.bd, through live chat, or by phone. Visit the Support page for all contact options.",
   },
 ];
 
 export default function FAQPage() {
   return (
-    <div className="mx-auto max-w-3xl px-3 py-4">
-      <div className="mb-4">
-        <h1 className="text-2xl font-black text-white">Frequently Asked Questions</h1>
-        <p className="mt-1 text-sm text-[#8a8aa0]">
-          Everything you need to know about playing on {SITE.name} Bangladesh.
-        </p>
+    <div className="space-y-5 px-3 py-4 sm:px-5 sm:py-6">
+      <div className="flex items-center gap-2">
+        <span className="section-title-bar" />
+        <span className="text-xl">❓</span>
+        <h1 className="text-lg font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-2xl">
+          FAQ
+        </h1>
       </div>
-
-      <FAQAccordion items={FAQS} />
-
-      <div className="mt-6 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-5 text-center">
-        <p className="text-sm text-[#c8c8d6]">Still have questions?</p>
-        <Link
-          href="/support"
-          className="mt-2 inline-block rounded-full px-5 py-2 text-sm font-bold text-black transition-opacity hover:opacity-90"
-          style={{ background: "linear-gradient(135deg, #f5a623, #e8920f)" }}
-        >
-          Contact Support
-        </Link>
-      </div>
+      <p className="max-w-2xl text-sm text-[#9ca3af]">
+        Frequently asked questions about BSL Gaming Bangladesh. Can&apos;t find what you&apos;re looking for? Contact our support team.
+      </p>
+      <FAQAccordion faqs={FAQS} />
     </div>
   );
 }

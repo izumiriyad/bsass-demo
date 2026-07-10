@@ -4,48 +4,42 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface FAQItem {
+interface FAQ {
   q: string;
   a: string;
 }
 
-export function FAQAccordion({ items }: { items: FAQItem[] }) {
+interface FAQAccordionProps {
+  faqs: FAQ[];
+}
+
+export function FAQAccordion({ faqs }: FAQAccordionProps) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <div className="flex flex-col gap-2">
-      {items.map((item, i) => {
+    <div className="space-y-2">
+      {faqs.map((faq, i) => {
         const isOpen = open === i;
         return (
-          <div
-            key={i}
-            className="overflow-hidden rounded-xl border border-[#2a2a3e] bg-[#1e1e2d]"
-          >
+          <div key={i} className="overflow-hidden rounded-xl border border-[#2a2c30] bg-[#1b1c1e]">
             <button
               type="button"
               onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-center justify-between gap-3 px-4 py-3.5 text-left"
+              className="flex w-full items-center justify-between gap-2 px-4 py-4 text-left"
             >
-              <span className="text-sm font-semibold text-white">{item.q}</span>
+              <span className="text-sm font-semibold text-[#f0f0f0]">{faq.q}</span>
               <ChevronDown
                 className={cn(
-                  "h-4 w-4 shrink-0 text-[#f5a623] transition-transform duration-200",
+                  "h-4 w-4 shrink-0 text-[#9ca3af] transition-transform",
                   isOpen && "rotate-180"
                 )}
               />
             </button>
-            <div
-              className={cn(
-                "grid transition-all duration-200",
-                isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-              )}
-            >
-              <div className="overflow-hidden">
-                <p className="px-4 pb-4 text-sm leading-relaxed text-[#c8c8d6]">
-                  {item.a}
-                </p>
+            {isOpen && (
+              <div className="px-4 pb-4 text-sm leading-relaxed text-[#9ca3af]">
+                {faq.a}
               </div>
-            </div>
+            )}
           </div>
         );
       })}

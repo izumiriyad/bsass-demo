@@ -1,81 +1,90 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { Wallet, TrendingUp, TrendingDown, Gift, Activity } from "lucide-react";
 import { getSessionUser } from "@/lib/auth";
 import { formatBDT, timeAgo } from "@/lib/utils";
-import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 
-const STATS = [
-  { id: "balance", label: "Current Balance", emoji: "💰", valueKey: "balance" },
-  { id: "deposited", label: "Total Deposited", emoji: "📥", value: 25000 },
-  { id: "withdrawn", label: "Total Withdrawn", emoji: "📤", value: 8000 },
-  { id: "bonuses", label: "Bonuses Earned", emoji: "🎁", value: 500 },
-] as const;
+export const metadata: Metadata = { title: "Dashboard" };
 
-const ACTIVITY = [
-  { id: "a1", text: "Deposited ৳1,000 via bKash", date: new Date(Date.now() - 1000 * 60 * 35) },
-  { id: "a2", text: "Played Gates of Olympus", date: new Date(Date.now() - 1000 * 60 * 60 * 3) },
-  { id: "a3", text: "Won ৳2,450 in Crazy Time", date: new Date(Date.now() - 1000 * 60 * 60 * 8) },
-  { id: "a4", text: "Claimed daily login bonus", date: new Date(Date.now() - 1000 * 60 * 60 * 24) },
-  { id: "a5", text: "Withdrew ৳3,000 via Nagad", date: new Date(Date.now() - 1000 * 60 * 60 * 48) },
+const RECENT_ACTIVITY = [
+  { id: 1, type: "deposit", label: "Deposit via bKash", amount: 5000, date: new Date(Date.now() - 1000 * 60 * 30) },
+  { id: 2, type: "win", label: "Won on Aviator", amount: 2300, date: new Date(Date.now() - 1000 * 60 * 90) },
+  { id: 3, type: "loss", label: "Lost on Crazy Time", amount: -800, date: new Date(Date.now() - 1000 * 60 * 60 * 3) },
+  { id: 4, type: "bonus", label: "Welcome bonus credited", amount: 500, date: new Date(Date.now() - 1000 * 60 * 60 * 24) },
+  { id: 5, type: "withdraw", label: "Withdrawal to Nagad", amount: -2000, date: new Date(Date.now() - 1000 * 60 * 60 * 48) },
 ];
 
 export default async function DashboardPage() {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) return null;
 
-  const balanceBDT = user.balance * 110;
-
-  const statValues: Record<string, number> = {
-    balance: balanceBDT,
-    deposited: 25000,
-    withdrawn: 8000,
-    bonuses: 500,
-  };
+  const stats = [
+    { label: "Current Balance", value: formatBDT(user.balance), icon: Wallet, color: "#ffdf19" },
+    { label: "Total Deposited", value: formatBDT(25000), icon: TrendingUp, color: "#00a86d" },
+    { label: "Total Withdrawn", value: formatBDT(8000), icon: TrendingDown, color: "#ef4444" },
+    { label: "Bonuses", value: formatBDT(1500), icon: Gift, color: "#a855f7" },
+  ];
 
   return (
-    <DashboardShell active="overview">
-      <div className="mb-4">
-        <h1 className="text-2xl font-black text-white">Overview</h1>
-        <p className="mt-1 text-sm text-[#8a8aa0]">
-          Welcome back, {user.username}. Here&apos;s your account summary.
-        </p>
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-xl font-bold text-[#f0f0f0] sm:text-2xl">Dashboard</h1>
+        <p className="text-sm text-[#9ca3af]">Welcome back, {user.username}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {STATS.map((stat) => (
-          <div
-            key={stat.id}
-            className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-2xl">{stat.emoji}</span>
+        {stats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div key={stat.label} className="rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-[#9ca3af]">{stat.label}</p>
+                <Icon className="h-4 w-4" style={{ color: stat.color }} />
+              </div>
+              <p className="mt-2 text-lg font-bold text-[#f0f0f0] sm:text-xl">{stat.value}</p>
             </div>
-            <p className="mt-2 text-xs text-[#8a8aa0]">{stat.label}</p>
-            <p className="mt-0.5 text-lg font-black text-[#f5a623]">
-              {formatBDT(statValues[stat.id])}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <div className="mt-5 rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4">
-        <h2 className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
-          <span className="h-4 w-1 rounded-full bg-[#f5a623]" />
-          Recent Activity
-        </h2>
-        <ul className="flex flex-col gap-2">
-          {ACTIVITY.map((item) => (
-            <li
-              key={item.id}
-              className="flex items-center justify-between gap-3 rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3 py-2.5"
-            >
-              <span className="text-sm text-[#c8c8d6]">{item.text}</span>
-              <span className="shrink-0 text-xs text-[#8a8aa0]">
-                {timeAgo(item.date)}
-              </span>
-            </li>
+      <div className="rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-4">
+        <div className="mb-3 flex items-center gap-2">
+          <Activity className="h-4 w-4 text-[#00a86d]" />
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0]">Recent Activity</h2>
+        </div>
+        <div className="space-y-2">
+          {RECENT_ACTIVITY.map((item) => (
+            <div key={item.id} className="flex items-center justify-between rounded-lg bg-[#121315] px-3 py-2.5">
+              <div>
+                <p className="text-sm font-medium text-[#f0f0f0]">{item.label}</p>
+                <p className="text-xs text-[#6b7280]">{timeAgo(item.date)}</p>
+              </div>
+              <p
+                className={
+                  item.amount > 0
+                    ? "text-sm font-bold text-[#00a86d]"
+                    : "text-sm font-bold text-[#ef4444]"
+                }
+              >
+                {item.amount > 0 ? "+" : ""}
+                {formatBDT(item.amount)}
+              </p>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
-    </DashboardShell>
+
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        <Link href="/dashboard/wallet" className="btn-primary rounded-lg px-4 py-3 text-center text-sm font-semibold">
+          Deposit
+        </Link>
+        <Link href="/games" className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] px-4 py-3 text-center text-sm font-semibold text-[#f0f0f0] transition hover:border-[#383b3f]">
+          Browse Games
+        </Link>
+        <Link href="/promotions" className="rounded-lg border border-[#ffdf19]/30 bg-[#1b1c1e] px-4 py-3 text-center text-sm font-semibold text-[#ffdf19] transition hover:border-[#ffdf19]/50">
+          Promotions
+        </Link>
+      </div>
+    </div>
   );
 }

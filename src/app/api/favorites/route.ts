@@ -1,45 +1,44 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
-
-const FAVORITES = new Map<string, Set<string>>();
+const favoritesStore = new Map<string, Set<string>>();
 
 export async function GET() {
   const user = await getSessionUser();
   if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const ids = Array.from(FAVORITES.get(user.id) ?? []);
-  return NextResponse.json({ ids });
+
+  const favorites = favoritesStore.get(user.id) ?? new Set<string>();
+  return NextResponse.json({ favorites: Array.from(favorites) });
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   const user = await getSessionUser();
   if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
-  const body = await req.json().catch(() => ({}));
-  const gameId = String(body.gameId ?? "");
-  if (!gameId) {
-    return NextResponse.json(
-      { error: "gameId is required." },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let set = FAVORITES.get(user.id);
-  if (!set) {
-    set = new Set();
-    FAVORITES.set(user.id, set);
+  try {
+    const { gameId } = (await request.json()) as { gameId?: string };
+    if (!gameId) {
+      return NextResponse.json({ error: "Game ID is required" }, { status: 400 });
+    }
+
+    let favorites = favoritesStore.get(user.id);
+    if (!favorites) {
+      favorites = new Set<string>();
+      favoritesStore.set(user.id, favorites);
+    }
+
+    if (favorites.has(gameId)) {
+      favorites.delete(gameId);
+    } else {
+      favorites.add(gameId);
+    }
+
+    return NextResponse.json({ favorites: Array.from(favorites) });
+  } catch {
+    return NextResponse.json({ error: "Failed to toggle favorite" }, { status: 500 });
   }
-  let favorited: boolean;
-  if (set.has(gameId)) {
-    set.delete(gameId);
-    favorited = false;
-  } else {
-    set.add(gameId);
-    favorited = true;
-  }
-  return NextResponse.json({ favorited });
 }

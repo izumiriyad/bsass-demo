@@ -1,52 +1,46 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { POPULAR_GAMES } from "@/lib/catalog";
+import { useEffect, useState } from "react";
+import { formatBDT } from "@/lib/utils";
 
 interface Win {
-  user: string;
+  username: string;
   amount: number;
   game: string;
 }
 
-const USERS = [
-  "Rahim***", "Karim***", "Tanvir***", "Sadia***", "Nusrat***",
-  "Imran***", "Fariha***", "Sabbir***", "Mehedi***", "Rifat***",
-  "Arif***", "Sumaiya***", "Hasan***", "Naimur***", "Tania***",
+const WINS: Win[] = [
+  { username: "Rahim***", amount: 12500, game: "Aviator" },
+  { username: "Karim***", amount: 8200, game: "Crazy Time" },
+  { username: "Sabi***", amount: 45300, game: "Gates of Olympus" },
+  { username: "Naye***", amount: 15800, game: "Sweet Bonanza" },
+  { username: "Tahi***", amount: 9600, game: "Lightning Roulette" },
+  { username: "Fari***", amount: 32100, game: "Mega Wheel" },
+  { username: "Jame***", amount: 7400, game: "Baccarat" },
+  { username: "Araf***", amount: 18900, game: "Dragon Tiger" },
+  { username: "Mitu***", amount: 6300, game: "Teen Patti" },
+  { username: "Hasa***", amount: 27500, game: "Super Ace" },
+  { username: "Rifa***", amount: 11200, game: "Fortune Gems 3" },
+  { username: "Saki***", amount: 5800, game: "Plinko" },
 ];
 
-function buildWins(): Win[] {
-  return Array.from({ length: 16 }, (_, i) => {
-    const g = POPULAR_GAMES[i % POPULAR_GAMES.length];
-    return {
-      user: USERS[i % USERS.length],
-      amount: Math.floor(Math.random() * 48000) + 2000,
-      game: g.title,
-    };
-  });
-}
-
 export function WinnersTicker() {
-  const winsRef = useRef<Win[]>(buildWins());
-  const wins = winsRef.current;
-  const doubled = [...wins, ...wins];
+  const items = [...WINS, ...WINS];
 
   return (
-    <div className="flex items-center gap-2 overflow-hidden border-b border-[#2a2a3e] bg-[#1e1e2d] px-2 py-1.5">
-      <span className="flex shrink-0 items-center gap-1.5 rounded bg-green-600/15 px-2 py-1 text-[10px] font-bold text-green-400">
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-        </span>
+    <div className="flex items-center gap-2 overflow-hidden border-y border-[#2a2c30] bg-[#1b1c1e] px-3 py-2">
+      <span className="flex shrink-0 items-center gap-1.5 rounded bg-[#008d5b]/15 px-2 py-1 text-[10px] font-bold text-[#22c55e]">
+        <span className="live-dot live-dot-pulse" />
         LIVE WINS
       </span>
       <div className="relative flex-1 overflow-hidden">
-        <div className="flex w-max animate-marquee items-center gap-6 whitespace-nowrap">
-          {doubled.map((w, i) => (
-            <span key={i} className="flex items-center gap-1.5 text-[11px]">
-              <span className="font-semibold text-[#c8c8d6]">{w.user}</span>
-              <span className="font-bold text-[#f5a623]">৳{w.amount.toLocaleString("en-BD")}</span>
-              <span className="text-[#8a8aa0]">on {w.game}</span>
+        <div className="animate-marquee flex w-max items-center gap-6 whitespace-nowrap">
+          {items.map((win, i) => (
+            <span key={i} className="flex items-center gap-1.5 text-xs text-[#9ca3af]">
+              <span className="font-semibold text-[#f0f0f0]">{win.username}</span>
+              <span className="font-bold text-[#ffdf19]">{formatBDT(win.amount)}</span>
+              <span className="text-[#6b7280]">on {win.game}</span>
+              <span className="text-[#2a2c30]">•</span>
             </span>
           ))}
         </div>
@@ -56,25 +50,26 @@ export function WinnersTicker() {
 }
 
 export function JackpotTicker() {
-  const [value, setValue] = useState(18_400_000 + Math.floor(Math.random() * 200_000));
+  const [value, setValue] = useState(18_245_900);
 
   useEffect(() => {
     const t = setInterval(() => {
-      setValue((v) => v + Math.floor(Math.random() * 700) + 100);
+      setValue((v) => v + Math.floor(Math.random() * 350) + 50);
     }, 1500);
     return () => clearInterval(t);
   }, []);
 
-  const formatted = value.toLocaleString("en-BD");
-
   return (
-    <div className="flex flex-col items-center justify-center gap-1">
-      <span className="text-[10px] font-bold uppercase tracking-wider text-[#f5a623]">
-        💰 Mega Jackpot
-      </span>
-      <span className="text-2xl font-black tabular-nums text-white sm:text-3xl">
-        ৳{formatted}
-      </span>
+    <div className="flex items-center justify-center gap-2 rounded-lg border border-[#ffdf19]/30 bg-gradient-to-r from-[#1b1c1e] via-[#242628] to-[#1b1c1e] px-4 py-3">
+      <span className="text-xl">💰</span>
+      <div className="text-center">
+        <p className="text-[10px] font-bold tracking-widest text-[#9ca3af]">
+          MEGA JACKPOT
+        </p>
+        <p className="text-lg font-extrabold text-[#ffdf19] sm:text-2xl">
+          {formatBDT(value)}
+        </p>
+      </div>
     </div>
   );
 }

@@ -1,86 +1,87 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { TrendingUp, TrendingDown, Gift, Gamepad2 } from "lucide-react";
 import { getSessionUser } from "@/lib/auth";
 import { formatBDT, timeAgo } from "@/lib/utils";
-import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 
-interface Txn {
-  id: string;
-  type: "deposit" | "withdraw" | "bonus" | "bet" | "win";
-  method: string;
-  amount: number;
-  date: Date;
-}
+export const metadata: Metadata = { title: "Transaction History" };
 
-const TRANSACTIONS: Txn[] = [
-  { id: "t1", type: "deposit", method: "bKash", amount: 1000, date: new Date(Date.now() - 1000 * 60 * 35) },
-  { id: "t2", type: "win", method: "Crazy Time", amount: 2450, date: new Date(Date.now() - 1000 * 60 * 60 * 3) },
-  { id: "t3", type: "bet", method: "Gates of Olympus", amount: -500, date: new Date(Date.now() - 1000 * 60 * 60 * 5) },
-  { id: "t4", type: "bonus", method: "Daily Login", amount: 100, date: new Date(Date.now() - 1000 * 60 * 60 * 8) },
-  { id: "t5", type: "withdraw", method: "Nagad", amount: -3000, date: new Date(Date.now() - 1000 * 60 * 60 * 24) },
-  { id: "t6", type: "deposit", method: "Rocket", amount: 2000, date: new Date(Date.now() - 1000 * 60 * 60 * 26) },
-  { id: "t7", type: "win", method: "Aviator", amount: 1800, date: new Date(Date.now() - 1000 * 60 * 60 * 30) },
-  { id: "t8", type: "bet", method: "Mega Wheel", amount: -750, date: new Date(Date.now() - 1000 * 60 * 60 * 36) },
-  { id: "t9", type: "bonus", method: "Welcome Credit", amount: 500, date: new Date(Date.now() - 1000 * 60 * 60 * 48) },
-  { id: "t10", type: "deposit", method: "Crypto", amount: 5000, date: new Date(Date.now() - 1000 * 60 * 60 * 72) },
+const TRANSACTIONS = [
+  { id: 1, type: "deposit", label: "Deposit via bKash", amount: 5000, date: new Date(Date.now() - 1000 * 60 * 30) },
+  { id: 2, type: "win", label: "Won on Aviator", amount: 2300, date: new Date(Date.now() - 1000 * 60 * 90) },
+  { id: 3, type: "loss", label: "Lost on Crazy Time", amount: -800, date: new Date(Date.now() - 1000 * 60 * 60 * 3) },
+  { id: 4, type: "bonus", label: "Welcome bonus credited", amount: 500, date: new Date(Date.now() - 1000 * 60 * 60 * 24) },
+  { id: 5, type: "withdraw", label: "Withdrawal to Nagad", amount: -2000, date: new Date(Date.now() - 1000 * 60 * 60 * 48) },
+  { id: 6, type: "deposit", label: "Deposit via Rocket", amount: 2000, date: new Date(Date.now() - 1000 * 60 * 60 * 72) },
+  { id: 7, type: "win", label: "Won on Gates of Olympus", amount: 4500, date: new Date(Date.now() - 1000 * 60 * 60 * 96) },
+  { id: 8, type: "loss", label: "Lost on Sweet Bonanza", amount: -1200, date: new Date(Date.now() - 1000 * 60 * 60 * 120) },
+  { id: 9, type: "deposit", label: "Deposit via Nagad", amount: 10000, date: new Date(Date.now() - 1000 * 60 * 60 * 144) },
+  { id: 10, type: "withdraw", label: "Withdrawal to bKash", amount: -5000, date: new Date(Date.now() - 1000 * 60 * 60 * 168) },
 ];
 
-const TYPE_META: Record<Txn["type"], { label: string; emoji: string }> = {
-  deposit: { label: "Deposit", emoji: "📥" },
-  withdraw: { label: "Withdrawal", emoji: "📤" },
-  bonus: { label: "Bonus", emoji: "🎁" },
-  bet: { label: "Bet Placed", emoji: "🎯" },
-  win: { label: "Win", emoji: "🎉" },
-};
+function getIcon(type: string) {
+  switch (type) {
+    case "deposit":
+      return TrendingUp;
+    case "withdraw":
+      return TrendingDown;
+    case "bonus":
+      return Gift;
+    default:
+      return Gamepad2;
+  }
+}
+
+function getColor(type: string) {
+  switch (type) {
+    case "deposit":
+    case "win":
+      return "#00a86d";
+    case "withdraw":
+    case "loss":
+      return "#ef4444";
+    case "bonus":
+      return "#a855f7";
+    default:
+      return "#9ca3af";
+  }
+}
 
 export default async function HistoryPage() {
   const user = await getSessionUser();
-  if (!user) redirect("/login");
+  if (!user) return null;
 
   return (
-    <DashboardShell active="history">
-      <div className="mb-4">
-        <h1 className="text-2xl font-black text-white">Transaction History</h1>
-        <p className="mt-1 text-sm text-[#8a8aa0]">
-          Your recent deposits, withdrawals, bets and winnings.
-        </p>
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-xl font-bold text-[#f0f0f0] sm:text-2xl">Transaction History</h1>
+        <p className="text-sm text-[#9ca3af]">Your recent deposits, withdrawals, and game activity</p>
       </div>
 
-      <div className="rounded-xl border border-[#2a2a3e] bg-[#1e1e2d] p-4">
-        <ul className="flex flex-col gap-2">
-          {TRANSACTIONS.map((txn) => {
-            const meta = TYPE_META[txn.type];
-            const positive = txn.amount >= 0;
+      <div className="rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-4">
+        <div className="space-y-2">
+          {TRANSACTIONS.map((tx) => {
+            const Icon = getIcon(tx.type);
+            const color = getColor(tx.type);
             return (
-              <li
-                key={txn.id}
-                className="flex items-center justify-between gap-3 rounded-lg border border-[#2a2a3e] bg-[#0d0d18] px-3 py-3"
-              >
+              <div key={tx.id} className="flex items-center justify-between rounded-lg bg-[#121315] px-3 py-3">
                 <div className="flex items-center gap-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1e1e2d] text-lg">
-                    {meta.emoji}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-white">
-                      {meta.label} · {txn.method}
-                    </p>
-                    <p className="text-xs text-[#8a8aa0]">{timeAgo(txn.date)}</p>
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ background: `${color}20` }}>
+                    <Icon className="h-4 w-4" style={{ color }} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[#f0f0f0]">{tx.label}</p>
+                    <p className="text-xs text-[#6b7280]">{timeAgo(tx.date)}</p>
                   </div>
                 </div>
-                <span
-                  className={
-                    positive
-                      ? "shrink-0 text-sm font-bold text-green-400"
-                      : "shrink-0 text-sm font-bold text-red-400"
-                  }
-                >
-                  {positive ? "+" : ""}
-                  {formatBDT(Math.abs(txn.amount))}
-                </span>
-              </li>
+                <p className="text-sm font-bold" style={{ color }}>
+                  {tx.amount > 0 ? "+" : ""}
+                  {formatBDT(tx.amount)}
+                </p>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
-    </DashboardShell>
+    </div>
   );
 }

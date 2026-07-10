@@ -1,162 +1,47 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-interface DialogContextValue {
+interface DialogProps {
   open: boolean;
-  setOpen: (open: boolean) => void;
-}
-
-const DialogContext = createContext<DialogContextValue | undefined>(undefined);
-
-function useDialogContext(component: string) {
-  const ctx = useContext(DialogContext);
-  if (!ctx) {
-    throw new Error(`<${component}> must be used within <Dialog>`);
-  }
-  return ctx;
-}
-
-export function Dialog({
-  children,
-  defaultOpen = false,
-}: {
-  children: ReactNode;
-  defaultOpen?: boolean;
-}) {
-  const [open, setOpen] = useState(defaultOpen);
-
-  return (
-    <DialogContext.Provider value={{ open, setOpen }}>
-      {children}
-    </DialogContext.Provider>
-  );
-}
-
-export function DialogTrigger({
-  children,
-  asChild,
-  className,
-}: {
-  children: ReactNode;
-  asChild?: boolean;
-  className?: string;
-}) {
-  const { open, setOpen } = useDialogContext("DialogTrigger");
-
-  if (asChild) {
-    // Clone the single child element to inject onClick + className.
-    const child = children as React.ReactElement<{
-      onClick?: (e: React.MouseEvent) => void;
-      className?: string;
-    }>;
-    return {
-      ...child,
-      props: {
-        ...child.props,
-        className: cn(child.props.className, className),
-        onClick: (e: React.MouseEvent) => {
-          child.props.onClick?.(e);
-          if (!e.defaultPrevented) setOpen(!open);
-        },
-      },
-    } as React.ReactElement;
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={() => setOpen(!open)}
-      className={cn("cursor-pointer", className)}
-    >
-      {children}
-    </button>
-  );
-}
-
-export function DialogContent({
-  children,
-  className,
-  onCloseAutoFocus,
-}: {
+  onClose: () => void;
   children: ReactNode;
   className?: string;
-  onCloseAutoFocus?: () => void;
-}) {
-  const { open, setOpen } = useDialogContext("DialogContent");
-  const contentRef = useRef<HTMLDivElement>(null);
+}
 
-  // Close on Escape and lock body scroll while open.
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setOpen(false);
-        onCloseAutoFocus?.();
-      }
-    };
-    document.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [open, setOpen, onCloseAutoFocus]);
-
+export function Dialog({ open, onClose, children, className }: DialogProps) {
   if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay */}
+    <div
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4"
+      onClick={onClose}
+    >
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-fade-in"
-        onClick={() => {
-          setOpen(false);
-          onCloseAutoFocus?.();
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Content */}
-      <div
-        ref={contentRef}
-        role="dialog"
-        aria-modal="true"
         className={cn(
-          "relative z-10 w-full max-w-md rounded-xl border p-5 shadow-2xl animate-fade-in",
+          "relative w-full max-w-md rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-6 shadow-2xl",
           className
         )}
-        style={{ background: "#1e1e2d", borderColor: "#2a2a3e" }}
+        onClick={(e) => e.stopPropagation()}
       >
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0]"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
         {children}
       </div>
     </div>
   );
 }
 
-export function DialogTitle({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function DialogTitle({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <h2
-      className={cn(
-        "text-lg font-semibold leading-none tracking-tight text-white",
-        className
-      )}
-    >
+    <h2 className={cn("mb-4 text-xl font-bold text-[#f0f0f0]", className)}>
       {children}
     </h2>
   );
