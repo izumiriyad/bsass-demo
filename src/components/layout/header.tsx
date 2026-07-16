@@ -16,6 +16,9 @@ export function Header() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocus, setSearchFocus] = useState(false);
+  const [language, setLanguage] = useState<"EN" | "বাংলা">("EN");
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -30,6 +33,21 @@ export function Header() {
     router.push("/");
   };
 
+  const popularGames = [
+    "Cricket Star",
+    "Aviator",
+    "Andar Bahar",
+    "Teen Patti",
+    "Lightning Roulette",
+  ];
+
+  const quickLinks = [
+    { label: "Promotions", href: "/promotions" },
+    { label: "Live Casino", href: "/casino" },
+    { label: "Sports Betting", href: "/sports" },
+    { label: "Cricket", href: "/cricket" },
+  ];
+
   const menuItems = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Bet History", href: "/dashboard?tab=bets" },
@@ -40,11 +58,11 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-30 flex h-[72px] items-center bg-[#121315] px-4">
+    <header className="glass fixed left-0 right-0 top-0 z-30 flex h-[72px] items-center border-b border-white/[0.06] px-3 sm:px-4">
       <button
         onClick={() => setMobileOpen(true)}
         aria-label="Open menu"
-        className="flex h-9 w-9 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0] lg:hidden"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0] lg:hidden"
       >
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -53,37 +71,103 @@ export function Header() {
       <button
         onClick={toggle}
         aria-label="Toggle sidebar"
-        className="hidden h-9 w-9 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0] lg:flex"
+        className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0] lg:flex"
       >
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
           <path d="M11 3L5 9l6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
-      <Link href="/" className="ml-2 flex items-center gap-1">
+      <Link href="/" className="ml-2 flex shrink-0 items-center gap-1">
         <span className="text-xl font-bold text-[#008d5b]">BSL</span>
         <span className="text-xl font-bold text-[#ffdf19]">Gaming</span>
       </Link>
 
-      <div className="ml-auto flex items-center gap-3">
+      <div className="relative ml-4 hidden max-w-md flex-1 items-center lg:flex">
+        <svg
+          className="pointer-events-none absolute left-3 text-[#6b7280]"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+        >
+          <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M11 11l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onFocus={() => setSearchFocus(true)}
+          onBlur={() => setTimeout(() => setSearchFocus(false), 150)}
+          placeholder="Search games, sports, promotions..."
+          className="w-full rounded-lg border border-white/[0.06] bg-[#1b1c1e]/80 py-2 pl-9 pr-3 text-sm text-[#f0f0f0] placeholder:text-[#6b7280] transition focus:border-[#008d5b]/50 focus:outline-none"
+        />
+        {searchFocus && (
+          <div className="absolute left-0 right-0 top-12 z-50 rounded-lg border border-white/[0.08] bg-[#1b1c1e] py-2 shadow-2xl">
+            <div className="px-4 py-1.5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#6b7280]">Popular Games</p>
+            </div>
+            {popularGames.map((game) => (
+              <button
+                key={game}
+                onMouseDown={(e) => e.preventDefault()}
+                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
+              >
+                <span className="text-[#ffdf19]">▸</span>
+                {game}
+              </button>
+            ))}
+            <div className="my-1 border-t border-white/[0.06]" />
+            <div className="px-4 py-1.5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#6b7280]">Quick Links</p>
+            </div>
+            {quickLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                onMouseDown={(e) => e.preventDefault()}
+                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
+              >
+                <span className="text-[#008d5b]">▸</span>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="ml-auto flex items-center gap-2 sm:gap-3">
+        <button
+          onClick={() => setLanguage((l) => (l === "EN" ? "বাংলা" : "EN"))}
+          aria-label="Toggle language"
+          className="flex h-9 shrink-0 items-center gap-1.5 rounded-md px-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M2 8h12M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+          <span>{language}</span>
+        </button>
+
         {!user ? (
           <>
             <button
               onClick={() => openModal("login")}
-              className="rounded-lg border border-[#ffdf19] px-4 py-2 text-sm font-semibold text-[#ffdf19] transition hover:bg-[#ffdf19]/10"
+              className="rounded-lg border border-[#ffdf19] px-3 py-2 text-sm font-semibold text-[#ffdf19] transition hover:bg-[#ffdf19]/10 sm:px-4"
             >
               Login
             </button>
             <button
               onClick={() => openModal("register")}
-              className="btn-primary px-4 py-2 text-sm"
+              className="btn-primary px-3 py-2 text-sm sm:px-4"
             >
               Sign Up
             </button>
           </>
         ) : (
           <>
-            <div className="flex items-center gap-2 rounded-lg border border-[#2a2c30] bg-[#1b1c1e] px-3 py-2">
+            <div className="flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-[#1b1c1e]/80 px-2.5 py-2 sm:gap-2 sm:px-3">
               <span className="text-sm font-bold text-[#ffdf19]">{formatBDT(user.balance)}</span>
               <button
                 onClick={handleRefresh}
@@ -108,7 +192,17 @@ export function Header() {
               </button>
             </div>
 
-            <button aria-label="Notifications" className="relative flex h-9 w-9 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0]">
+            <button
+              onClick={() => openModal("deposit")}
+              className="flex shrink-0 items-center gap-1 rounded-lg bg-[#008d5b] px-2.5 py-2 text-sm font-semibold text-white transition hover:bg-[#00a86b] sm:px-3"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <span className="hidden sm:inline">Deposit</span>
+            </button>
+
+            <button aria-label="Notifications" className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path
                   d="M9 2a4 4 0 0 0-4 4v3l-1.5 2.5h11L13 9V6a4 4 0 0 0-4-4zM7 14a2 2 0 0 0 4 0"
@@ -124,15 +218,15 @@ export function Header() {
             <div className="relative">
               <button
                 onClick={() => setMenuOpen((o) => !o)}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#008d5b] text-sm font-bold text-white"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#008d5b] text-sm font-bold text-white"
               >
                 {user.username.charAt(0).toUpperCase()}
               </button>
               {menuOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setMenuOpen(false)} />
-                  <div className="absolute right-0 top-11 z-50 w-52 rounded-lg border border-[#2a2c30] bg-[#1b1c1e] py-1 shadow-2xl">
-                    <div className="border-b border-[#2a2c30] px-4 py-2.5">
+                  <div className="absolute right-0 top-11 z-50 w-52 rounded-lg border border-white/[0.08] bg-[#1b1c1e] py-1 shadow-2xl">
+                    <div className="border-b border-white/[0.06] px-4 py-2.5">
                       <p className="text-sm font-semibold text-[#f0f0f0]">{user.username}</p>
                       <p className="truncate text-xs text-[#6b7280]">{user.email}</p>
                     </div>
@@ -142,7 +236,7 @@ export function Header() {
                           key={item.label}
                           href={item.href}
                           onClick={() => setMenuOpen(false)}
-                          className="block px-4 py-2 text-sm text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0]"
+                          className="block px-4 py-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
                         >
                           {item.label}
                         </Link>
@@ -150,16 +244,16 @@ export function Header() {
                         <button
                           key={item.label}
                           onClick={item.action}
-                          className="block w-full px-4 py-2 text-left text-sm text-[#9ca3af] transition hover:bg-[#242628] hover:text-[#f0f0f0]"
+                          className="block w-full px-4 py-2 text-left text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
                         >
                           {item.label}
                         </button>
                       )
                     )}
-                    <div className="border-t border-[#2a2c30]">
+                    <div className="border-t border-white/[0.06]">
                       <button
                         onClick={handleLogout}
-                        className="block w-full px-4 py-2 text-left text-sm text-[#ef4444] transition hover:bg-[#242628]"
+                        className="block w-full px-4 py-2 text-left text-sm text-[#ef4444] transition hover:bg-white/5"
                       >
                         Logout
                       </button>

@@ -22,6 +22,18 @@ const WINS: Win[] = [
   { username: "Hasa***", amount: 27500, game: "Super Ace" },
   { username: "Rifa***", amount: 11200, game: "Fortune Gems 3" },
   { username: "Saki***", amount: 5800, game: "Plinko" },
+  { username: "Lami***", amount: 38900, game: "Lightning Roulette" },
+  { username: "Dipo***", amount: 14600, game: "Crazy Time" },
+  { username: "Rash***", amount: 21400, game: "Mega Wheel" },
+  { username: "Suma***", amount: 9100, game: "Sweet Bonanza" },
+  { username: "Tari***", amount: 47800, game: "Gates of Olympus" },
+  { username: "Jiba***", amount: 13700, game: "Aviator" },
+  { username: "Wasi***", amount: 8600, game: "Dragon Tiger" },
+  { username: "Nusa***", amount: 19500, game: "Super Ace" },
+  { username: "Hasi***", amount: 24300, game: "Starlight Princess" },
+  { username: "Bapp***", amount: 33600, game: "Big Bass Bonanza" },
+  { username: "Roka***", amount: 7900, game: "Wild West Gold" },
+  { username: "Mamu***", amount: 16100, game: "Aztec Gems" },
 ];
 
 export function WinnersTicker() {
@@ -38,7 +50,7 @@ export function WinnersTicker() {
           {items.map((win, i) => (
             <span key={i} className="flex items-center gap-1.5 text-xs text-[#9ca3af]">
               <span className="font-semibold text-[#f0f0f0]">{win.username}</span>
-              <span className="font-bold text-[#ffdf19]">{formatBDT(win.amount)}</span>
+              <span className="font-bold text-gold-gradient">{formatBDT(win.amount)}</span>
               <span className="text-[#6b7280]">on {win.game}</span>
               <span className="text-[#2a2c30]">•</span>
             </span>
@@ -50,7 +62,7 @@ export function WinnersTicker() {
 }
 
 export function JackpotTicker() {
-  const [value, setValue] = useState(18_245_900);
+  const [value, setValue] = useState(42_875_300);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -60,13 +72,13 @@ export function JackpotTicker() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center gap-2 rounded-lg border border-[#ffdf19]/30 bg-gradient-to-r from-[#1b1c1e] via-[#242628] to-[#1b1c1e] px-4 py-3">
-      <span className="text-xl">💰</span>
+    <div className="glow-gold flex items-center justify-center gap-2 rounded-lg border border-[#ffdf19]/30 bg-gradient-to-r from-[#1b1c1e] via-[#242628] to-[#1b1c1e] px-4 py-3">
+      <span className="animate-tilt text-xl">💰</span>
       <div className="text-center">
         <p className="text-[10px] font-bold tracking-widest text-[#9ca3af]">
           MEGA JACKPOT
         </p>
-        <p className="text-lg font-extrabold text-[#ffdf19] sm:text-2xl">
+        <p className="text-gold-shimmer counter text-lg font-extrabold sm:text-2xl">
           {formatBDT(value)}
         </p>
       </div>
