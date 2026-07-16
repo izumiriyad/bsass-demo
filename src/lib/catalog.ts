@@ -244,3 +244,157 @@ export const ALL_GAMES: BSLGame[] = [
   ...TABLE_GAMES,
   ...COCKFIGHTING_GAMES,
 ];
+
+// === UPGRADED SECTIONS FROM COMPETITOR RESEARCH ===
+
+// Sportsbook providers (BetJili-style multi-provider aggregation)
+export const SPORTSBOOK_PROVIDERS = [
+  { id: "saba", name: "SABA", emoji: "🎯", events: "500+ daily" },
+  { id: "bti", name: "BTi", emoji: "📊", events: "800+ daily" },
+  { id: "sbo", name: "SBOBET", emoji: "⚽", events: "600+ daily" },
+  { id: "cmd", name: "CMD368", emoji: "🎮", events: "700+ daily" },
+  { id: "pinnacle", name: "PINNACLE", emoji: "🏔️", events: "400+ daily" },
+];
+
+// Cricket events with live streaming + scores
+export const CRICKET_LIVE_MATCHES = [
+  { id: "clm1", league: "Bangladesh Premier League", team1: "Dhaka Dominators", team2: "Chattogram Challengers", score1: "178/4", overs1: "18.4", score2: "—", overs2: "—", status: "live", odds: { back1: 1.85, lay1: 1.87, back2: 2.10, lay2: 2.12, draw: 3.40 } as Record<string, number>, inning: "1st Innings" },
+  { id: "clm2", league: "IPL 2025", team1: "Mumbai Indians", team2: "Chennai Super Kings", score1: "—", overs1: "—", score2: "—", overs2: "—", status: "upcoming", odds: { back1: 1.95, lay1: 1.97, back2: 1.90, lay2: 1.92 } as Record<string, number>, startTime: "Today 7:30 PM" },
+  { id: "clm3", league: "Asia Cup", team1: "Bangladesh", team2: "India", score1: "—", overs1: "—", score2: "—", overs2: "—", status: "upcoming", odds: { back1: 2.40, lay1: 2.42, back2: 1.60, lay2: 1.62 } as Record<string, number>, startTime: "Tomorrow 2:00 PM" },
+  { id: "clm4", league: "BPL T20", team1: "Sylhet Strikers", team2: "Khulna Tigers", score1: "145/6", overs1: "20", score2: "120/3", overs2: "15.2", status: "live", odds: { back1: 1.75, lay1: 1.77, back2: 2.25, lay2: 2.27 } as Record<string, number>, inning: "2nd Innings" },
+];
+
+// Tournament/Event system (HeyVIP-style cross-brand events)
+export const TOURNAMENTS = [
+  { id: "evt-fifa", title: "FIFA Grand Challenge", emoji: "⚽", prizePool: "৳10,000,000", participants: 5200, status: "active", endDate: "Aug 31", gradient: ["#065f46", "#0d9488"] as [string, string], category: "Sports" },
+  { id: "evt-cricket-crown", title: "Cricket Crown Challenge", emoji: "🏏", prizePool: "৳5,000,000", participants: 3800, status: "active", endDate: "Sep 15", gradient: ["#0c4a6e", "#1d4ed8"] as [string, string], category: "Cricket" },
+  { id: "evt-crazy-time", title: "Crazy Time Event Battle", emoji: "🎪", prizePool: "৳3,000,000", participants: 2400, status: "active", endDate: "Jul 31", gradient: ["#7c0000", "#991b1b"] as [string, string], category: "Casino" },
+  { id: "evt-jili-macaw", title: "JILI Macaw Contest", emoji: "🦜", prizePool: "৳2,000,000", participants: 1800, status: "active", endDate: "Aug 10", gradient: ["#713f12", "#d97706"] as [string, string], category: "Slots" },
+  { id: "evt-cash-hunt", title: "New Year Cash Hunt", emoji: "💰", prizePool: "৳8,000,000", participants: 6100, status: "upcoming", endDate: "Dec 31", gradient: ["#1e1b4b", "#4c1d95"] as [string, string], category: "Special" },
+  { id: "evt-sv388", title: "SV388 Cockfight Campaign", emoji: "🐓", prizePool: "৳1,500,000", participants: 900, status: "active", endDate: "Aug 20", gradient: ["#7c0000", "#b91c1c"] as [string, string], category: "Cockfighting" },
+];
+
+// Event leaderboard data
+export const EVENT_LEADERBOARD = [
+  { rank: 1, username: "TigerBD", points: 158200, prize: "৳500,000" },
+  { rank: 2, username: "DhakaKing", points: 142100, prize: "৳300,000" },
+  { rank: 3, username: "CricketMaster", points: 135800, prize: "৳200,000" },
+  { rank: 4, username: "LuckyBettor", points: 98700, prize: "৳100,000" },
+  { rank: 5, username: "BPL_Fan", points: 87600, prize: "৳50,000" },
+  { rank: 6, username: "SlotQueen", points: 76200, prize: "৳30,000" },
+  { rank: 7, username: "NagadBoss", points: 65100, prize: "৳20,000" },
+  { rank: 8, username: "ChaseRun", points: 54200, prize: "৳10,000" },
+  { rank: 9, username: "SixMachine", points: 43800, prize: "৳5,000" },
+  { rank: 10, username: "BoundaryKing", points: 32900, prize: "৳5,000" },
+];
+
+// RAF Leaderboard (JeetBuzz-style gamified referral)
+export const RAF_LEADERBOARD = [
+  { rank: 1, username: "SuperReferrer", referrals: 285, earned: "৳145,000" },
+  { rank: 2, username: "NetworkKing", referrals: 231, earned: "৳118,000" },
+  { rank: 3, username: "InviteMaster", referrals: 198, earned: "৳101,000" },
+  { rank: 4, username: "ShareQueen", referrals: 167, earned: "৳85,000" },
+  { rank: 5, username: "BDFriend", referrals: 143, earned: "৳73,000" },
+  { rank: 6, username: "ConnectorBD", referrals: 121, earned: "৳62,000" },
+  { rank: 7, username: "CrowdPuller", referrals: 98, earned: "৳50,000" },
+  { rank: 8, username: "LinkMaster", referrals: 87, earned: "৳44,000" },
+  { rank: 9, username: "ReferPro", referrals: 76, earned: "৳39,000" },
+  { rank: 10, username: "GrowTogether", referrals: 65, earned: "৳33,000" },
+];
+
+// Cricket team sponsorships (Baji-style)
+export const SPONSORS = [
+  { name: "Dhaka Titans", league: "BPL 2025", role: "Title Sponsor", emoji: "🏏" },
+  { name: "Chattogram Warriors", league: "BPL 2025", role: "Principal Sponsor", emoji: "🏏" },
+  { name: "Rajshahi Royals", league: "BPL 2025", role: "Jersey Sponsor", emoji: "🏏" },
+  { name: "Sylhet Lions", league: "BPL 2025", role: "Back Sponsor", emoji: "🏏" },
+];
+
+// Celebrity ambassadors (Baji-style)
+export const AMBASSADORS = [
+  { name: "Shakib Al Hasan", role: "Brand Ambassador", sport: "Cricket", emoji: "🏏", period: "2025-2027" },
+  { name: "Tamim Iqbal", role: "Sports Ambassador", sport: "Cricket", emoji: "🏏", period: "2025-2026" },
+  { name: "Mashrafe Mortaza", role: "Cricket Legend", sport: "Cricket", emoji: "🏏", period: "2025" },
+  { name: "Sabina Khatun", role: "Football Ambassador", sport: "Football", emoji: "⚽", period: "2025-2026" },
+];
+
+// Local casual games (Baji-style LUDO, So De)
+export const LOCAL_GAMES: BSLGame[] = [
+  g("lg1", "LUDO Classic", "BSL Originals", "popular", "#065f46", "#0d9488", "🎲", { isNew: true, players: 1200 }),
+  g("lg2", "So De", "BSL Originals", "popular", "#7c0000", "#991b1b", "🔢", { isNew: true, players: 800 }),
+  g("lg3", "LUDO Express", "BSL Originals", "popular", "#1e3a5f", "#1d4ed8", "🎲", { players: 600 }),
+  g("lg4", "Number Matka", "BSL Originals", "popular", "#713f12", "#b45309", "🎰", { players: 500 }),
+];
+
+// News & Updates (HeyVIP-style)
+export const NEWS_ARTICLES = [
+  { id: "news1", title: "BSL Gaming Becomes Title Sponsor of Dhaka Titans in BPL 2025", excerpt: "BSL Gaming announces major sponsorship deal with Dhaka Titans for the upcoming Bangladesh Premier League season.", date: "2025-07-10", category: "Sponsorship", emoji: "🏏" },
+  { id: "news2", title: "New JILI Games Added: Over 50 New Slots Now Available", excerpt: "We've expanded our slots collection with 50+ new titles from JILI, including exclusive BSL Gaming releases.", date: "2025-07-08", category: "Games", emoji: "🎰" },
+  { id: "news3", title: "Cricket Crown Challenge: ৳5 Million Prize Pool Live Now", excerpt: "Join our biggest cricket betting tournament with a massive ৳5,000,000 prize pool. Compete and win big.", date: "2025-07-05", category: "Tournament", emoji: "🏆" },
+  { id: "news4", title: "bKash Instant Withdrawals Now Available 24/7", excerpt: "We're proud to announce 24/7 instant bKash withdrawals. Cash out your winnings anytime, anywhere in Bangladesh.", date: "2025-07-01", category: "Payment", emoji: "💗" },
+  { id: "news5", title: "Welcome Bonus Increased to ৳10,000 for New Members", excerpt: "New players can now claim a 100% welcome bonus up to ৳10,000 BDT on their first deposit. Terms apply.", date: "2025-06-28", category: "Promotion", emoji: "🎁" },
+  { id: "news6", title: "RAF Leaderboard: ৳3 Lakh Monthly Prize Pool Launches", excerpt: "Our gamified Refer-A-Friend leaderboard is live. Refer friends, climb ranks, and share a ৳3,00,000 monthly pool.", date: "2025-06-25", category: "Referral", emoji: "🤝" },
+];
+
+// Trust/License badges
+export const TRUST_BADGES = [
+  { label: "Curaçao License", sub: "No. 365/JAZ", emoji: "📜" },
+  { label: "RNG Certified", sub: "Fair Play", emoji: "✅" },
+  { label: "SSL Encrypted", sub: "256-bit", emoji: "🔒" },
+  { label: "18+ Responsible Gaming", sub: "BeGambleAware", emoji: "🛡️" },
+];
+
+// Social media links
+export const SOCIAL_LINKS = [
+  { platform: "Telegram", handle: "@BSLGamingOfficial", href: "https://t.me/BSLGamingOfficial", emoji: "📨" },
+  { platform: "WhatsApp", handle: "+880 1700-000000", href: "https://wa.me/8801700000000", emoji: "💬" },
+  { platform: "Facebook", handle: "BSL Gaming BD", href: "https://facebook.com/bslgamingbd", emoji: "📘" },
+  { platform: "YouTube", handle: "BSL Gaming", href: "https://youtube.com/@bslgaming", emoji: "📺" },
+  { platform: "Instagram", handle: "@bslgaming", href: "https://instagram.com/bslgaming", emoji: "📸" },
+];
+
+// VIP tiers with rebate structure (Crickex/BetJili-style)
+export const VIP_TIERS = [
+  { tier: "Bronze", emoji: "🥉", threshold: "৳0", cashback: "0.5%", rebate: "0.3%", withdrawalLimit: "৳50,000/day", perks: ["Standard support", "Birthday bonus ৳500"] },
+  { tier: "Silver", emoji: "🥈", threshold: "৳50,000", cashback: "0.8%", rebate: "0.5%", withdrawalLimit: "৳1,00,000/day", perks: ["Priority support", "Birthday bonus ৳1,000", "Monthly cashback ৳2,000"] },
+  { tier: "Gold", emoji: "🥇", threshold: "৳2,00,000", cashback: "1.0%", rebate: "0.8%", withdrawalLimit: "৳3,00,000/day", perks: ["VIP support line", "Birthday bonus ৳3,000", "Weekly cashback ৳5,000", "Exclusive promos"] },
+  { tier: "Platinum", emoji: "💎", threshold: "৳5,00,000", cashback: "1.2%", rebate: "1.0%", withdrawalLimit: "৳5,00,000/day", perks: ["Dedicated manager", "Birthday bonus ৳5,000", "Daily cashback ৳3,000", "Festival bonuses", "Event invitations"] },
+  { tier: "Diamond", emoji: "👑", threshold: "৳10,00,000", cashback: "1.5%", rebate: "1.21%", withdrawalLimit: "Unlimited", perks: ["Personal VIP host", "Birthday bonus ৳10,000", "Daily cashback ৳10,000", "Custom limits", "Luxury gifts", "Exclusive tournament access"] },
+];
+
+// Affiliate commission tiers
+export const AFFILIATE_TIERS = [
+  { tier: "Starter", commission: "25%", requirement: "1-10 active players", monthlyBonus: "৳5,000" },
+  { tier: "Silver", commission: "30%", requirement: "11-50 active players", monthlyBonus: "৳15,000" },
+  { tier: "Gold", commission: "35%", requirement: "51-200 active players", monthlyBonus: "৳50,000" },
+  { tier: "Platinum", commission: "40%", requirement: "201-500 active players", monthlyBonus: "৳1,50,000" },
+  { tier: "Diamond", commission: "45%", requirement: "500+ active players", monthlyBonus: "৳5,00,000" },
+];
+
+// Additional providers (expanded from research)
+export const EXTRA_PROVIDERS = [
+  { name: "MICROGAMING", emoji: "🎰" },
+  { name: "PLAY'N GO", emoji: "🎮" },
+  { name: "RED TIGER", emoji: "🐯" },
+  { name: "PLAYTECH", emoji: "🅿️" },
+  { name: "NETENT", emoji: "💎" },
+  { name: "CQ9", emoji: "🎲" },
+  { name: "RICH88", emoji: "💰" },
+  { name: "FASTSPIN", emoji: "⚡" },
+  { name: "KING MAKER", emoji: "👑" },
+  { name: "SPRIBE", emoji: "🚀" },
+  { name: "AE SEXY", emoji: "💃" },
+  { name: "BIG GAMING", emoji: "🎮" },
+  { name: "SABA SPORTS", emoji: "📊" },
+  { name: "SBOBET", emoji: "⚽" },
+];
+
+// Promo calendar (JeetBuzz-style category-specific promo calendars)
+export const PROMO_CALENDAR = [
+  { category: "Slots", title: "JILI Slots Festival", prize: "৳9,00,000", dateRange: "Jul 1 - Jul 31", emoji: "🎰", status: "active" },
+  { category: "Sports", title: "Sports Cashback Festival", prize: "৳12,00,000", dateRange: "Jul 1 - Jul 31", emoji: "⚽", status: "active" },
+  { category: "Live Casino", title: "Crazy Time Battle", prize: "৳6,00,000", dateRange: "Jul 15 - Aug 15", emoji: "🎪", status: "active" },
+  { category: "Crash", title: "Aviator Cash Hunt", prize: "৳4,00,000", dateRange: "Jul 1 - Jul 31", emoji: "✈️", status: "active" },
+  { category: "Fishing", title: "Deep Sea Bounty", prize: "৳3,00,000", dateRange: "Aug 1 - Aug 31", emoji: "🎣", status: "upcoming" },
+  { category: "Cockfighting", title: "SV388 Derby Cup", prize: "৳2,00,000", dateRange: "Aug 1 - Aug 31", emoji: "🐓", status: "upcoming" },
+];

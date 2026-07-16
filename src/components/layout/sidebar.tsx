@@ -7,9 +7,19 @@ import { GAME_CATEGORIES } from "@/lib/catalog";
 import { useSidebar } from "./sidebar-provider";
 import { cn } from "@/lib/utils";
 
+const EXTRA_NAV_ITEMS = [
+  { id: "betting-exchange", label: "BETTING EXCHANGE", emoji: "🔄", href: "/betting-exchange" },
+  { id: "live-scores", label: "LIVE SCORES", emoji: "📊", href: "/live-scores" },
+  { id: "tournaments", label: "TOURNAMENTS", emoji: "🏆", href: "/tournaments" },
+];
+
 const BOTTOM_ITEMS = [
   { id: "promotions", label: "PROMOTIONS", emoji: "🎁", href: "/promotions" },
   { id: "vip", label: "VIP", emoji: "👑", href: "/vip" },
+  { id: "affiliate", label: "AFFILIATE", emoji: "💼", href: "/affiliate" },
+  { id: "referral", label: "REFERRAL", emoji: "🤝", href: "/referral" },
+  { id: "news", label: "NEWS", emoji: "📰", href: "/news" },
+  { id: "app-download", label: "APP DOWNLOAD", emoji: "📱", href: "/app-download" },
 ];
 
 const SUBMENU_MAP: Record<string, { label: string; href: string }[]> = {
@@ -136,6 +146,28 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      <div className="border-t border-[#2a2c30] py-2">
+        {EXTRA_NAV_ITEMS.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition",
+                collapsed && "justify-center px-0",
+                active
+                  ? "bg-[#ffdf19]/[0.08] text-[#ffdf19]"
+                  : "text-[#9ca3af] hover:bg-[#242628] hover:text-[#f0f0f0]"
+              )}
+            >
+              <span className="text-lg">{item.emoji}</span>
+              {!collapsed && <span>{item.label}</span>}
+            </Link>
+          );
+        })}
+      </div>
 
       <div className="border-t border-[#2a2c30] py-2">
         {BOTTOM_ITEMS.map((item) => {

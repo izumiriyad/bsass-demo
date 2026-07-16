@@ -1,11 +1,28 @@
 import Link from "next/link";
-import { GameCard, FeatureCard, GameGrid } from "@/components/bj88/game-card";
-import { HeroBanner } from "@/components/bj88/hero-banner";
 import { WinnersTicker, JackpotTicker } from "@/components/bj88/tickers";
+import { HeroBanner } from "@/components/bj88/hero-banner";
 import { CategoryTabs } from "@/components/bj88/category-tabs";
 import { GameSection } from "@/components/bj88/game-section";
+import { GameCard, FeatureCard, GameGrid } from "@/components/bj88/game-card";
+import { TournamentSection } from "@/components/bj88/tournament-cards";
+import { EventLeaderboard } from "@/components/bj88/event-leaderboard";
+import { RAFLeaderboard } from "@/components/bj88/raf-leaderboard";
+import { AmbassadorShowcase } from "@/components/bj88/ambassador-showcase";
+import { SponsorStrip } from "@/components/bj88/sponsor-strip";
+import { LiveCricketWidget } from "@/components/bj88/live-cricket";
+import { SportsbookOdds } from "@/components/bj88/sportsbook-odds";
+import { AppDownloadBanner } from "@/components/bj88/app-download-banner";
+import { TrustBadges } from "@/components/bj88/trust-badges";
+import { NewsSection } from "@/components/bj88/news-section";
+import { PromoCalendar } from "@/components/bj88/promo-calendar";
+import { BettingExchangeWidget } from "@/components/bj88/betting-exchange-widget";
+import { JackpotBanner } from "@/components/bj88/jackpot-banner";
+import { Footer } from "@/components/bj88/footer";
 import {
-  SITE,
+  EXTRA_PROVIDERS,
+  PROVIDERS,
+  PROMOTIONS,
+  LOCAL_GAMES,
   POPULAR_GAMES,
   SLOTS_GAMES,
   CASINO_GAMES,
@@ -13,9 +30,12 @@ import {
   COCKFIGHTING_GAMES,
   FEATURED_GAMES,
   SPORTS_EVENTS,
-  PROMOTIONS,
-  PROVIDERS,
+  SITE,
 } from "@/lib/catalog";
+
+const ALL_PROVIDERS = [...PROVIDERS, ...EXTRA_PROVIDERS];
+const POPULAR_WITH_LOCAL = [...POPULAR_GAMES, ...LOCAL_GAMES];
+const HOMEPAGE_PROMOS = PROMOTIONS.slice(0, 6);
 
 export default function HomePage() {
   return (
@@ -26,13 +46,21 @@ export default function HomePage() {
 
       <CategoryTabs />
 
+      <JackpotBanner />
+
       <GameSection
         title="Popular"
         emoji="⭐"
-        games={POPULAR_GAMES}
+        games={POPULAR_WITH_LOCAL}
         href="/popular"
         columns={10}
       />
+
+      <LiveCricketWidget />
+
+      <BettingExchangeWidget />
+
+      <SportsbookOdds />
 
       <section className="space-y-3">
         <div className="flex items-center gap-2">
@@ -48,6 +76,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <TournamentSection />
 
       <GameSection
         title="Slots"
@@ -65,45 +95,11 @@ export default function HomePage() {
         columns={10}
       />
 
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <span className="section-title-bar" />
-          <span className="text-lg">🏆</span>
-          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
-            Tournaments
-          </h2>
-          <Link
-            href="/vip"
-            className="ml-auto text-xs font-semibold text-[#22c55e] transition hover:text-[#00a86d]"
-          >
-            See All →
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          <FeatureCard
-            game={{
-              id: "tournament-slots",
-              title: "Slots Championship",
-              provider: "৳5,000,000 Prize Pool",
-              category: "popular",
-              gradient: ["#2e1065", "#5b21b6"],
-              emoji: "🎰",
-              isFeatured: true,
-            }}
-          />
-          <FeatureCard
-            game={{
-              id: "tournament-cricket",
-              title: "Cricket Betting Cup",
-              provider: "৳2,000,000 Prize Pool",
-              category: "popular",
-              gradient: ["#0c4a6e", "#1d4ed8"],
-              emoji: "🏏",
-              isFeatured: true,
-            }}
-          />
-        </div>
-      </section>
+      <PromoCalendar />
+
+      <RAFLeaderboard />
+
+      <EventLeaderboard title="Tournament Leaderboard" limit={5} />
 
       <GameSection
         title="Crash"
@@ -136,12 +132,12 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {PROMOTIONS.map((promo) => {
+          {HOMEPAGE_PROMOS.map((promo) => {
             const [c1, c2] = promo.gradient;
             return (
               <Link
                 key={promo.id}
-                href="/promotions"
+                href={`/promotions/${promo.id}`}
                 className="relative overflow-hidden rounded-xl p-4 transition hover:opacity-95"
                 style={{
                   background: `linear-gradient(135deg, ${c1}, ${c2})`,
@@ -177,71 +173,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <span className="section-title-bar" />
-          <span className="text-lg">⚽</span>
-          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
-            Sportsbook
-          </h2>
-          <Link
-            href="/sports"
-            className="ml-auto text-xs font-semibold text-[#22c55e] transition hover:text-[#00a86d]"
-          >
-            See All →
-          </Link>
-        </div>
-        <div className="space-y-2">
-          {SPORTS_EVENTS.map((event) => (
-            <div
-              key={event.id}
-              className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3"
-            >
-              <div className="mb-2 flex items-center gap-2">
-                <span className="text-xs font-semibold text-[#9ca3af]">
-                  {event.league}
-                </span>
-                {event.status === "live" ? (
-                  <span className="flex items-center gap-1 rounded bg-[#ef4444]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#ef4444]">
-                    <span className="live-dot live-dot-pulse" style={{ background: "#ef4444" }} />
-                    LIVE {event.minute}
-                  </span>
-                ) : (
-                  <span className="rounded bg-[#2a2c30] px-1.5 py-0.5 text-[10px] font-bold text-[#9ca3af]">
-                    UPCOMING
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold text-[#f0f0f0]">
-                    {event.team1}
-                  </p>
-                  <p className="truncate text-sm font-semibold text-[#f0f0f0]">
-                    {event.team2}
-                  </p>
-                </div>
-                <div className="flex shrink-0 gap-1.5">
-                  {event.odds.map((odd, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      className="rounded-md border border-[#2a2c30] bg-[#242628] px-3 py-2 text-center transition hover:border-[#008d5b] hover:bg-[#008d5b]/10"
-                    >
-                      <p className="text-[9px] uppercase text-[#6b7280]">
-                        {i === 0 ? "1" : i === 1 ? "X" : "2"}
-                      </p>
-                      <p className="text-sm font-bold text-[#f0f0f0]">
-                        {odd.toFixed(2)}
-                      </p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AmbassadorShowcase />
+
+      <SponsorStrip />
+
+      <AppDownloadBanner />
+
+      <NewsSection limit={4} />
 
       <JackpotTicker />
 
@@ -253,8 +191,8 @@ export default function HomePage() {
             Providers
           </h2>
         </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {PROVIDERS.map((provider) => (
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+          {ALL_PROVIDERS.map((provider) => (
             <div
               key={provider.name}
               className="flex items-center gap-2 rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 transition hover:border-[#383b3f]"
@@ -267,6 +205,8 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      <TrustBadges />
 
       <section className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-4 text-center">
         <p className="text-xs text-[#9ca3af]">
@@ -282,6 +222,8 @@ export default function HomePage() {
           .
         </p>
       </section>
+
+      <Footer />
     </div>
   );
 }

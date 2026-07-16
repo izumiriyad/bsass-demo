@@ -15,6 +15,7 @@ export function RegisterModal() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [promoCode, setPromoCode] = useState("");
   const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +38,7 @@ export function RegisterModal() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, promoCode }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error ?? "Registration failed");
@@ -93,6 +94,18 @@ export function RegisterModal() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Re-enter password"
+            className="w-full rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
+          />
+        </div>
+        <div>
+          <label className="mb-1.5 block text-sm font-medium text-[#9ca3af]">
+            Promo Code <span className="text-[#6b7280]">(optional)</span>
+          </label>
+          <input
+            type="text"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+            placeholder="Enter referral/promo code for bonus"
             className="w-full rounded-lg border border-[#2a2c30] bg-[#121315] px-4 py-2.5 text-[#f0f0f0] placeholder:text-[#6b7280] outline-none transition focus:border-[#008d5b]"
           />
         </div>

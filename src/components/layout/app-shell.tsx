@@ -3,6 +3,7 @@
 import { type ReactNode } from "react";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
+import { Footer } from "@/components/bj88/footer";
 import { useSidebar } from "./sidebar-provider";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       >
         <main className="min-h-screen pt-[72px]">{children}</main>
+        <Footer />
       </div>
     </div>
   );

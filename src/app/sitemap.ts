@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE, ALL_GAMES, PROMOTIONS } from "@/lib/catalog";
+import { SITE, ALL_GAMES, PROMOTIONS, NEWS_ARTICLES } from "@/lib/catalog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -28,6 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE.url}/responsible-gaming`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     { url: `${SITE.url}/login`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE.url}/register`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE.url}/tournaments`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/affiliate`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE.url}/referral`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE.url}/news`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
+    { url: `${SITE.url}/betting-exchange`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE.url}/app-download`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE.url}/live-scores`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
   ];
 
   const gamePages: MetadataRoute.Sitemap = ALL_GAMES.map((game) => ({
@@ -44,5 +51,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...gamePages, ...promoPages];
+  const newsPages: MetadataRoute.Sitemap = NEWS_ARTICLES.map((article) => ({
+    url: `${SITE.url}/news/${article.id}`,
+    lastModified: new Date(article.date),
+    changeFrequency: "yearly",
+    priority: 0.5,
+  }));
+
+  return [...staticPages, ...gamePages, ...promoPages, ...newsPages];
 }
