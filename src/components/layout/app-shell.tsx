@@ -3,7 +3,8 @@
 import { type ReactNode } from "react";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
-import { Footer } from "@/components/bj88/footer";
+import { TopNavBar } from "@/components/bj88/top-nav-bar";
+import { FloatingChat } from "@/components/bj88/floating-chat";
 import { useSidebar } from "./sidebar-provider";
 import { cn } from "@/lib/utils";
 
@@ -20,9 +21,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           collapsed ? "lg:pl-[63px]" : "lg:pl-[260px]"
         )}
       >
+        <TopNavBar />
         <main className="min-h-screen pt-[72px]">{children}</main>
-        <Footer />
       </div>
+      <FloatingChat />
     </div>
   );
 }

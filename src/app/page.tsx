@@ -18,6 +18,10 @@ import { PromoCalendar } from "@/components/bj88/promo-calendar";
 import { BettingExchangeWidget } from "@/components/bj88/betting-exchange-widget";
 import { JackpotBanner } from "@/components/bj88/jackpot-banner";
 import { Footer } from "@/components/bj88/footer";
+import { WhyChoose } from "@/components/bj88/why-choose";
+import { ProviderShowcase } from "@/components/bj88/provider-showcase";
+import { StatsCounter } from "@/components/bj88/stats-counter";
+import { AppQRSection } from "@/components/bj88/app-qr-section";
 import {
   EXTRA_PROVIDERS,
   PROVIDERS,
@@ -33,7 +37,6 @@ import {
   SITE,
 } from "@/lib/catalog";
 
-const ALL_PROVIDERS = [...PROVIDERS, ...EXTRA_PROVIDERS];
 const POPULAR_WITH_LOCAL = [...POPULAR_GAMES, ...LOCAL_GAMES];
 const HOMEPAGE_PROMOS = PROMOTIONS.slice(0, 6);
 
@@ -94,6 +97,10 @@ export default function HomePage() {
         href="/casino"
         columns={10}
       />
+
+      <WhyChoose />
+
+      <StatsCounter />
 
       <PromoCalendar />
 
@@ -177,34 +184,15 @@ export default function HomePage() {
 
       <SponsorStrip />
 
+      <AppQRSection />
+
       <AppDownloadBanner />
 
       <NewsSection limit={4} />
 
       <JackpotTicker />
 
-      <section className="space-y-3">
-        <div className="flex items-center gap-2">
-          <span className="section-title-bar" />
-          <span className="text-lg">🏢</span>
-          <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0] sm:text-base">
-            Providers
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-          {ALL_PROVIDERS.map((provider) => (
-            <div
-              key={provider.name}
-              className="flex items-center gap-2 rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-3 transition hover:border-[#383b3f]"
-            >
-              <span className="text-2xl">{provider.emoji}</span>
-              <span className="truncate text-xs font-bold text-[#f0f0f0]">
-                {provider.name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+      <ProviderShowcase />
 
       <TrustBadges />
 
