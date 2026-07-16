@@ -213,6 +213,14 @@ export const PROMOTIONS = [
   { id: "cricket-promo", title: "Cricket Special", subtitle: "50% Bonus on First Cricket Bet", badge: "Cricket", emoji: "🏏", gradient: ["#0c4a6e", "#0369a1"] as [string, string] },
   { id: "referral", title: "Refer & Earn", subtitle: "Get ৳500 for each friend referred", badge: "Referral", emoji: "🤝", gradient: ["#78350f", "#b45309"] as [string, string] },
   { id: "vip", title: "VIP Club", subtitle: "Exclusive rewards for VIP members", badge: "VIP", emoji: "👑", gradient: ["#713f12", "#d97706"] as [string, string] },
+  { id: "daily-sports-rebate", title: "Daily Sports Rebate", subtitle: "1.21% Daily Rebate on All Sports Bets", badge: "Daily", emoji: "⚽", gradient: ["#065f46", "#0d9488"] as [string, string] },
+  { id: "slots-cashback", title: "Slots Cashback", subtitle: "Up to 5% Cashback on Slots Losses", badge: "Slots", emoji: "🎰", gradient: ["#1e1b4b", "#4c1d95"] as [string, string] },
+  { id: "cricket-first-bet", title: "Cricket First Bet", subtitle: "50% Bonus on Your First Cricket Bet", badge: "Cricket", emoji: "🏏", gradient: ["#0c4a6e", "#0369a1"] as [string, string] },
+  { id: "birthday-bonus", title: "Birthday Bonus", subtitle: "Special Bonus on Your Birthday", badge: "VIP", emoji: "🎂", gradient: ["#831843", "#be185d"] as [string, string] },
+  { id: "unlimited-deposit", title: "Unlimited Deposit Bonus", subtitle: "4.50% Bonus on Every Deposit", badge: "Unlimited", emoji: "💰", gradient: ["#713f12", "#d97706"] as [string, string] },
+  { id: "weekly-reload", title: "Weekly Reload", subtitle: "Reload Bonus Every Monday", badge: "Weekly", emoji: "🔄", gradient: ["#166534", "#15803d"] as [string, string] },
+  { id: "loss-refund", title: "Loss Refund", subtitle: "100% Refund on Net Weekly Losses", badge: "Safety Net", emoji: "🛡️", gradient: ["#1c1917", "#57534e"] as [string, string] },
+  { id: "vip-exclusive", title: "VIP Exclusive", subtitle: "Custom Bonuses for VIP Members", badge: "VIP Only", emoji: "👑", gradient: ["#4c1d95", "#8b5cf6"] as [string, string] },
 ];
 
 export const PROVIDERS = [

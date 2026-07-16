@@ -80,7 +80,7 @@ export default function CricketPage() {
           {CRICKET_LEAGUES.map((league) => (
             <Link
               key={league.id}
-              href={`/cricket/${league.id}`}
+              href="/betting-exchange"
               className="card-glow hover-lift flex flex-col items-center gap-2 rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-4 text-center"
             >
               <span className="text-3xl">{league.emoji}</span>

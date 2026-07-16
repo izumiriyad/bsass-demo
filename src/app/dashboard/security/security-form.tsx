@@ -25,7 +25,13 @@ export function SecurityForm() {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 500));
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed");
       toast.success("Password changed successfully");
       setCurrentPassword("");
       setNewPassword("");

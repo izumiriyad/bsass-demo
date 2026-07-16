@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/components/providers/auth-provider";
 
 interface ProfileFormProps {
   username: string;
@@ -9,6 +10,7 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ username, email }: ProfileFormProps) {
+  const { refreshUser } = useAuth();
   const [formUsername, setFormUsername] = useState(username);
   const [formEmail, setFormEmail] = useState(email);
   const [loading, setLoading] = useState(false);
@@ -21,7 +23,14 @@ export function ProfileForm({ username, email }: ProfileFormProps) {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 500));
+      const res = await fetch("/api/auth/update-profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: formUsername, email: formEmail }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed");
+      await refreshUser();
       toast.success("Profile updated successfully");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Update failed");

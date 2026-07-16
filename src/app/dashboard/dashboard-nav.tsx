@@ -11,7 +11,8 @@ interface DashboardNavProps {
 }
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Profile", icon: User },
+  { href: "/dashboard", label: "Overview", icon: User },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
   { href: "/dashboard/wallet", label: "Wallet", icon: Wallet },
   { href: "/dashboard/history", label: "History", icon: History },
   { href: "/dashboard/favorites", label: "Favorites", icon: Heart },

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PROMOTIONS } from "@/lib/catalog";
+import { ClaimButton } from "@/components/bj88/claim-button";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -59,9 +60,7 @@ export default async function PromotionDetailPage({ params }: { params: Promise<
         </div>
       </div>
 
-      <button type="button" className="btn-primary w-full py-3 text-base font-semibold">
-        Claim Now
-      </button>
+      <ClaimButton promoId={promo.id} />
     </div>
   );
 }

@@ -68,7 +68,7 @@ export default function SportsPage() {
           {SPORTS_CATEGORIES.map((cat) => (
             <Link
               key={cat.id}
-              href={`/sports/${cat.id}`}
+              href="/sports"
               className="card-glow hover-lift flex flex-col items-center gap-2 rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-4 text-center"
             >
               <span className="text-3xl">{cat.emoji}</span>

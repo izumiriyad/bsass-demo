@@ -1,6 +1,10 @@
 "use client";
 
 import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { RegisterModal } from "@/components/auth/register-modal";
+import { LoginModal } from "@/components/auth/login-modal";
+import { DepositModal } from "@/components/auth/deposit-modal";
+import { WithdrawModal } from "@/components/auth/withdraw-modal";
 
 type ModalType = "login" | "register" | "deposit" | "withdraw" | null;
 
@@ -21,6 +25,10 @@ export function ModalProvider({ children }: { children: ReactNode }) {
   return (
     <ModalContext.Provider value={{ modal, openModal, closeModal }}>
       {children}
+      {modal === "register" && <RegisterModal />}
+      {modal === "login" && <LoginModal />}
+      {modal === "deposit" && <DepositModal />}
+      {modal === "withdraw" && <WithdrawModal />}
     </ModalContext.Provider>
   );
 }

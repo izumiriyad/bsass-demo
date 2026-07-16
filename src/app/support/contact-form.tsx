@@ -18,8 +18,14 @@ export function ContactForm() {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 500));
-      toast.success("Message sent! We'll get back to you soon.");
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to send message");
+      toast.success(data.message || "Message sent! We'll get back to you soon.");
       setName("");
       setEmail("");
       setSubject("");

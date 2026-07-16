@@ -34,11 +34,11 @@ export function Header() {
   };
 
   const popularGames = [
-    "Cricket Star",
-    "Aviator",
-    "Andar Bahar",
-    "Teen Patti",
-    "Lightning Roulette",
+    { label: "Cricket Star", href: "/games/cricket-star" },
+    { label: "Aviator", href: "/games/aviator" },
+    { label: "Andar Bahar", href: "/games/andar-bahar" },
+    { label: "Teen Patti", href: "/games/teen-patti" },
+    { label: "Lightning Roulette", href: "/games/lightning-roulette" },
   ];
 
   const quickLinks = [
@@ -50,11 +50,11 @@ export function Header() {
 
   const menuItems = [
     { label: "Dashboard", href: "/dashboard" },
-    { label: "Bet History", href: "/dashboard?tab=bets" },
-    { label: "Transactions", href: "/dashboard?tab=transactions" },
+    { label: "Bet History", href: "/dashboard/history" },
+    { label: "Transactions", href: "/dashboard/history" },
     { label: "Deposit", action: () => { openModal("deposit"); setMenuOpen(false); } },
     { label: "Withdraw", action: () => { openModal("withdraw"); setMenuOpen(false); } },
-    { label: "Profile", href: "/dashboard?tab=profile" },
+    { label: "Profile", href: "/dashboard/profile" },
   ];
 
   return (
@@ -109,14 +109,15 @@ export function Header() {
               <p className="text-xs font-semibold uppercase tracking-wide text-[#6b7280]">Popular Games</p>
             </div>
             {popularGames.map((game) => (
-              <button
-                key={game}
+              <Link
+                key={game.label}
+                href={game.href}
                 onMouseDown={(e) => e.preventDefault()}
                 className="flex w-full items-center gap-2 px-4 py-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
               >
                 <span className="text-[#ffdf19]">▸</span>
-                {game}
-              </button>
+                {game.label}
+              </Link>
             ))}
             <div className="my-1 border-t border-white/[0.06]" />
             <div className="px-4 py-1.5">
@@ -202,7 +203,11 @@ export function Header() {
               <span className="hidden sm:inline">Deposit</span>
             </button>
 
-            <button aria-label="Notifications" className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]">
+            <Link
+              href="/dashboard/notifications"
+              aria-label="Notifications"
+              className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
+            >
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path
                   d="M9 2a4 4 0 0 0-4 4v3l-1.5 2.5h11L13 9V6a4 4 0 0 0-4-4zM7 14a2 2 0 0 0 4 0"
@@ -213,7 +218,7 @@ export function Header() {
                 />
               </svg>
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#ef4444]" />
-            </button>
+            </Link>
 
             <div className="relative">
               <button

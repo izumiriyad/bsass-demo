@@ -17,11 +17,11 @@ const COMPANY_LINKS = [
   { label: "Promotions", href: "/promotions" },
   { label: "Affiliate", href: "/affiliate" },
   { label: "News", href: "/news" },
-  { label: "App Download", href: "/download" },
+  { label: "App Download", href: "/app-download" },
 ];
 
 const SUPPORT_LINKS = [
-  { label: "Help Center", href: "/help" },
+  { label: "Help Center", href: "/support" },
   { label: "Responsible Gaming", href: "/responsible-gaming" },
   { label: "Terms", href: "/terms" },
   { label: "Privacy", href: "/privacy" },
@@ -29,9 +29,10 @@ const SUPPORT_LINKS = [
 ];
 
 const LEGAL_LINKS = [
-  { label: "License Info", href: "/license" },
-  { label: "RNG Certified", href: "/rng" },
-  { label: "SSL Security", href: "/security" },
+  { label: "About Us", href: "/about" },
+  { label: "Responsible Gaming", href: "/responsible-gaming" },
+  { label: "Terms & Conditions", href: "/terms" },
+  { label: "Privacy Policy", href: "/privacy" },
 ];
 
 const PAYMENTS = ["bKash", "Nagad", "Rocket", "USDT", "Bank Transfer"];

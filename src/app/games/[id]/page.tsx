@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ALL_GAMES, GAME_CATEGORIES } from "@/lib/catalog";
 import { getSessionUser } from "@/lib/auth";
 import { GameGrid } from "@/components/bj88/game-card";
+import { PlayButton, LoginToPlayButton } from "@/components/bj88/play-button";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -81,16 +82,9 @@ export default async function GameDetailPage({ params }: { params: Promise<{ id:
           </div>
 
           {user ? (
-            <button type="button" className="btn-primary w-full py-3 text-base font-semibold">
-              ▶ Play Now
-            </button>
+            <PlayButton gameId={game.id} gameTitle={game.title} />
           ) : (
-            <Link
-              href="/login"
-              className="btn-primary w-full py-3 text-center text-base font-semibold"
-            >
-              Login to Play
-            </Link>
+            <LoginToPlayButton />
           )}
 
           <div className="rounded-lg border border-[#2a2c30] bg-[#1b1c1e] p-4">

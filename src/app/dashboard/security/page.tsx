@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Shield, Lock, Smartphone } from "lucide-react";
 import { getSessionUser } from "@/lib/auth";
 import { SecurityForm } from "./security-form";
+import { TwoFactorToggle } from "./two-factor-toggle";
 
 export const metadata: Metadata = { title: "Security" };
 
@@ -29,18 +30,7 @@ export default async function SecurityPage() {
           <Smartphone className="h-4 w-4 text-[#a855f7]" />
           <h2 className="text-sm font-bold uppercase tracking-wide text-[#f0f0f0]">Two-Factor Authentication</h2>
         </div>
-        <div className="flex items-center justify-between rounded-lg bg-[#121315] p-4">
-          <div>
-            <p className="text-sm font-medium text-[#f0f0f0]">2FA Status</p>
-            <p className="text-xs text-[#9ca3af]">Add an extra layer of security to your account</p>
-          </div>
-          <button type="button" className="relative h-6 w-11 rounded-full bg-[#2a2c30] transition">
-            <span className="absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-[#9ca3af] transition" />
-          </button>
-        </div>
-        <p className="mt-2 text-xs text-[#6b7280]">
-          Two-factor authentication is currently disabled. Enable it for enhanced account security.
-        </p>
+        <TwoFactorToggle />
       </div>
     </div>
   );

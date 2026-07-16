@@ -4,6 +4,7 @@ export interface AuthUser {
   id: string;
   username: string;
   email: string;
+  password: string;
   balance: number;
 }
 
@@ -17,20 +18,28 @@ export async function getSessionUser(): Promise<AuthUser | null> {
   if (!session) return null;
   const user = DEMO_USERS.get(session);
   if (!user) return null;
-  return { id: user.id, username: user.username, email: user.email, balance: user.balance };
+  return { id: user.id, username: user.username, email: user.email, password: user.password, balance: user.balance };
 }
 
-export async function createSession(username: string, password: string): Promise<AuthUser | null> {
+export async function createSession(username: string, password: string, email?: string): Promise<AuthUser | null> {
   let user = Array.from(DEMO_USERS.values()).find((u) => u.username === username);
   if (!user) {
-    user = { id: crypto.randomUUID(), username, email: `${username}@bslgaming.com.bd`, password, balance: 500 };
+    user = { id: crypto.randomUUID(), username, email: email ?? `${username}@bslgaming.com.bd`, password, balance: 500 };
     DEMO_USERS.set(user.id, user);
   } else if (user.password !== password) {
     return null;
   }
   const store = await cookies();
   store.set(SESSION_COOKIE, user.id, { httpOnly: true, secure: false, sameSite: "lax", maxAge: 604800 });
-  return { id: user.id, username: user.username, email: user.email, balance: user.balance };
+  return { id: user.id, username: user.username, email: user.email, password: user.password, balance: user.balance };
+}
+
+export async function updateUser(userId: string, updates: Partial<Pick<AuthUser, "username" | "email" | "password" | "balance">>): Promise<AuthUser | null> {
+  const user = DEMO_USERS.get(userId);
+  if (!user) return null;
+  const updated = { ...user, ...updates };
+  DEMO_USERS.set(userId, updated);
+  return updated;
 }
 
 export async function destroySession(): Promise<void> {
