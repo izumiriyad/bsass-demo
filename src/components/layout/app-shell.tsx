@@ -5,6 +5,7 @@ import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 import { TopNavBar } from "@/components/bj88/top-nav-bar";
 import { FloatingChat } from "@/components/bj88/floating-chat";
+import { MobileBottomNav } from "./mobile-bottom-nav";
 import { useSidebar } from "./sidebar-provider";
 import { cn } from "@/lib/utils";
 
@@ -22,9 +23,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       >
         <TopNavBar />
-        <main className="min-h-screen pt-[72px]">{children}</main>
+        <main className="min-h-screen pt-[72px] pb-16 lg:pb-0">{children}</main>
       </div>
       <FloatingChat />
+      <MobileBottomNav />
     </div>
   );
 }

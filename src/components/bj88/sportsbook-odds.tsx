@@ -65,7 +65,7 @@ export function SportsbookOdds() {
                     {e.team2}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-1.5 sm:gap-2">
                   <OddsBtn label="1" value={o1} />
                   <OddsBtn label="X" value={ox} />
                   <OddsBtn label="2" value={o2} />
@@ -83,7 +83,7 @@ function OddsBtn({ label, value }: { label: string; value: number }) {
   return (
     <Link
       href="/sports"
-      className="flex min-w-[64px] flex-col items-center rounded-lg border border-[#2a2c30] bg-[#242628] px-3 py-1.5 text-center transition hover:border-[#008d5b]"
+      className="flex min-w-[52px] flex-1 flex-col items-center rounded-lg border border-[#2a2c30] bg-[#242628] px-2 py-1.5 text-center transition hover:border-[#008d5b] sm:min-w-[64px] sm:flex-none sm:px-3"
     >
       <span className="text-[9px] font-bold uppercase text-[#9ca3af]">
         {label}

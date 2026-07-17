@@ -14,12 +14,14 @@ export function Dialog({ open, onClose, children, className }: DialogProps) {
   if (!open) return null;
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[1000] flex items-end justify-center bg-black/75 backdrop-blur-sm sm:items-center sm:p-4"
       onClick={onClose}
     >
       <div
         className={cn(
-          "relative w-full max-w-md rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-6 shadow-2xl",
+          "relative w-full max-w-md rounded-t-2xl border border-[#2a2c30] bg-[#1b1c1e] p-5 shadow-2xl sm:rounded-xl sm:p-6",
+          "max-h-[90vh] overflow-y-auto",
+          "animate-modal-slide-up sm:animate-modal-center",
           className
         )}
         onClick={(e) => e.stopPropagation()}

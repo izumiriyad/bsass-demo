@@ -9,7 +9,7 @@ export function TopNavBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-[72px] z-30 border-b border-[#2a2c30] bg-[#1b1c1e]">
+    <nav className="sticky top-[72px] z-30 hidden border-b border-[#2a2c30] bg-[#1b1c1e] lg:block">
       <div className="no-scrollbar flex items-center gap-1 overflow-x-auto px-2 py-1.5">
         {GAME_CATEGORIES.map((cat) => {
           const href = `/${cat.id}`;

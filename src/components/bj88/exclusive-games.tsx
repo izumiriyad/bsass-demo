@@ -24,7 +24,7 @@ export function ExclusiveGames() {
             <Link
               key={game.id}
               href={`/games/${game.id}`}
-              className="group relative h-[120px] w-[200px] shrink-0 overflow-hidden rounded-xl transition hover:scale-[1.02]"
+              className="group relative h-[110px] w-[160px] shrink-0 overflow-hidden rounded-xl transition hover:scale-[1.02] sm:h-[120px] sm:w-[200px]"
               style={{ background: `linear-gradient(150deg, ${c1}, ${c2})` }}
             >
               <div

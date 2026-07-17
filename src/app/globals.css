@@ -19,6 +19,8 @@
   --color-red: #ef4444;
   --color-green: #22c55e;
   --font-sans: "Lexend", sans-serif;
+
+  --breakpoint-xs: 400px;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -591,6 +593,32 @@ html, body {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 .animate-modal { animation: modal-slide-up 0.3s ease forwards; }
+
+/* Modal center (desktop) */
+@keyframes modal-center {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-modal-center { animation: modal-center 0.25s ease forwards; }
+
+/* Bottom sheet grabber */
+.bottom-sheet-grabber {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: #383b3f;
+}
+
+/* Mobile bottom nav */
+@keyframes nav-pop {
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+.animate-nav-pop { animation: nav-pop 0.2s ease; }
 
 /* Tab indicator */
 @keyframes tab-slide {

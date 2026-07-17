@@ -148,7 +148,7 @@ export function Header() {
         <button
           onClick={() => setLanguage((l) => (l === "EN" ? "বাংলা" : "EN"))}
           aria-label="Toggle language"
-          className="flex h-9 shrink-0 items-center gap-1.5 rounded-md px-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0]"
+          className="hidden h-9 shrink-0 items-center gap-1.5 rounded-md px-2 text-sm text-[#9ca3af] transition hover:bg-white/5 hover:text-[#f0f0f0] sm:flex"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" />
@@ -161,15 +161,21 @@ export function Header() {
           <>
             <button
               onClick={() => openModal("login")}
-              className="rounded-lg border border-[#ffdf19] px-3 py-2 text-sm font-semibold text-[#ffdf19] transition hover:bg-[#ffdf19]/10 sm:px-4"
+              className="rounded-lg border border-[#ffdf19] px-2.5 py-1.5 text-xs font-semibold text-[#ffdf19] transition hover:bg-[#ffdf19]/10 sm:px-4 sm:text-sm"
             >
-              Login
+              <span className="hidden xs:inline">Login</span>
+              <svg className="xs:hidden" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </button>
             <button
               onClick={() => openModal("register")}
-              className="btn-primary px-3 py-2 text-sm sm:px-4"
+              className="btn-primary px-2.5 py-1.5 text-xs sm:px-4 sm:text-sm"
             >
-              Sign Up
+              <span className="hidden xs:inline">Sign Up</span>
+              <svg className="xs:hidden" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
             </button>
           </>
         ) : (

@@ -8,7 +8,7 @@ export function FloatingChat() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2">
+    <div className="fixed bottom-20 right-4 z-50 flex flex-col items-end gap-2 lg:bottom-4">
       {open && (
         <div className="animate-scale-in mb-2 w-56 rounded-xl border border-[#2a2c30] bg-[#1b1c1e] p-3 shadow-2xl">
           <p className="mb-2 text-xs font-bold uppercase tracking-wide text-[#f0f0f0]">Need Help?</p>

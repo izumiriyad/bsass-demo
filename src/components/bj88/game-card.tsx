@@ -145,10 +145,10 @@ interface GameGridProps {
 
 export function GameGrid({ games, columns = 7 }: GameGridProps) {
   const colsClass = {
-    5: "grid-cols-5",
-    7: "grid-cols-4 sm:grid-cols-6 lg:grid-cols-7",
+    5: "grid-cols-3 xs:grid-cols-5",
+    7: "grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 lg:grid-cols-7",
     8: "grid-cols-4 sm:grid-cols-6 lg:grid-cols-8",
-    10: "grid-cols-5 sm:grid-cols-8 lg:grid-cols-10",
+    10: "grid-cols-3 xs:grid-cols-5 sm:grid-cols-8 lg:grid-cols-10",
   }[columns];
 
   return (
