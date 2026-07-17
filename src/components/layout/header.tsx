@@ -78,10 +78,16 @@ export function Header() {
         </svg>
       </button>
 
-      <Link href="/" className="ml-2 flex shrink-0 items-center gap-1">
-        <span className="text-xl font-bold text-[#008d5b]">BSL</span>
-        <span className="text-xl font-bold text-[#ffdf19]">Gaming</span>
+      <Link href="/" className="ml-2 flex shrink-0 items-center gap-1.5">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#008d5b] to-[#006640] text-sm font-extrabold text-white">BSL</span>
+        <div className="flex flex-col leading-none">
+          <span className="text-base font-extrabold tracking-tight text-[#f0f0f0]">BSL <span className="text-[#ffdf19]">Gaming</span></span>
+          <span className="hidden text-[9px] font-medium text-[#6b7280] sm:block">BD's Premier Betting Platform</span>
+        </div>
       </Link>
+      <span className="ml-2 hidden items-center gap-1 rounded-full border border-[#ffdf19]/20 bg-[#ffdf19]/5 px-2 py-0.5 text-[9px] font-bold text-[#ffdf19] lg:flex">
+        🏏 BPL 2025 Sponsor
+      </span>
 
       <div className="relative ml-4 hidden max-w-md flex-1 items-center lg:flex">
         <svg

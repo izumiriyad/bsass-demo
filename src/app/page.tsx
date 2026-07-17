@@ -17,6 +17,7 @@ import { NewsSection } from "@/components/bj88/news-section";
 import { PromoCalendar } from "@/components/bj88/promo-calendar";
 import { BettingExchangeWidget } from "@/components/bj88/betting-exchange-widget";
 import { JackpotBanner } from "@/components/bj88/jackpot-banner";
+import { ExclusiveGames } from "@/components/bj88/exclusive-games";
 import { Footer } from "@/components/bj88/footer";
 import { WhyChoose } from "@/components/bj88/why-choose";
 import { ProviderShowcase } from "@/components/bj88/provider-showcase";
@@ -50,6 +51,8 @@ export default function HomePage() {
       <CategoryTabs />
 
       <JackpotBanner />
+
+      <ExclusiveGames />
 
       <GameSection
         title="Popular"

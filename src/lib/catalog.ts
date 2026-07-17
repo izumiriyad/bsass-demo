@@ -1,7 +1,7 @@
 export const SITE = {
   name: "BSL Gaming",
   shortName: "BSL",
-  tagline: "Bangladesh's #1 Online Gaming Platform",
+  tagline: "Bangladesh's Premier Online Betting & Casino Platform",
   description:
     "BSL Gaming — Premier online casino, sports betting, cricket, cockfighting, slots, fishing games and more. Play with BDT. 24/7 support.",
   url: "https://bslgaming.com.bd",
@@ -197,6 +197,19 @@ export const FEATURED_GAMES: BSLGame[] = [
   g("feat-2", "High Flyer", "Pragmatic Play", "crash", "#0c4a6e", "#0369a1", "🛩️", { isFeatured: true }),
   g("feat-3", "Gates of Olympus", "Pragmatic Play", "slots", "#2e1065", "#5b21b6", "⚡", { isFeatured: true }),
   g("feat-4", "Crazy Time", "Evolution", "casino", "#7c0000", "#991b1b", "🎪", { isFeatured: true }),
+];
+
+export const EXCLUSIVE_GAMES: BSLGame[] = [
+  g("ex-pp", "PRAGMATIC PLAY", "Pragmatic Play", "popular", "#7c2d12", "#ea580c", "🎯", { isHot: true, players: 8200 }),
+  g("ex-sportsbook", "SPORTS BOOK", "UG Sports", "popular", "#065f46", "#0d9488", "⚽", { isHot: true, players: 9100 }),
+  g("ex-sexy", "SEXY BACCARAT", "AE Sexy", "popular", "#3b0011", "#6b0020", "💃", { isHot: true, players: 6200 }),
+  g("ex-jungle", "LET'S GO JUNGLE", "Pragmatic Play", "popular", "#166534", "#15803d", "🌴", { players: 3400 }),
+  g("ex-aztec", "AZTEC GEMS", "Pragmatic Play", "popular", "#7c2d12", "#9a3412", "💎", { players: 4100 }),
+  g("ex-mega-wheel", "MEGA WHEEL", "Pragmatic Play", "popular", "#1e1b4b", "#4c1d95", "🎡", { isFeatured: true, players: 6200 }),
+  g("ex-high-flyer", "HIGH FLYER", "Pragmatic Play", "popular", "#0c4a6e", "#0369a1", "🛩️", { players: 5500 }),
+  g("ex-super-ace", "SUPER ACE", "JILI", "popular", "#422006", "#713f12", "♠️", { isHot: true, players: 4800 }),
+  g("ex-fortune-gems", "FORTUNE GEMS 3", "JILI", "popular", "#713f12", "#92400e", "💍", { players: 3900 }),
+  g("ex-gates", "GATES OF OLYMPUS", "Pragmatic Play", "popular", "#2e1065", "#5b21b6", "⚡", { isFeatured: true, players: 8200 }),
 ];
 
 export const SPORTS_EVENTS = [
